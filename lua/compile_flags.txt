@@ -1,0 +1,5 @@
+clang++
+-Wall
+-Wextra
+-Isrc/
+-I../engine/include/
