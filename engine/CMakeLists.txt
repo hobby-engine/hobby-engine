@@ -9,11 +9,11 @@ set(ENGINE_SOURCE_FILES
 )
 
 set(ENGINE_HEADER_FILES
-  include/point.h
-  include/window.h
-  include/shader.h
-  include/texture.h
-  include/vec2.h
+  include/point.hh
+  include/window.hh
+  include/shader.hh
+  include/texture.hh
+  include/vec2.hh
 )
 
 set(ENGINE_THIRDPARTY_SOURCE_FILES
@@ -27,9 +27,12 @@ add_library(
   ${ENGINE_HEADER_FILES}
   ${ENGINE_THIRDPARTY_SOURCE_FILES}
 )
-target_link_libraries(${POINT_LIB_NAME} PRIVATE ${LIB_GLFW} ${LIB_SDL})
-target_include_directories(
-  ${POINT_LIB_NAME} PRIVATE 
+target_link_libraries(${POINT_LIB_NAME} PRIVATE
+  ${LIB_GLFW}
+  ${LIB_SDL}
+)
+
+target_include_directories(${POINT_LIB_NAME} PRIVATE 
   src
   include
   thirdparty

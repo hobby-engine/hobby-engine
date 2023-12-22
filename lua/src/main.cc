@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "point.h"
+#include "point.hh"
 
 int main() {
   auto window = point::Window();

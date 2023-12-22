@@ -1,8 +1,8 @@
-#include "window.h"
+#include "window.hh"
 
 #include <iostream>
 
-#include "vec2.h"
+#include "vec2.hh"
 
 namespace point {
 
