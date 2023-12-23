@@ -25,7 +25,6 @@ Window::~Window() {
   SDL_DestroyWindow(_window);
 }
 
-
 void Window::InitializeWindow(const WindowSettings& settings) {
   // Don't allow more than 1 window.
   if (_alreadyInstanced) {
