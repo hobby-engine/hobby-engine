@@ -9,9 +9,9 @@ bool OnKeyPressed(const point::KeyReleasedEvent& event) {
   showColor = !showColor;
 
   if (showColor) {
-    point::Graphics::Pop();
+    point::Graphics::PopState();
   } else {
-    point::Graphics::Push();
+    point::Graphics::PushState();
   }
   
   return false;

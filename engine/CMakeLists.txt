@@ -2,7 +2,7 @@ find_library(LIB_SDL NAME SDL2)
 
 set(ENGINE_SOURCE_FILES
   src/window.cc
-  src/draw.cc
+  src/graphics.cc
   src/texture.cc
   src/vec2.cc
   src/event_impl.cc
@@ -12,7 +12,7 @@ set(ENGINE_SOURCE_FILES
 set(ENGINE_HEADER_FILES
   include/point.hh
   include/window.hh
-  include/draw.hh
+  include/graphics.hh
   include/event.hh
   include/event/key.hh
   include/color.hh

@@ -9,6 +9,20 @@ namespace point {
 /// @brief Holds and mutates graphics state.
 class Graphics {
   public:
+    /// @brief Create the initial graphics state.
+    ///
+    /// If the window is destroyed, then all states created from it are
+    /// invalidated.
+    ///
+    /// @param window The window this state will draw to.
+    static void Initialize(Window& window);
+    /// @brief Return to previous state. Does not free the current state.
+    static void PopState();
+    /// @brief Create a new graphics state.
+    ///
+    /// Does not replace the current state. It will keep a reference to it, and
+    /// once `Pop()` is called, it will return to the previous state.
+    static void PushState();
     /// @brief Sets the color of the current graphics state.
     /// @param color The new draw color.
     static void SetColor(Color color);
@@ -19,20 +33,6 @@ class Graphics {
     static void Clear();
     /// @brief Presents all changes to the screen.
     static void Present();
-    /// @brief Return to previous state. Does not free the current state.
-    static void Pop();
-    /// @brief Create the initial graphics state.
-    ///
-    /// If the window is destroyed, then all states created from it are
-    /// invalidated.
-    ///
-    /// @param window The window this state will draw to.
-    static void Initialize(Window& window);
-    /// @brief Create a new graphics state.
-    ///
-    /// Does not replace the current state. It will keep a reference to it, and
-    /// once `Pop()` is called, it will return to the previous state.
-    static void Push();
     
   private:
     Graphics() = default;

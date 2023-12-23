@@ -1,4 +1,4 @@
-#include "draw.hh"
+#include "graphics.hh"
 
 #include <iostream>
 #include <stdexcept>
@@ -21,7 +21,7 @@ void Graphics::Initialize(Window& window) {
   Current = newState;
 }
 
-void Graphics::Push() {
+void Graphics::PushState() {
   if (Current == nullptr) {
     throw std::runtime_error("Graphics state not initialized.");
   }
@@ -32,15 +32,7 @@ void Graphics::Push() {
   Current = newState;
 }
 
-void Graphics::SetColor(Color color) {
-  Current->_currentColor = color; 
-}
-
-void Graphics::SetBackgroundColor(Color color) {
-  Current->_backgroundColor = color; 
-}
-
-void Graphics::Pop() {
+void Graphics::PopState() {
   if (Current->_enclosing == nullptr) {
     throw std::runtime_error("Invalid pop. Please add a corresponding push call.");
   }
@@ -49,6 +41,14 @@ void Graphics::Pop() {
   Current = Current->_enclosing;
 
   delete previous;
+}
+
+void Graphics::SetColor(Color color) {
+  Current->_currentColor = color; 
+}
+
+void Graphics::SetBackgroundColor(Color color) {
+  Current->_backgroundColor = color; 
 }
 
 void Graphics::Clear() {

@@ -6,7 +6,7 @@
 
 #include "vec2.hh"
 #include "window.hh"
-#include "draw.hh"
+#include "graphics.hh"
 #include "color.hh"
 #include "event.hh"
 #include "event/key.hh"
