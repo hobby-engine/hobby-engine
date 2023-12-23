@@ -7,7 +7,6 @@
 namespace point {
 
 class Graphics {
-    friend class Graphics;
   public:
     Graphics(Window& window);
     Graphics();

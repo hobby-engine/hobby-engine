@@ -12,7 +12,7 @@ namespace point {
 Graphics* Graphics::Current = nullptr;
 
 Graphics::Graphics(Window& window)
-    : _window(window.GetWindow()) {
+    : _window(window._window) {
   _enclosing = Current;
   Current = this;
 }

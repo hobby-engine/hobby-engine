@@ -15,7 +15,7 @@ struct WindowSettings {
 };
 
 class Window {
-    friend class GraphicsState;
+    friend class Graphics;
   public:
     Window(); // Default
     Window(const WindowSettings& settings);
@@ -35,9 +35,6 @@ class Window {
     }
     inline void Close() {
       _shouldClose = true;
-    }
-    inline SDL_Window* GetWindow() const {
-      return _window;
     }
   private:
     void InitializeWindow(const WindowSettings& settings);
