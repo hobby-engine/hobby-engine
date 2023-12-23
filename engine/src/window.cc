@@ -6,6 +6,7 @@
 #include "glad/glad.h"
 #include "SDL2/SDL.h"
 
+#include "event/key.hh"
 #include "vec2.hh"
 
 namespace point {
@@ -108,6 +109,16 @@ void Window::Update() {
       case SDL_QUIT:
         Close();
         break;
+      case SDL_KEYDOWN: {
+        KeyPressedEvent keyPressedEvent(event.key.type, event.key.repeat);
+        KeyPressedEvent::PushEvent(keyPressedEvent);
+        break;
+      }
+      case SDL_KEYUP: {
+        KeyReleasedEvent keyReleasedEvent(event.key.type);
+        KeyReleasedEvent::PushEvent(keyReleasedEvent);
+        break;
+      }
     }
   }
 }

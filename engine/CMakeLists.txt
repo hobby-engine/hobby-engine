@@ -5,6 +5,7 @@ set(ENGINE_SOURCE_FILES
   src/draw.cc
   src/texture.cc
   src/vec2.cc
+  src/event_impl.cc
   src/lib_impl.cc
 )
 
@@ -12,6 +13,8 @@ set(ENGINE_HEADER_FILES
   include/point.hh
   include/window.hh
   include/draw.hh
+  include/event.hh
+  include/event/key.hh
   include/color.hh
   include/texture.hh
   include/vec2.hh

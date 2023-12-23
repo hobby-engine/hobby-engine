@@ -8,5 +8,7 @@
 #include "window.hh"
 #include "draw.hh"
 #include "color.hh"
+#include "event.hh"
+#include "event/key.hh"
 
 #endif
