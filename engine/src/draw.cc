@@ -42,7 +42,7 @@ void Graphics::SetBackgroundColor(Color color) {
 
 void Graphics::Pop() {
   if (Current->_enclosing == nullptr) {
-    throw std::runtime_error("Invalid pop. Please add a corresponding graphics state.");
+    throw std::runtime_error("Invalid pop. Please add a corresponding push call.");
   }
 
   Graphics* previous = Current;
