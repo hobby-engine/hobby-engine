@@ -5,16 +5,16 @@
 
 namespace point {
 
-template <class T>
-class Vec2Template {
+class Vec2 {
   public:
-    T x, y;
+    union { double x, w; };
+    union { double y, h; };
 
-    Vec2Template(T x = 0, T y = 0)
+    Vec2(double x = 0, double y = 0)
       : x(x), y(y) {
     }
 
-    Vec2Template(Vec2Template<T>& other) // Copy
+    Vec2(Vec2& other) // Copy
       : x(other.x), y(other.y) {
     }
 
@@ -22,7 +22,7 @@ class Vec2Template {
       return std::sqrt(x*x + y*y);
     }
 
-    inline double Dot(Vec2Template<T> other) const {
+    inline double Dot(Vec2 other) const {
       return x*other.x + y*other.y;
     }
 
@@ -30,115 +30,103 @@ class Vec2Template {
       return std::atan2(y, x);
     }
 
-    inline double AngleTo(Vec2Template<T> other) const {
+    inline double AngleTo(Vec2 other) const {
       return (*this - other).Angle();
     }
 
-    inline double DistanceTo(Vec2Template<T> other) const {
+    inline double DistanceTo(Vec2 other) const {
       return (*this - other).Length();
     }
 
-    inline Vec2Template<T> DirectionTo(Vec2Template<T> other) const {
+    inline Vec2 DirectionTo(Vec2 other) const {
       return (*this - other).Normalized();
     }
 
-    Vec2Template<T> Normalized() const {
+    Vec2 Normalized() const {
       const double l = Length();
       return l == 0
-        ? Vec2Template<T>()
-        : Vec2Template<T>(x / l, y / l);
+        ? Vec2()
+        : Vec2(x / l, y / l);
     }
 
-    Vec2Template<T> Rotated(double radians) const {
+    Vec2 Rotated(double radians) const {
       const double angle = Angle() + radians;
       const double length = Length();
-      return Vec2Template<T>(
+      return Vec2(
         std::cos(angle) * length,
         std::sin(angle) * length);
     }
 
-  Vec2Template<T> operator=(Vec2Template<T> rhs) {
+    Vec2 Reflect(Vec2 normal) const {
+      return (*this) * Dot(normal) * 2 * normal;
+    }
+
+  Vec2 operator=(const Vec2 rhs) {
     x = rhs.x;
     y = rhs.y;
     return *this;
   }
+
+  Vec2 operator+(const Vec2 rhs) const {
+    return Vec2(x + rhs.x, y + rhs.y);
+  }
+
+  Vec2 operator+=(const Vec2 rhs) {
+    x += rhs.x;
+    y += rhs.y;
+    return *this;
+  }
+
+  Vec2 operator-(const Vec2 rhs) const {
+    return Vec2(x - rhs.x, y - rhs.y);
+  }
+
+  Vec2 operator-=(const Vec2 rhs) {
+    x -= rhs.x;
+    y -= rhs.y;
+    return *this;
+  }
+
+  Vec2 operator*(const Vec2& rhs) const {
+    return Vec2(x * rhs.x, y * rhs.y);
+  }
+
+  Vec2 operator*(double rhs) const {
+    return Vec2(x * rhs, y * rhs);
+  }
+
+  Vec2 operator*=(const Vec2& rhs) {
+    x *= rhs.x;
+    y *= rhs.y;
+    return *this;
+  }
+
+  Vec2 operator*=(double rhs) {
+    x *= rhs;
+    y *= rhs;
+    return *this;
+  }
+
+  Vec2 operator/(const Vec2& rhs) const {
+    return Vec2(x / rhs.x, y / rhs.y);
+  }
+
+  Vec2 operator/(double rhs) const {
+    return Vec2(x / rhs, y / rhs);
+  }
+
+  Vec2 operator/=(const Vec2& rhs) {
+    x /= rhs.x;
+    y /= rhs.y;
+    return *this;
+  }
+
+  Vec2 operator/=(double rhs) {
+    x /= rhs;
+    y /= rhs;
+    return *this;
+  }
 };
-
-using Vec2 = Vec2Template<double>;
-using Vec2f = Vec2Template<float>;
-using Vec2i = Vec2Template<int>;
-
-template <class T>
-Vec2Template<T> operator+(Vec2Template<T> lhs, Vec2Template<T> rhs) {
-  return Vec2Template<T>(lhs.x + rhs.x, lhs.y + rhs.y);
-}
-
-template <class T>
-Vec2Template<T> operator+=(Vec2Template<T> lhs, Vec2Template<T> rhs) {
-  lhs.x += rhs.x;
-  lhs.y += rhs.y;
-  return lhs;
-}
-
-template <class T>
-Vec2Template<T> operator-(Vec2Template<T> lhs, Vec2Template<T> rhs) {
-  return Vec2Template<T>(lhs.x - rhs.x, lhs.y - rhs.y);
-}
-
-template <class T>
-Vec2Template<T> operator-=(Vec2Template<T> lhs, Vec2Template<T> rhs) {
-  lhs.x -= rhs.x;
-  lhs.y -= rhs.y;
-  return lhs;
-}
-
-template <class T>
-Vec2Template<T> operator*(Vec2Template<T> lhs, Vec2Template<T> rhs) {
-  return Vec2Template<T>(lhs.x * rhs.x, lhs.y * rhs.y);
-}
-
-template <class T>
-Vec2Template<T> operator*(Vec2Template<T> lhs, T rhs) {
-  return Vec2Template<T>(lhs.x * rhs, lhs.y * rhs);
-}
-
-template <class T>
-Vec2Template<T> operator*=(Vec2Template<T> lhs, Vec2Template<T> rhs) {
-  lhs.x *= rhs.x;
-  lhs.y *= rhs.y;
-  return lhs;
-}
-
-template <class T>
-Vec2Template<T> operator*=(Vec2Template<T> lhs, T rhs) {
-  lhs.x *= rhs;
-  lhs.y *= rhs;
-  return lhs;
-}
-
-template <class T>
-Vec2Template<T> operator/(Vec2Template<T> lhs, Vec2Template<T> rhs) {
-  return Vec2Template<T>(lhs.x / rhs.x, lhs.y / rhs.y);
-}
-
-template <class T>
-Vec2Template<T> operator/(Vec2Template<T> lhs, T rhs) {
-  return Vec2Template<T>(lhs.x / rhs, lhs.y / rhs);
-}
-
-template <class T>
-Vec2Template<T> operator/=(Vec2Template<T> lhs, Vec2Template<T> rhs) {
-  lhs.x /= rhs.x;
-  lhs.y /= rhs.y;
-  return lhs;
-}
-
-template <class T>
-Vec2Template<T> operator/=(Vec2Template<T> lhs, T rhs) {
-  lhs.x /= rhs;
-  lhs.y /= rhs;
-  return lhs;
-}
 
 } // namespace point
 
