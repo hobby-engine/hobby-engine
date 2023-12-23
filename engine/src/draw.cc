@@ -7,60 +7,48 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-namespace point::draw {
+namespace point {
 
-class GraphicsState {
-  public:
-    GraphicsState(Window& window)
-      : CurrentColor(1, 1, 1), 
-      BackgroundColor(0, 0, 0),
-      _window(window) {
-    }
-    
-    Color CurrentColor;
-    Color BackgroundColor;
+Graphics* Graphics::Current = nullptr;
 
-    inline SDL_Window* GetWindow() {
-      return _window.GetWindow();
-    }
-  private:
-    Window& _window;
-};
-
-std::vector<GraphicsState> states;
-
-static inline GraphicsState& State() {
-  return states.back();
+Graphics::Graphics(Window& window)
+    : _window(window.GetWindow()) {
+  _enclosing = Current;
+  Current = this;
 }
 
-void Initialize(Window& window) {
-  states = std::vector<GraphicsState>();
-  states.reserve(16);
-
-  states.emplace_back(GraphicsState(window));
+Graphics::Graphics() {
+  _enclosing = Current;
+  _window = _enclosing->_window;
+  
+  Current = this;
 }
 
-void SetColor(Color color) {
-  State().CurrentColor = color;
+void Graphics::SetColor(Color color) {
+  Current->_currentColor = color; 
 }
 
-void SetBackgroundColor(Color color) {
-  State().BackgroundColor = color;
+void Graphics::SetBackgroundColor(Color color) {
+  Current->_backgroundColor = color; 
 }
 
-void Clear() {
-  Color color = State().BackgroundColor;
+void Graphics::Pop() {
+  Current = Current->_enclosing;
+}
+
+void Graphics::Clear() {
+  Color color = Current->_backgroundColor;
   glClearColor(color.R, color.G, color.B, color.A);
   glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void Present() {
+void Graphics::Present() {
 #ifdef POINT_APPLE
   // Nothing happens on MacOS if this ain't here (docs said so!)
   glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 #endif
 
-  SDL_GL_SwapWindow(State().GetWindow());
+  SDL_GL_SwapWindow(Current->_window);
 }
 
-} // namespace point::draw
+} // namespace point

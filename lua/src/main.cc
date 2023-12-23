@@ -4,15 +4,15 @@
 
 int main() {
   auto window = point::Window();
+  auto graphicsState = point::Graphics(window);
 
-  point::draw::Initialize(window);
-  point::draw::SetBackgroundColor(point::Color(0.2, 0.2, 0.2));
+  point::Graphics::SetBackgroundColor(point::Color(1, 0.5, 1));
 
   while (!window.ShouldClose()) {
     window.Update();
 
-    point::draw::Clear();
-    point::draw::Present();
+    point::Graphics::Clear();
+    point::Graphics::Present();
   }
 
   return 0;
