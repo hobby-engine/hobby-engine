@@ -1,4 +1,5 @@
 build/
+doxygen_output/
 
 CustomOpts.cmake
 

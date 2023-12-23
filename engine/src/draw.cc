@@ -18,6 +18,11 @@ Graphics::Graphics(Window& window)
 }
 
 Graphics::Graphics() {
+  if (Current == nullptr) {
+    // Cannot be an initial state. TODO: Throw error.
+    exit(1);
+  }
+
   _enclosing = Current;
   _window = _enclosing->_window;
   
@@ -33,6 +38,10 @@ void Graphics::SetBackgroundColor(Color color) {
 }
 
 void Graphics::Pop() {
+  if (Current->_enclosing == nullptr) {
+    // TODO: let the user know about this instead of quitting.
+    exit(1);
+  }
   Current = Current->_enclosing;
 }
 
