@@ -1,4 +1,4 @@
-find_library(LIB_SDL SDL2)
+find_library(LIB_SDL NAME SDL2)
 
 set(ENGINE_SOURCE_FILES
   src/window.cc
