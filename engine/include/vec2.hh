@@ -7,8 +7,8 @@ namespace point {
 
 class Vec2 {
   public:
-    union { double x, w; };
-    union { double y, h; };
+    union { double X, W; };
+    union { double Y, H; };
 
     static const Vec2 ZERO;
     static const Vec2 ONE;
@@ -18,11 +18,11 @@ class Vec2 {
     static const Vec2 RIGHT;
 
     Vec2(double x = 0, double y = 0)
-      : x(x), y(y) {
+      : X(x), Y(y) {
     }
 
     Vec2(Vec2& other) // Copy
-      : x(other.x), y(other.y) {
+      : X(other.X), Y(other.Y) {
     }
 
     inline double Length() const;
@@ -37,68 +37,68 @@ class Vec2 {
     Vec2 Reflect(Vec2 normal) const;
 
     Vec2 operator=(const Vec2 rhs) {
-      x = rhs.x;
-      y = rhs.y;
+      X = rhs.X;
+      Y = rhs.Y;
       return *this;
     }
 
     Vec2 operator+(const Vec2 rhs) const {
-      return Vec2(x + rhs.x, y + rhs.y);
+      return Vec2(X + rhs.X, Y + rhs.Y);
     }
 
     Vec2 operator+=(const Vec2 rhs) {
-      x += rhs.x;
-      y += rhs.y;
+      X += rhs.X;
+      Y += rhs.Y;
       return *this;
     }
 
     Vec2 operator-(const Vec2 rhs) const {
-      return Vec2(x - rhs.x, y - rhs.y);
+      return Vec2(X - rhs.X, Y - rhs.Y);
     }
 
     Vec2 operator-=(const Vec2 rhs) {
-      x -= rhs.x;
-      y -= rhs.y;
+      X -= rhs.X;
+      Y -= rhs.Y;
       return *this;
     }
 
     Vec2 operator*(const Vec2& rhs) const {
-      return Vec2(x * rhs.x, y * rhs.y);
+      return Vec2(X * rhs.X, Y * rhs.Y);
     }
 
     Vec2 operator*(double rhs) const {
-      return Vec2(x * rhs, y * rhs);
+      return Vec2(X * rhs, Y * rhs);
     }
 
     Vec2 operator*=(const Vec2& rhs) {
-      x *= rhs.x;
-      y *= rhs.y;
+      X *= rhs.X;
+      Y *= rhs.Y;
       return *this;
     }
 
     Vec2 operator*=(double rhs) {
-      x *= rhs;
-      y *= rhs;
+      X *= rhs;
+      Y *= rhs;
       return *this;
     }
 
     Vec2 operator/(const Vec2& rhs) const {
-      return Vec2(x / rhs.x, y / rhs.y);
+      return Vec2(X / rhs.X, Y / rhs.Y);
     }
 
     Vec2 operator/(double rhs) const {
-      return Vec2(x / rhs, y / rhs);
+      return Vec2(X / rhs, Y / rhs);
     }
 
     Vec2 operator/=(const Vec2& rhs) {
-      x /= rhs.x;
-      y /= rhs.y;
+      X /= rhs.X;
+      Y /= rhs.Y;
       return *this;
     }
 
     Vec2 operator/=(double rhs) {
-      x /= rhs;
-      y /= rhs;
+      X /= rhs;
+      Y /= rhs;
       return *this;
     }
 };

@@ -8,10 +8,10 @@
 namespace point {
 
 struct WindowSettings {
-  const char* title = "Point Engine";
-  int width = 800, height = 400;
-  int x = SDL_WINDOWPOS_CENTERED, y = SDL_WINDOWPOS_CENTERED;
-  bool resizable = true;
+  const char* Title = "Point Engine";
+  int Width = 800, Height = 400;
+  int X = SDL_WINDOWPOS_CENTERED, Y = SDL_WINDOWPOS_CENTERED;
+  bool Resizable = true;
 };
 
 class Window {

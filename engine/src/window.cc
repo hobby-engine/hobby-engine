@@ -42,14 +42,14 @@ void Window::InitializeWindow(const WindowSettings& settings) {
 
   // Create window
   uint32_t flags = 0;
-  if (settings.resizable) {
+  if (settings.Resizable) {
     flags |= SDL_WINDOW_RESIZABLE;
   }
 
   _window = SDL_CreateWindow(
-    settings.title,
-    settings.x, settings.y,
-    settings.width, settings.height,
+    settings.Title,
+    settings.X, settings.Y,
+    settings.Width, settings.Height,
     flags | SDL_WINDOW_OPENGL);
   if (!_window) {
     std::cerr << "Could not create window: " << SDL_GetError() << std::endl;
@@ -88,17 +88,17 @@ Vec2 Window::GetPosition() const {
 }
 
 void Window::SetPosition(const Vec2& position) {
-  SDL_SetWindowPosition(_window, position.x, position.y);
+  SDL_SetWindowPosition(_window, position.X, position.Y);
 }
 
 Vec2 Window::GetSize() const {
-  int x, y;
-  SDL_GetWindowSize(_window, &x, &y);
-  return Vec2(x, y);
+  int w, h;
+  SDL_GetWindowSize(_window, &w, &h);
+  return Vec2(w, h);
 }
 
 void Window::SetSize(const Vec2& size) {
-  SDL_SetWindowSize(_window, size.x, size.y);
+  SDL_SetWindowSize(_window, size.W, size.H);
 }
 
 void Window::Update() {
