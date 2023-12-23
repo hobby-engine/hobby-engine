@@ -9,9 +9,9 @@ bool OnKeyPressed(const point::KeyReleasedEvent& event) {
   showColor = !showColor;
 
   if (showColor) {
-    point::Graphics::SetBackgroundColor(point::Color(1, 0.5, 1));
+    point::Graphics::Pop();
   } else {
-    point::Graphics::SetBackgroundColor(point::Color(0, 0, 0));
+    point::Graphics::Push();
   }
   
   return false;
@@ -19,7 +19,7 @@ bool OnKeyPressed(const point::KeyReleasedEvent& event) {
 
 int main() {
   auto window = point::Window();
-  auto graphicsState = point::Graphics(window);
+  point::Graphics::Initialize(window);
 
   point::Graphics::SetBackgroundColor(point::Color(1, 0.5, 1));
   point::KeyReleasedEvent::AddCallback(OnKeyPressed);

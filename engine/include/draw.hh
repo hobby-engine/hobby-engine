@@ -9,24 +9,6 @@ namespace point {
 /// @brief Holds and mutates graphics state.
 class Graphics {
   public:
-    /// @brief Initial constructor, the first state must use this constructor.
-    ///
-    /// Other states made after this can infer the window from the previous one.
-    /// This constructor will not replace current state, assuming there is one.
-    /// Instead, it will keep a reference to it, and will return to that state 
-    /// when `Pop()` is called.
-    /// It does not own the window. If the window is destroyed then the graphics
-    /// state is invalidated.
-    ///
-    /// @param window The window this state will draw to.
-    Graphics(Window& window);
-    /// @brief Default constructor. Infers window from the previous state.
-    ///
-    /// Will not replace current state. Instead, it will keep a reference to it,
-    /// and will return to that state when `Pop()` is called. If this is used to
-    /// create the initial state, it will throw an error.
-    Graphics();
-
     /// @brief Sets the color of the current graphics state.
     /// @param color The new draw color.
     static void SetColor(Color color);
@@ -39,8 +21,22 @@ class Graphics {
     static void Present();
     /// @brief Return to previous state. Does not free the current state.
     static void Pop();
+    /// @brief Create the initial graphics state.
+    ///
+    /// If the window is destroyed, then all states created from it are
+    /// invalidated.
+    ///
+    /// @param window The window this state will draw to.
+    static void Initialize(Window& window);
+    /// @brief Create a new graphics state.
+    ///
+    /// Does not replace the current state. It will keep a reference to it, and
+    /// once `Pop()` is called, it will return to the previous state.
+    static void Push();
     
   private:
+    Graphics() = default;
+
     /// @brief The current state.
     static Graphics* Current;
     /// @brief The previous state.

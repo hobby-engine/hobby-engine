@@ -11,21 +11,25 @@ namespace point {
 
 Graphics* Graphics::Current = nullptr;
 
-Graphics::Graphics(Window& window)
-    : _window(window._window) {
-  _enclosing = Current;
-  Current = this;
-}
-
-Graphics::Graphics() {
-  if (Current == nullptr) {
-    throw std::runtime_error("There is no initial state. Please pass your window.");
+void Graphics::Initialize(Window& window) {
+  if (Current != nullptr) {
+    throw std::runtime_error("Graphics state already initialized.");
   }
 
-  _enclosing = Current;
-  _window = _enclosing->_window;
-  
-  Current = this;
+  auto newState = new Graphics();
+  newState->_window = window._window;
+  Current = newState;
+}
+
+void Graphics::Push() {
+  if (Current == nullptr) {
+    throw std::runtime_error("Graphics state not initialized.");
+  }
+
+  auto newState = new Graphics();
+  newState->_enclosing = Current;
+  newState->_window = Current->_window;
+  Current = newState;
 }
 
 void Graphics::SetColor(Color color) {
@@ -40,7 +44,11 @@ void Graphics::Pop() {
   if (Current->_enclosing == nullptr) {
     throw std::runtime_error("Invalid pop. Please add a corresponding graphics state.");
   }
+
+  Graphics* previous = Current;
   Current = Current->_enclosing;
+
+  delete previous;
 }
 
 void Graphics::Clear() {
