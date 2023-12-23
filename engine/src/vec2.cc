@@ -3,15 +3,15 @@
 namespace point {
 
 double Vec2::Length() const {
-  return std::sqrt(x*x + y*y);
+  return std::sqrt(X*X + Y*Y);
 }
 
 double Vec2::Dot(Vec2 other) const {
-  return x*other.x + y*other.y;
+  return X*other.X + Y*other.Y;
 }
 
 double Vec2::Angle() const {
-  return std::atan2(y, x);
+  return std::atan2(Y, X);
 }
 
 double Vec2::AngleTo(Vec2 other) const {
@@ -39,7 +39,7 @@ Vec2 Vec2::Normalized() const {
   const double l = Length();
   return l == 0
   ? Vec2()
-  : Vec2(x / l, y / l);
+  : Vec2(X / l, Y / l);
 }
 
 Vec2 Vec2::Rotated(double radians) const {
