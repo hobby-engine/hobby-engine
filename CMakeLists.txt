@@ -22,5 +22,12 @@ set(POINT_LIB_NAME point)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "-O2 -Wall -Wextra")
 
+# Allow custom options (in my case, -fsanitize=address for debugging)
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/CustomOpts.cmake)
+  message("Custom Opts!")
+  include(${CMAKE_CURRENT_SOURCE_DIR}/CustomOpts.cmake)
+endif()
+
+
 add_subdirectory(engine)
 add_subdirectory(lua)

@@ -6,7 +6,7 @@ int main() {
   auto window = point::Window();
 
   point::draw::Initialize(window);
-  point::draw::SetBackgroundColor(point::Color(0, 1, 1));
+  point::draw::SetBackgroundColor(point::Color(0.2, 0.2, 0.2));
 
   while (!window.ShouldClose()) {
     window.Update();
