@@ -1,11 +1,11 @@
 #include "draw.hh"
 
-#include <SDL2/SDL_video.h>
 #include <iostream>
+#include <stdexcept>
 #include <vector>
 
 #include "glad/glad.h"
-#include "GLFW/glfw3.h"
+#include "SDL2/SDL.h"
 
 namespace point {
 
@@ -19,8 +19,7 @@ Graphics::Graphics(Window& window)
 
 Graphics::Graphics() {
   if (Current == nullptr) {
-    // Cannot be an initial state. TODO: Throw error.
-    exit(1);
+    throw std::runtime_error("There is no initial state. Please pass your window.");
   }
 
   _enclosing = Current;
@@ -39,8 +38,7 @@ void Graphics::SetBackgroundColor(Color color) {
 
 void Graphics::Pop() {
   if (Current->_enclosing == nullptr) {
-    // TODO: let the user know about this instead of quitting.
-    exit(1);
+    throw std::runtime_error("Invalid pop. Please add a corresponding graphics state.");
   }
   Current = Current->_enclosing;
 }
