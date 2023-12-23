@@ -2,6 +2,10 @@
 
 #include <iostream>
 
+#include "SDL2/SDL_video.h"
+#include "glad/glad.h"
+#include "SDL2/SDL.h"
+
 #include "vec2.hh"
 
 namespace point {
@@ -32,6 +36,11 @@ void Window::InitializeWindow(const WindowSettings& settings) {
   }
   _alreadyInstanced = true;
 
+  if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+    std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
+    exit(1);
+  }
+
   // Create window
   uint32_t flags = 0;
   if (settings.resizable) {
@@ -42,10 +51,25 @@ void Window::InitializeWindow(const WindowSettings& settings) {
     settings.title,
     settings.x, settings.y,
     settings.width, settings.height,
-    flags);
-  
+    flags | SDL_WINDOW_OPENGL);
   if (!_window) {
-    std::cerr << "Could not create window." << std::endl;
+    std::cerr << "Could not create window: " << SDL_GetError() << std::endl;
+    exit(1);
+  }
+
+  _context = SDL_GL_CreateContext(_window);
+  if (!_context) {
+    SDL_DestroyWindow(_window);
+    std::cerr << "Could not create context: " << SDL_GetError() << std::endl;
+    exit(1);
+  }
+
+  SDL_GL_MakeCurrent(_window, _context);
+
+  if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
+    SDL_DestroyWindow(_window);
+    SDL_GL_DeleteContext(_context);
+    std::cerr << "Failed to initialize glad." << std::endl;
     exit(1);
   }
 }
@@ -58,23 +82,23 @@ void Window::SetTitle(const char* title) {
   SDL_SetWindowTitle(_window, title);
 }
 
-Vec2i Window::GetPosition() const {
+Vec2 Window::GetPosition() const {
   int x, y;
   SDL_GetWindowPosition(_window, &x, &y);
-  return Vec2i(x, y);
+  return Vec2(x, y);
 }
 
-void Window::SetPosition(const Vec2i& position) {
+void Window::SetPosition(const Vec2& position) {
   SDL_SetWindowPosition(_window, position.x, position.y);
 }
 
-Vec2i Window::GetSize() const {
+Vec2 Window::GetSize() const {
   int x, y;
   SDL_GetWindowSize(_window, &x, &y);
-  return Vec2i(x, y);
+  return Vec2(x, y);
 }
 
-void Window::SetSize(const Vec2i& size) {
+void Window::SetSize(const Vec2& size) {
   SDL_SetWindowSize(_window, size.x, size.y);
 }
 

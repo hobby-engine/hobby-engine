@@ -15,6 +15,7 @@ struct WindowSettings {
 };
 
 class Window {
+    friend class GraphicsState;
   public:
     Window(); // Default
     Window(const WindowSettings& settings);
@@ -22,10 +23,10 @@ class Window {
     
     const char* GetTitle() const;
     void SetTitle(const char* title);
-    Vec2i GetPosition() const;
-    void SetPosition(const Vec2i& position);
-    Vec2i GetSize() const;
-    void SetSize(const Vec2i& size);
+    Vec2 GetPosition() const;
+    void SetPosition(const Vec2& position);
+    Vec2 GetSize() const;
+    void SetSize(const Vec2& size);
 
     void Update();
 
@@ -35,11 +36,14 @@ class Window {
     inline void Close() {
       _shouldClose = true;
     }
+    inline SDL_Window* GetWindow() const {
+      return _window;
+    }
   private:
     void InitializeWindow(const WindowSettings& settings);
 
     SDL_Window* _window;
-    SDL_GLContext* _context;
+    SDL_GLContext _context;
 
     bool _shouldClose = false;
     
