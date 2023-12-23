@@ -5,6 +5,7 @@
 
 namespace point {
 
+/// @brief An event representing a key press.
 class KeyPressedEvent : public Event {
   public:
     IMPL_BUS(KeyPressedEvent);
@@ -14,10 +15,12 @@ class KeyPressedEvent : public Event {
         _isRepeated(isRepeated) {
     }
 
+    /// @brief Get the key that was pressed.
     inline int GetKey() const {
       return _key;
     }
 
+    /// @brief Check if the key has been pressed multiple times.
     inline bool IsRepeated() const {
       return _isRepeated;
     }
@@ -26,6 +29,7 @@ class KeyPressedEvent : public Event {
     bool _isRepeated;
 };
 
+/// @brief An event representing a key release.
 class KeyReleasedEvent : public Event {
   public:
     IMPL_BUS(KeyReleasedEvent);
@@ -34,6 +38,7 @@ class KeyReleasedEvent : public Event {
       : _key(key) {
     }
 
+    /// @brief Get the key that was pressed.
     inline int GetKey() const {
       return _key;
     }

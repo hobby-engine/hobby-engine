@@ -16,22 +16,22 @@ class Graphics {
     ///
     /// @param window The window this state will draw to.
     static void Initialize(Window& window);
-    /// @brief Return to previous state. Does not free the current state.
+    /// @brief Return to previous state.
     static void PopState();
     /// @brief Create a new graphics state.
     ///
     /// Does not replace the current state. It will keep a reference to it, and
-    /// once `Pop()` is called, it will return to the previous state.
+    /// once `PopState()` is called, it will return to the previous state.
     static void PushState();
-    /// @brief Sets the color of the current graphics state.
+    /// @brief Set the color of the current graphics state.
     /// @param color The new draw color.
     static void SetColor(Color color);
-    /// @brief Sets the background color of the current graphics state.
+    /// @brief Set the background color of the current graphics state.
     /// @param color The new background color.
     static void SetBackgroundColor(Color color);
-    /// @brief Clears the screen using the current graphics state.
+    /// @brief Clear the screen using the current graphics state.
     static void Clear();
-    /// @brief Presents all changes to the screen.
+    /// @brief Present all changes to the screen.
     static void Present();
     
   private:

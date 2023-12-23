@@ -14,11 +14,19 @@ namespace point {
     bus.PushEvent(event); \
   }
 
+/// @brief Base class for all events.
 class Event {
 public:
+  /// Whether or not this event has been handled yet.
   bool IsHandled = false;
 };
 
+/// @brief Keeps track of event callbacks and calls them when an
+/// event is given.
+///
+/// Events are called on demand, so when a key is pressed, it calls every
+/// callback immediately. TODO: Make an event queue instead of calling
+/// immediately.
 template <class T = Event>
 class EventBus {
     using CallbackFn = std::function<bool(const T& event)>;
@@ -27,10 +35,14 @@ class EventBus {
       _callbacks = std::vector<CallbackFn>();
     }
     
+    /// @brief Add a callback to the event bus.
+    /// @param callback The callback.
     void AddCallback(CallbackFn callback) {
       _callbacks.push_back(callback);
     }
     
+    /// @brief Call all callbacks with the new event.
+    /// @param event The new event.
     void PushEvent(T& event) {
       for (auto&& callback : _callbacks) {
         event.IsHandled = callback(event);
