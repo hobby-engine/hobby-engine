@@ -5,11 +5,11 @@
 
 namespace point::input {
 
-static SDL_KeyCode ConvertToSDL(Key key);
+static SDL_KeyCode PointToSDL(Key key);
 
 bool IsKeyDown(Key key) {
 	const uint8_t* state = SDL_GetKeyboardState(nullptr);
-  SDL_Scancode scancode = SDL_GetScancodeFromKey(ConvertToSDL(key));
+  SDL_Scancode scancode = SDL_GetScancodeFromKey(PointToSDL(key));
   return state[scancode] ? true : false;
 }
 
@@ -36,7 +36,7 @@ Vec2 GetMousePosition() {
   return Vec2(x, y);
 }
 
-static SDL_KeyCode ConvertToSDL(Key key) {
+static SDL_KeyCode PointToSDL(Key key) {
   switch (key) {
     case Key::UNKNOWN:               return SDLK_UNKNOWN;
     case Key::RETURN:                return SDLK_RETURN;

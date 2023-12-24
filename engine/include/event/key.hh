@@ -2,6 +2,7 @@
 #define _POINT_EVENT_KEY_H
 
 #include "event.hh"
+#include "input_types.hh"
 
 namespace point {
 
@@ -10,13 +11,13 @@ class KeyPressedEvent : public Event {
   public:
     IMPL_BUS(KeyPressedEvent);
     
-    KeyPressedEvent(int key, bool isRepeated) 
+    KeyPressedEvent(input::Key key, bool isRepeated) 
       : _key(key),
         _isRepeated(isRepeated) {
     }
 
     /// @brief Get the key that was pressed.
-    inline int GetKey() const {
+    inline input::Key GetKey() const {
       return _key;
     }
 
@@ -25,7 +26,7 @@ class KeyPressedEvent : public Event {
       return _isRepeated;
     }
   private:
-    int _key;
+    input::Key _key;
     bool _isRepeated;
 };
 
@@ -34,17 +35,17 @@ class KeyReleasedEvent : public Event {
   public:
     IMPL_BUS(KeyReleasedEvent);
 
-    KeyReleasedEvent(int key)
+    KeyReleasedEvent(input::Key key)
       : _key(key) {
     }
 
     /// @brief Get the key that was pressed.
-    inline int GetKey() const {
+    inline input::Key GetKey() const {
       return _key;
     }
 
   private:
-    int _key;
+    input::Key _key;
 };
 
 } // namespace point
