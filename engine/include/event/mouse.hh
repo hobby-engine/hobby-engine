@@ -6,6 +6,7 @@
 
 namespace point {
 
+/// @brief An event representing a mouse button press.
 class MousePressedEvent : public Event {
   public:
     IMPL_BUS(MousePressedEvent);
@@ -15,10 +16,12 @@ class MousePressedEvent : public Event {
         _position(position) {
     }
 
+    /// @brief The button pressed.
     inline int GetButton() const {
       return _button;
     }
 
+    /// @brief The position of the mouse at the time of the event.
     inline Vec2 GetPosition() const {
       return _button;
     }
@@ -28,6 +31,7 @@ class MousePressedEvent : public Event {
     Vec2 _position;
 };
 
+/// @brief An event represent a mouse button release.
 class MouseReleasedEvent : public Event {
   public:
     IMPL_BUS(MouseReleasedEvent);
@@ -37,10 +41,12 @@ class MouseReleasedEvent : public Event {
         _position(position) {
     }
 
+    /// @brief The button released.
     inline int GetButton() const {
       return _button;
     }
 
+    /// @brief The position of the mouse at the time of the event.
     inline Vec2 GetPosition() const {
       return _position;
     }
@@ -50,6 +56,7 @@ class MouseReleasedEvent : public Event {
     Vec2& _position;
 };
 
+/// @brief An event represent a mouse movement.
 class MouseMovedEvent : public Event {
 public:
   IMPL_BUS(MouseMovedEvent);
@@ -59,10 +66,12 @@ public:
       _position(position) {
   }
 
+  /// @brief The motion relative to the previous position.
   inline Vec2 GetRelative() const {
     return _relative;
   }
 
+  /// @brief The position of the mouse at the time of the event.
   inline Vec2 GetPosition() const {
     return _position;
   }
@@ -72,6 +81,7 @@ private:
   Vec2& _position;
 };
 
+/// @brief An event represent a mouse scroll.
 class MouseScrolledEvent : public Event {
 public:
   IMPL_BUS(MouseScrolledEvent);
