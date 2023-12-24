@@ -2,6 +2,7 @@ find_library(LIB_SDL NAME SDL2)
 
 set(ENGINE_SOURCE_FILES
   src/window.cc
+  src/input.cc
   src/graphics.cc
   src/texture.cc
   src/vec2.cc
@@ -12,6 +13,8 @@ set(ENGINE_SOURCE_FILES
 set(ENGINE_HEADER_FILES
   include/point.hh
   include/window.hh
+  include/input.hh
+  include/input_types.hh
   include/graphics.hh
   include/event.hh
   include/event/key.hh
