@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "event/key.hh"
+#include "input.hh"
 #include "point.hh"
 
 int main() {
@@ -10,7 +10,7 @@ int main() {
   while (!window.ShouldClose()) {
     window.Update();
 
-    if (point::input::IsMouseDown(1)) {
+    if (point::input::IsKeyDown(point::input::Key::KP_ENTER)) {
       point::Graphics::SetBackgroundColor(point::Color(1, 0.5, 1));
     } else {
       point::Graphics::SetBackgroundColor(point::Color(0, 0, 0));
