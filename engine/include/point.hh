@@ -11,5 +11,6 @@
 #include "input.hh"
 #include "event.hh"
 #include "event/key.hh"
+#include "event/mouse.hh"
 
 #endif

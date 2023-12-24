@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-#include "SDL2/SDL_video.h"
+#include "SDL2/SDL_events.h"
+#include "event/mouse.hh"
 #include "glad/glad.h"
 #include "SDL2/SDL.h"
 
@@ -121,6 +122,37 @@ void Window::Update() {
         KeyReleasedEvent keyReleasedEvent(
           SDLToPoint(static_cast<SDL_KeyCode>(event.key.keysym.sym)));
         KeyReleasedEvent::PushEvent(keyReleasedEvent);
+        break;
+      }
+      case SDL_MOUSEBUTTONUP:
+      case SDL_MOUSEBUTTONDOWN: {
+        int button = event.button.button;
+        switch (button) {
+          case 2: button = SDL_BUTTON_RIGHT; break;
+          case 3: button = SDL_BUTTON_MIDDLE; break;
+        }
+        Vec2 position = Vec2(event.button.x, event.button.y);
+        
+        if (event.button.state == SDL_PRESSED) {
+          MousePressedEvent mousePressedEvent(button, position);
+          MousePressedEvent::PushEvent(mousePressedEvent);
+        } else if (event.button.state == SDL_RELEASED) {
+          MouseReleasedEvent mouseReleasedEvent(button, position);
+          MouseReleasedEvent::PushEvent(mouseReleasedEvent);
+        }
+        break;
+      }
+      case SDL_MOUSEMOTION: {
+        Vec2 relative = Vec2(event.motion.xrel, event.motion.yrel);
+        Vec2 position = Vec2(event.motion.x, event.motion.y);
+        MouseMovedEvent mouseMovedEvent(relative, position);
+        MouseMovedEvent::PushEvent(mouseMovedEvent);
+        break;
+      }
+      case SDL_MOUSEWHEEL: {
+        Vec2 scroll = Vec2(event.wheel.x, event.wheel.y);
+        MouseScrolledEvent mouseScrolledEvent(scroll);
+        MouseScrolledEvent::PushEvent(mouseScrolledEvent);
         break;
       }
     }

@@ -18,6 +18,7 @@ set(ENGINE_HEADER_FILES
   include/graphics.hh
   include/event.hh
   include/event/key.hh
+  include/event/mouse.hh
   include/color.hh
   include/texture.hh
   include/vec2.hh
