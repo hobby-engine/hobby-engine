@@ -1,4 +1,4 @@
-find_library(LIB_LUA luajit5.1)
+find_library(LIB_LUA luajit-5.1)
 
 set(LUA_SOURCE_FILES
   src/main.cc
