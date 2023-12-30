@@ -3,6 +3,8 @@
 #include "wrap.hh"
 #include <iostream>
 
+#define WINDOW_MEMBERS "windowMembers"
+
 int w_ShouldClose(lua_State* L) {
   if (!lua_isuserdata(L, 1)) {
     return luaL_error(L, "Expected window object.");
@@ -69,30 +71,58 @@ int w_CreateWindow(lua_State* L) {
 }
 
 static int w_WindowGc(lua_State* L) {
-  if (!lua_isuserdata(L, -1)) {
+  if (!lua_isuserdata(L, 1)) {
     return luaL_error(L, "Expected window object.");
   }
 
-  WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, -1));
+  WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
   delete window->window;
 
   return 0;
 }
 
-luaL_Reg windowLib[] = {
-  { "Create", w_CreateWindow },
+static int w_WindowIndex(lua_State* L) {
+  // Ignore arg 1.
+  const char* key = lua_tostring(L, 2);
+  lua_getfield(L, LUA_REGISTRYINDEX, WINDOW_MEMBERS);
+  lua_getfield(L, -1, key);
+
+  // Clean up the stack
+  lua_CFunction func = lua_tocfunction(L, -1);
+  lua_pop(L, 2); 
+
+  lua_pushcfunction(L, func);
+  return 1;
+}
+
+luaL_Reg windowMt[] = {
+  { "__gc", w_WindowGc },
+  { "__index", w_WindowIndex },
+  { nullptr, nullptr },
+};
+
+luaL_Reg windowMembers[] = {
   { "ShouldClose", w_ShouldClose },
   { "Update", w_Update },
+  { nullptr, nullptr },
+};
+
+luaL_Reg windowLib[] = {
+  { "Create", w_CreateWindow },
   { nullptr, nullptr },
 };
 
 int WrapWindow(lua_State* L) {
   // Create window metatable
   luaL_newmetatable(L, "windowmt");
-  lua_pushcfunction(L, w_WindowGc);
-  lua_setfield(L, -2, "__gc");
+  RegisterFunctions(L, windowMt);
   lua_pop(L, 1);
 
+  lua_newtable(L);
+  RegisterFunctions(L, windowMembers);
+  lua_setfield(L, LUA_REGISTRYINDEX, WINDOW_MEMBERS);
+
   RegisterModule(L, WINDOW_NAME, windowLib);
+
   return LUA_OK;
 }

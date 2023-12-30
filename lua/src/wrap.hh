@@ -8,11 +8,12 @@ struct WindowWrapper {
   Hobby::Window* window;
 };
 
-#define LIB_NAME "point"
-#define WINDOW_NAME "window"
-#define GRAPHICS_NAME "graphics"
+#define LIB_NAME "Hobby"
+#define WINDOW_NAME "Window"
+#define GRAPHICS_NAME "Graphics"
 
-void RegisterModule(lua_State* L, const char* name, luaL_Reg functions[]);
+void RegisterModule(lua_State* L, const char* name, const luaL_Reg *functions);
+void RegisterFunctions(lua_State* L, const luaL_Reg* funcs);
 
 int WrapWindow(lua_State* L);
 int WrapGraphics(lua_State* L);
