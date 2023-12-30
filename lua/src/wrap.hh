@@ -1,5 +1,5 @@
-#ifndef _POINT_LUA_WRAP_H
-#define _POINT_LUA_WRAP_H
+#ifndef _HOBBY_LUA_WRAP_H
+#define _HOBBY_LUA_WRAP_H
 
 #include "luajit/lua.hpp"
 #include "hobby.hh"
@@ -18,4 +18,4 @@ void RegisterFunctions(lua_State* L, const luaL_Reg* funcs);
 int WrapWindow(lua_State* L);
 int WrapGraphics(lua_State* L);
 
-#endif // _POINT_LUA_WRAP_H
+#endif // _HOBBY_LUA_WRAP_H
