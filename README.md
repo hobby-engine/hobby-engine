@@ -1,3 +1,4 @@
-# Point Engine
+# Hobby Engine
 
-A game engine made to learn C++ because I wanna learn C++ ig.
+A game engine made to be simple and stuff.
+Named after the type of falcon called hobbies.
