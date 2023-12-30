@@ -5,12 +5,12 @@
 
 namespace point {
 
-/// Represents a vector in 2D space.
+/// Represents a point or vector in 2D space.
 class Vec2 {
   public:
-    /// @brief Position on the X axis.
+    /// @brief Position on the X axis. W is an alias.
     union { double X, W; };
-    /// @brief Position on the Y axis.
+    /// @brief Position on the Y axis. H is an alias.
     union { double Y, H; };
 
     /// @brief Default vector initialized to (0, 0)

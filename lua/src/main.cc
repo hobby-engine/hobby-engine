@@ -1,52 +1,60 @@
 #include <iostream>
 #include <cmath>
 
-#include "event/mouse.hh"
-#include "point.hh"
+#include "luajit/lua.hpp"
 
-bool isPink = true;
+#include "wrap.hh"
 
-bool OnKeyPressed(const point::KeyPressedEvent& event) {
-  if (event.GetKey() == point::input::Key::KP_ENTER) {
-    isPink = !isPink;
+void RegisterModule(lua_State* L, const char* name, luaL_Reg functions[]) {
+  lua_getglobal(L, LIB_NAME);
 
-    if (isPink) {
-      point::Graphics::SetBackgroundColor(point::Color(1, 0.5, 1));
+  lua_newtable(L); // module
+
+  luaL_Reg func;
+  for (int i = 0; (func = functions[i]).func != nullptr; i++) {
+    lua_pushcfunction(L, func.func);
+    lua_setfield(L, -2, func.name);
+  }
+
+  lua_setfield(L, -2, name);
+  lua_pop(L, 1); // point
+}
+
+int main(int argc, char* args[]) {
+  std::string path = "./main.lua";
+  if (argc == 2) {
+    path = args[1];
+    if (path.back() == '/') {
+      path += "main.lua";
     } else {
-      point::Graphics::SetBackgroundColor(point::Color(0, 0, 0));
+      path += "/main.lua";
     }
-
-    return true;
+  } else if (argc != 1) {
+    std::cerr << "Usage: " << args[0] << " [path]" << std::endl;
+    return 1;
   }
 
-  return false;
-}
+  lua_State* L = luaL_newstate();
+  luaL_openlibs(L);
 
-float red = 0;
+  lua_newtable(L);
+  lua_setglobal(L, LIB_NAME);
 
-bool OnMouseScrolled(const point::MouseScrolledEvent& event) {
-  std::cout << event.GetScroll().Y << std::endl;
-  red += static_cast<double>(event.GetScroll().Y) / 20;
-  red = fmin(fmax(red, 0), 1);
-  point::Graphics::SetBackgroundColor(point::Color(red, 0, 0));
-  return false;
-}
+  WrapWindow(L);
+  WrapGraphics(L);
 
-int main() {
-  auto window = point::Window();
-  point::Graphics::Initialize(window);
-
-  // point::KeyPressedEvent::AddCallback(OnKeyPressed);
-  point::MouseScrolledEvent::AddCallback(OnMouseScrolled);
-
-  point::Graphics::SetBackgroundColor(point::Color(1, 0.5, 1));
-
-  while (!window.ShouldClose()) {
-    window.Update();
-
-    point::Graphics::Clear();
-    point::Graphics::Present();
+  int res = luaL_dofile(L, path.c_str());
+  if (res != LUA_OK) {
+    std::cerr << "Error: " << lua_tostring(L, -1) << std::endl;
+    lua_close(L);
+    return 1;
   }
 
+  lua_getglobal(L, LIB_NAME);
+  lua_getfield(L, -1, "run");
+  lua_call(L, 0, -1);
+  lua_pop(L, 1); // point
+
+  lua_close(L);
   return 0;
 }

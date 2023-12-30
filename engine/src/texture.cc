@@ -36,6 +36,9 @@ Texture::Texture(std::string path) {
   stbi_image_free(data);
 }
 
+void Texture::Draw(Graphics* graphics, Vec2 position) {
+}
+
 Texture::~Texture() {
 }
 
