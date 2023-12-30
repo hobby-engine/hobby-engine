@@ -32,24 +32,23 @@ int w_CreateWindow(lua_State* L) {
     if (!lua_istable(L, 1)) {
       lua_pushstring(L, "Must take a table.");
       lua_error(L);
+      return 0;
     }
-    lua_pushvalue(L, 1);
 
-    lua_getfield(L, -1, "Title");
+    lua_getfield(L, 1, "Title");
     const char* title = luaL_optstring(L, -1, settings.Title);
-    lua_getfield(L, -1, "Width");
-    int width = luaL_optinteger(L, -1, settings.Width);
-    lua_getfield(L, -1, "Height");
-    int height = luaL_optinteger(L, -1, settings.Height);
-    lua_getfield(L, -1, "X");
-    int x = luaL_optinteger(L, -1, settings.X);
-    lua_getfield(L, -1, "Y");
-    int y = luaL_optinteger(L, -1, settings.Y);
-    lua_getfield(L, -1, "Resizable");
-    bool resizable = settings.Resizable;
-    if (!lua_isnil(L, -1)) {
-      resizable = lua_toboolean(L, -1);
-    }
+    lua_getfield(L, 1, "Width");
+    int width = luaL_optint(L, -1, settings.Width);
+    lua_getfield(L, 1, "Height");
+    int height = luaL_optint(L, -1, settings.Height);
+    lua_getfield(L, 1, "X");
+    int x = luaL_optint(L, -1, settings.X);
+    lua_getfield(L, 1, "Y");
+    int y = luaL_optint(L, -1, settings.Y);
+    lua_getfield(L, 1, "Resizable");
+    bool resizable = lua_isboolean(L, -1)
+      ? lua_toboolean(L, -1)
+      : settings.Resizable;
 
     settings.Title = title;
     settings.Width = width;
