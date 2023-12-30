@@ -5,7 +5,9 @@
 
 #include "SDL2/SDL.h"
 
+#include "quad.hh"
 #include "vec2.hh"
+#include "shader.hh"
 #include "graphics.hh"
 
 namespace Hobby {
@@ -17,10 +19,15 @@ class Texture {
     Texture(std::string path);
     ~Texture();
 
-    void Draw(Graphics* graphics, Vec2 position);
+    /// @brief Draw the texture.
+    void Draw(Vec2 position);
+    /// @brief Set a new quad.
+    void SetQuad(Quad quad);
 
   private:
     int _width, _height, _nrChannels;
+    Quad _quad;
+    Shader _shader;
     unsigned int _glTexture;
 };
 

@@ -7,6 +7,8 @@
 #include "vec2.hh"
 #include "window.hh"
 #include "graphics.hh"
+#include "quad.hh"
+#include "texture.hh"
 #include "color.hh"
 #include "input.hh"
 #include "event.hh"

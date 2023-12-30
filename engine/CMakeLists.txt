@@ -4,6 +4,9 @@ set(ENGINE_SOURCE_FILES
   src/window.cc
   src/input.cc
   src/graphics.cc
+  src/shader.cc
+  src/builtin_shaders.cc
+  src/quad.cc
   src/texture.cc
   src/vec2.cc
   src/event_impl.cc

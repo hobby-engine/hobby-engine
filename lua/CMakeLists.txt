@@ -2,6 +2,7 @@ find_library(LIB_LUA luajit-5.1)
 
 set(LUA_SOURCE_FILES
   src/main.cc
+  src/wrap_texture.cc
   src/wrap_window.cc
   src/wrap_graphics.cc
 )

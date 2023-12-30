@@ -55,6 +55,7 @@ int main(int argc, char* args[]) {
   lua_newtable(L);
   lua_setglobal(L, LIB_NAME);
 
+  WrapTexture(L);
   WrapWindow(L);
   WrapGraphics(L);
 
