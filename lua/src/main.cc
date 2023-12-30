@@ -58,13 +58,11 @@ int main(int argc, char* args[]) {
   WrapWindow(L);
   WrapGraphics(L);
 
-  int loadRes = luaL_loadfile(L, path.c_str());
-  if (loadRes == LUA_OK) {
-    int runRes = lua_pcall(L, 0, 0, errorHandlerIndex);
-    if (runRes != LUA_OK) {
-      lua_close(L);
-      return 1;
-    }
+  int loadRes = luaL_dofile(L, path.c_str());
+  if (loadRes != LUA_OK) {
+    ErrorHandler(L);
+    lua_close(L);
+    return 0;
   }
 
   lua_getglobal(L, LIB_NAME);
