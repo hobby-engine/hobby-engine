@@ -11,13 +11,13 @@ elseif(BSD)
 endif()
 
 project(
-  point
+  hobby
   VERSION 0.1.0
   LANGUAGES CXX C
 )
 
-set(POINT_LUA_NAME pointlua)
-set(POINT_LIB_NAME point)
+set(HOBBY_LUA_NAME hobbylua)
+set(HOBBY_LIB_NAME hobby)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "-O2 -Wall -Wextra")

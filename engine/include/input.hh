@@ -1,13 +1,13 @@
-#ifndef _POINT_INPUT_H
-#define _POINT_INPUT_H
+#ifndef _HOBBY_INPUT_H
+#define _HOBBY_INPUT_H
 
 #include "input_types.hh"
 #include "vec2.hh"
 
-/// @namespace point::input
+/// @namespace Hobby::Input
 /// @brief Holds input related things.
 
-namespace point::input {
+namespace Hobby::Input {
 
 /// @brief Check if the specified key is pressed.
 /// @param key The key to check.
@@ -19,6 +19,6 @@ bool IsMouseDown(int button);
 /// of the window.
 Vec2 GetMousePosition();
 
-} // namespace point::input
+} // namespace Hobby::Input
 
 #endif

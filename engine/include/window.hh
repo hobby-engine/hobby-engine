@@ -1,11 +1,11 @@
-#ifndef _POINT_ENGINE_WINDOW_H
-#define _POINT_ENGINE_WINDOW_H
+#ifndef _HOBBY_ENGINE_WINDOW_H
+#define _HOBBY_ENGINE_WINDOW_H
 
 #include "SDL2/SDL.h"
 
 #include "vec2.hh"
 
-namespace point {
+namespace Hobby {
 
 /// @brief Settings to initialize a window with.
 struct WindowSettings {
@@ -68,6 +68,6 @@ class Window {
     static bool _alreadyInstanced;
 };
 
-} // namespace point
+} // namespace Hobby
 
-#endif // _POINT_ENGINE_WINDOW_H
+#endif // _HOBBY_ENGINE_WINDOW_H

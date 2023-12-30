@@ -1,9 +1,9 @@
-#ifndef _POINT_EVENT_H
-#define _POINT_EVENT_H
+#ifndef _HOBBY_EVENT_H
+#define _HOBBY_EVENT_H
 
 #include <functional>
 
-namespace point {
+namespace Hobby {
 
 #define IMPL_BUS(type) \
   static EventBus<type> bus; \
@@ -55,7 +55,7 @@ class EventBus {
     std::vector<CallbackFn> _callbacks;
 };
 
-} // namespace point
+} // namespace Hobby
 
 #endif
 

@@ -1,7 +1,7 @@
 #include "event/key.hh"
 #include "event/mouse.hh"
 
-namespace point {
+namespace Hobby {
 
 #define IMPL(type) \
   EventBus<type> type::bus = EventBus<type>();
@@ -13,4 +13,4 @@ IMPL(MouseReleasedEvent);
 IMPL(MouseMovedEvent);
 IMPL(MouseScrolledEvent);
 
-} // namespace point
+} // namespace Hobby

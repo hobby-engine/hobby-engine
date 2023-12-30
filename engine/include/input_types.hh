@@ -1,7 +1,7 @@
-#ifndef _POINT_INPUT_TYPES_H
-#define _POINT_INPUT_TYPES_H
+#ifndef _HOBBY_INPUT_TYPES_H
+#define _HOBBY_INPUT_TYPES_H
 
-namespace point::input {
+namespace Hobby::Input {
 
 /// @brief Human-readable names for any key you can press.
 enum class Key {
@@ -252,6 +252,6 @@ enum class Key {
   ENDCALL,
 }; // Key
 
-} // namespace point::input
+} // namespace Hobby::input
 
 #endif

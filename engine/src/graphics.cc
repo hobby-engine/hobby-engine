@@ -7,7 +7,7 @@
 #include "glad/glad.h"
 #include "SDL2/SDL.h"
 
-namespace point {
+namespace Hobby {
 
 Graphics* Graphics::Current = nullptr;
 
@@ -66,4 +66,4 @@ void Graphics::Present() {
   SDL_GL_SwapWindow(Current->_window);
 }
 
-} // namespace point
+} // namespace Hobby

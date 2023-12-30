@@ -7,16 +7,16 @@ set(LUA_SOURCE_FILES
 )
 
 add_executable(
-  ${POINT_LUA_NAME}
+  ${HOBBY_LUA_NAME}
 
   ${LUA_SOURCE_FILES}
 )
-target_link_libraries(${POINT_LUA_NAME} PRIVATE ${POINT_LIB_NAME})
-target_include_directories(${POINT_LUA_NAME} PRIVATE
+target_link_libraries(${HOBBY_LUA_NAME} PRIVATE ${HOBBY_LIB_NAME})
+target_include_directories(${HOBBY_LUA_NAME} PRIVATE
   ../engine/include
   thirdparty
   src
 )
-target_link_libraries(${POINT_LUA_NAME} PRIVATE
+target_link_libraries(${HOBBY_LUA_NAME} PRIVATE
   ${LIB_LUA}
 )

@@ -11,7 +11,7 @@ set(ENGINE_SOURCE_FILES
 )
 
 set(ENGINE_HEADER_FILES
-  include/point.hh
+  include/hobby.hh
   include/window.hh
   include/input.hh
   include/input_types.hh
@@ -29,17 +29,17 @@ set(ENGINE_THIRDPARTY_SOURCE_FILES
 )
 
 add_library(
-  ${POINT_LIB_NAME} SHARED
+  ${HOBBY_LIB_NAME} SHARED
 
   ${ENGINE_SOURCE_FILES}
   ${ENGINE_HEADER_FILES}
   ${ENGINE_THIRDPARTY_SOURCE_FILES}
 )
-target_link_libraries(${POINT_LIB_NAME} PRIVATE
+target_link_libraries(${HOBBY_LIB_NAME} PRIVATE
   ${LIB_SDL}
 )
 
-target_include_directories(${POINT_LIB_NAME} PRIVATE 
+target_include_directories(${HOBBY_LIB_NAME} PRIVATE 
   src
   include
   thirdparty

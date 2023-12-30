@@ -1,10 +1,10 @@
-#ifndef _POINT_DRAW_H
-#define _POINT_DRAW_H
+#ifndef _HOBBY_DRAW_H
+#define _HOBBY_DRAW_H
 
 #include "color.hh"
 #include "window.hh"
 
-namespace point {
+namespace Hobby {
 
 /// @brief Holds and mutates graphics state.
 class Graphics {
@@ -51,6 +51,6 @@ class Graphics {
     SDL_Window* _window;
 };
 
-} // namespace point
+} // namespace Hobby
 
 #endif

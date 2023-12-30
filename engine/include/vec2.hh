@@ -1,9 +1,9 @@
-#ifndef _POINT_ENGINE_VEC2_H
-#define _POINT_ENGINE_VEC2_H
+#ifndef _HOBBY_ENGINE_VEC2_H
+#define _HOBBY_ENGINE_VEC2_H
 
 #include <cmath>
 
-namespace point {
+namespace Hobby {
 
 /// Represents a point or vector in 2D space.
 class Vec2 {
@@ -132,6 +132,6 @@ class Vec2 {
     }
 };
 
-} // namespace point
+} // namespace Hobby
 
-#endif // _POINT_ENGINE_VEC2_H 
+#endif // _HOBBY_ENGINE_VEC2_H 

@@ -6,7 +6,7 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-namespace point {
+namespace Hobby {
 
 Texture::Texture(std::string path) {
   glGenTextures(1, &_glTexture);

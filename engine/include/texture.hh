@@ -1,5 +1,5 @@
-#ifndef _POINT_ENGINE_TEXTURE_H
-#define _POINT_ENGINE_TEXTURE_H
+#ifndef _HOBBY_ENGINE_TEXTURE_H
+#define _HOBBY_ENGINE_TEXTURE_H
 
 #include <string>
 
@@ -8,7 +8,7 @@
 #include "vec2.hh"
 #include "graphics.hh"
 
-namespace point {
+namespace Hobby {
 
 /// TEXTURES AAAAAA
 class Texture {
@@ -24,6 +24,6 @@ class Texture {
     unsigned int _glTexture;
 };
 
-} // namespace point
+} // namespace Hobby
 
-#endif // _POINT_ENGINE_TEXTURE_H
+#endif // _HOBBY_ENGINE_TEXTURE_H

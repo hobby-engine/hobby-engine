@@ -1,6 +1,6 @@
 #include "vec2.hh"
 
-namespace point {
+namespace Hobby {
 
 double Vec2::Length() const {
   return std::sqrt(X*X + Y*Y);
@@ -61,4 +61,4 @@ const Vec2 Vec2::DOWN  = Vec2(0, 1);
 const Vec2 Vec2::LEFT  = Vec2(-1, 0);
 const Vec2 Vec2::RIGHT = Vec2(1, 0);
 
-}; // namespace point
+}; // namespace Hobby

@@ -1,8 +1,8 @@
-#ifndef _POINT_COLOR_H
-#define _POINT_COLOR_H
+#ifndef _HOBBY_COLOR_H
+#define _HOBBY_COLOR_H
 
 #include <cstdint>
-namespace point {
+namespace Hobby {
 
 /// @brief Stores and manipulates colors.
 struct Color {

@@ -1,23 +1,23 @@
-#ifndef _POINT_EVENT_KEY_H
-#define _POINT_EVENT_KEY_H
+#ifndef _HOBBY_EVENT_KEY_H
+#define _HOBBY_EVENT_KEY_H
 
 #include "event.hh"
 #include "input_types.hh"
 
-namespace point {
+namespace Hobby {
 
 /// @brief An event representing a key press.
 class KeyPressedEvent : public Event {
   public:
     IMPL_BUS(KeyPressedEvent);
     
-    KeyPressedEvent(input::Key key, bool isRepeated) 
+    KeyPressedEvent(Input::Key key, bool isRepeated) 
       : _key(key),
         _isRepeated(isRepeated) {
     }
 
     /// @brief Get the key that was pressed.
-    inline input::Key GetKey() const {
+    inline Input::Key GetKey() const {
       return _key;
     }
 
@@ -26,7 +26,7 @@ class KeyPressedEvent : public Event {
       return _isRepeated;
     }
   private:
-    input::Key _key;
+    Input::Key _key;
     bool _isRepeated;
 };
 
@@ -35,19 +35,19 @@ class KeyReleasedEvent : public Event {
   public:
     IMPL_BUS(KeyReleasedEvent);
 
-    KeyReleasedEvent(input::Key key)
+    KeyReleasedEvent(Input::Key key)
       : _key(key) {
     }
 
     /// @brief Get the key that was pressed.
-    inline input::Key GetKey() const {
+    inline Input::Key GetKey() const {
       return _key;
     }
 
   private:
-    input::Key _key;
+    Input::Key _key;
 };
 
-} // namespace point
+} // namespace Hobby
 
 #endif

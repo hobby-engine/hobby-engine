@@ -26,7 +26,7 @@ int w_Update(lua_State* L) {
 int w_CreateWindow(lua_State* L) {
   int argc = lua_gettop(L);
 
-  point::WindowSettings settings;
+  Hobby::WindowSettings settings;
 
   if (argc != 0) {
     if (!lua_istable(L, 1)) {
@@ -59,7 +59,7 @@ int w_CreateWindow(lua_State* L) {
     settings.Resizable = resizable;
   }
 
-  point::Window* window = new point::Window(settings);
+  Hobby::Window* window = new Hobby::Window(settings);
   WindowWrapper* wrapper = static_cast<WindowWrapper*>(
     lua_newuserdata(L, sizeof(WindowWrapper)));
   wrapper->window = window;

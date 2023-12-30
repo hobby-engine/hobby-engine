@@ -1,26 +1,24 @@
 #include "wrap.hh"
 
-#include "point.hh"
-
 int w_GraphicsInitialize(lua_State* L) {
   if (!lua_isuserdata(L, 1)) {
     return luaL_error(L, "Expected window object.");
   }
 
   WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
-  point::Graphics::Initialize(*window->window);
+  Hobby::Graphics::Initialize(*window->window);
   return 0;
 }
 
 int w_GraphicsPushState(lua_State* L) {
   (void)L;
-  point::Graphics::PushState();
+  Hobby::Graphics::PushState();
   return 0;
 }
 
 int w_GraphicsPopState(lua_State* L) {
   (void)L;
-  point::Graphics::PopState();
+  Hobby::Graphics::PopState();
   return 0;
 }
 
@@ -29,8 +27,8 @@ int w_GraphicsSetColor(lua_State* L) {
   float g = luaL_checknumber(L, 2);
   float b = luaL_checknumber(L, 3);
   float a = luaL_optnumber(L, 4, 1);
-  point::Color color(r, g, b, a);
-  point::Graphics::SetColor(color);
+  Hobby::Color color(r, g, b, a);
+  Hobby::Graphics::SetColor(color);
   return 0;
 }
 
@@ -39,20 +37,20 @@ int w_GraphicsSetBackgroundColor(lua_State* L) {
   float g = luaL_checknumber(L, 2);
   float b = luaL_checknumber(L, 3);
   float a = luaL_optnumber(L, 4, 1);
-  point::Color color(r, g, b, a);
-  point::Graphics::SetBackgroundColor(color);
+  Hobby::Color color(r, g, b, a);
+  Hobby::Graphics::SetBackgroundColor(color);
   return 0;
 }
 
 int w_GraphicsClear(lua_State* L) {
   (void)L;
-  point::Graphics::Clear();
+  Hobby::Graphics::Clear();
   return 0;
 }
 
 int w_GraphicsPresent(lua_State* L) {
   (void)L;
-  point::Graphics::Present();
+  Hobby::Graphics::Present();
   return 0;
 }
 

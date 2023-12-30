@@ -2,10 +2,10 @@
 #define _POINT_LUA_WRAP_H
 
 #include "luajit/lua.hpp"
-#include "point.hh"
+#include "hobby.hh"
 
 struct WindowWrapper {
-  point::Window* window;
+  Hobby::Window* window;
 };
 
 #define LIB_NAME "point"

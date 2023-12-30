@@ -1,10 +1,10 @@
-#ifndef _POINT_EVENT_MOUSE_H
-#define _POINT_EVENT_MOUSE_H
+#ifndef _HOBBY_EVENT_MOUSE_H
+#define _HOBBY_EVENT_MOUSE_H
 
 #include "event.hh"
 #include "vec2.hh"
 
-namespace point {
+namespace Hobby {
 
 /// @brief An event representing a mouse button press.
 class MousePressedEvent : public Event {
@@ -98,6 +98,6 @@ private:
   Vec2& _scroll;
 };
 
-}; // namespace point
+}; // namespace Hobby
 
 #endif

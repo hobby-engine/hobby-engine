@@ -3,7 +3,7 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_keycode.h"
 
-namespace point::input {
+namespace Hobby::Input {
 
 static SDL_KeyCode PointToSDL(Key key);
 
@@ -287,4 +287,4 @@ static SDL_KeyCode PointToSDL(Key key) {
   return SDLK_UNKNOWN;
 }
 
-} // namespace point::input
+} // namespace Hobby::input
