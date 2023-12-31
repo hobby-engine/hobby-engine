@@ -44,7 +44,8 @@ Texture::Texture(std::string path)
 
 void Texture::Draw(Vec2 position) {
   _shader.Apply();
-  _quad.Draw(_glTexture);
+  glBindTexture(GL_TEXTURE_2D, _glTexture);
+  _quad.Draw();
   glUseProgram(0);
 }
 

@@ -45,8 +45,7 @@ Quad::~Quad() {
   glDeleteBuffers(1, &_ebo);
 }
 
-void Quad::Draw(unsigned int textureId) {
-  glBindTexture(GL_TEXTURE_2D, textureId);
+void Quad::Draw() {
   glBindVertexArray(_vao);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
   glBindVertexArray(0);

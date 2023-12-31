@@ -10,7 +10,7 @@ public:
   Quad(float x, float y, float w, float h);
   ~Quad();
 
-  void Draw(unsigned int textureId);
+  void Draw();
 private:
   unsigned int _ebo, _vao, _vbo;
 };
