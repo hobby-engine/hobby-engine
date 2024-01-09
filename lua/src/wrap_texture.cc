@@ -28,6 +28,18 @@ static int w_Draw(lua_State* L) {
   return 0;
 };
 
+static int w_GetSize(lua_State* L) {
+  if (!lua_isuserdata(L, 1)) {
+    return luaL_error(L, "Expected texture object.");
+  }
+
+  TextureWrapper* wrapper = static_cast<TextureWrapper*>(lua_touserdata(L, 1));
+  Hobby::Vec2 size = wrapper->texture->GetSize();
+  lua_pushnumber(L, size.W);
+  lua_pushnumber(L, size.H);
+  return 2;
+}
+
 static int w_TextureGc(lua_State* L) {
   if (!lua_isuserdata(L, 1)) {
     return luaL_error(L, "Expected texture object.");
@@ -61,6 +73,7 @@ luaL_Reg textureMt[] = {
 
 luaL_Reg textureMembers[] = {
   { "Draw", w_Draw },
+  { "GetSize", w_GetSize },
   { nullptr, nullptr },
 };
 

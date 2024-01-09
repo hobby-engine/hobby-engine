@@ -1,6 +1,7 @@
+#include "draw.hh"
 #include "wrap.hh"
 
-int w_GraphicsInitialize(lua_State* L) {
+int w_DrawInitialize(lua_State* L) {
   if (!lua_isuserdata(L, 1)) {
     return luaL_error(L, "Expected window object.");
   }
@@ -10,19 +11,19 @@ int w_GraphicsInitialize(lua_State* L) {
   return 0;
 }
 
-int w_GraphicsPushState(lua_State* L) {
+int w_DrawPushState(lua_State* L) {
   (void)L;
   Hobby::Draw::PushState();
   return 0;
 }
 
-int w_GraphicsPopState(lua_State* L) {
+int w_DrawPopState(lua_State* L) {
   (void)L;
   Hobby::Draw::PopState();
   return 0;
 }
 
-int w_GraphicsSetColor(lua_State* L) {
+int w_DrawSetColor(lua_State* L) {
   float r = luaL_checknumber(L, 1);
   float g = luaL_checknumber(L, 2);
   float b = luaL_checknumber(L, 3);
@@ -32,19 +33,32 @@ int w_GraphicsSetColor(lua_State* L) {
   return 0;
 }
 
-int w_GraphicsClear(lua_State* L) {
+int w_DrawClear(lua_State* L) {
   (void)L;
   Hobby::Draw::Clear();
   return 0;
 }
 
-int w_GraphicsPresent(lua_State* L) {
+int w_DrawPresent(lua_State* L) {
   (void)L;
   Hobby::Draw::Present();
   return 0;
 }
 
-int w_GraphicsLine(lua_State* L) {
+static int w_DrawDrawTexture(lua_State* L) {
+  if (!lua_isuserdata(L, 1)) {
+    return luaL_error(L, "Expected texture object.");
+  }
+
+  float x = luaL_checknumber(L, 2);
+  float y = luaL_checknumber(L, 3);
+
+  TextureWrapper* wrapper = static_cast<TextureWrapper*>(lua_touserdata(L, 1));
+  Hobby::Draw::DrawTexture(*wrapper->texture, Hobby::Vec2(x, y));
+  return 0;
+};
+
+int w_DrawLine(lua_State* L) {
   float sx = luaL_checknumber(L, 1);
   float sy = luaL_checknumber(L, 2);
   float ex = luaL_checknumber(L, 3);
@@ -54,7 +68,7 @@ int w_GraphicsLine(lua_State* L) {
   return 0;
 }
 
-int w_GraphicsRectangle(lua_State* L) {
+int w_DrawRectangle(lua_State* L) {
   float x = luaL_checknumber(L, 1);
   float y = luaL_checknumber(L, 2);
   float w = luaL_checknumber(L, 3);
@@ -64,7 +78,7 @@ int w_GraphicsRectangle(lua_State* L) {
   return 0;
 }
 
-int w_GraphicsFilledRectangle(lua_State* L) {
+int w_DrawFilledRectangle(lua_State* L) {
   float x = luaL_checknumber(L, 1);
   float y = luaL_checknumber(L, 2);
   float w = luaL_checknumber(L, 3);
@@ -75,15 +89,16 @@ int w_GraphicsFilledRectangle(lua_State* L) {
 }
 
 luaL_Reg graphicsLib[] = {
-  { "Initialize", w_GraphicsInitialize },
-  { "PushState", w_GraphicsPushState },
-  { "PopState", w_GraphicsPopState },
-  { "SetColor", w_GraphicsSetColor },
-  { "Clear", w_GraphicsClear },
-  { "Present", w_GraphicsPresent },
-  { "Line", w_GraphicsLine },
-  { "Rectangle", w_GraphicsRectangle },
-  { "FilledRectangle", w_GraphicsFilledRectangle },
+  { "Initialize", w_DrawInitialize },
+  { "PushState", w_DrawPushState },
+  { "PopState", w_DrawPopState },
+  { "SetColor", w_DrawSetColor },
+  { "Clear", w_DrawClear },
+  { "Present", w_DrawPresent },
+  { "DrawTexture", w_DrawDrawTexture },
+  { "Line", w_DrawLine },
+  { "Rectangle", w_DrawRectangle },
+  { "FilledRectangle", w_DrawFilledRectangle },
   { nullptr, nullptr },
 };
 
