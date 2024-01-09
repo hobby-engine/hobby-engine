@@ -38,7 +38,7 @@ int w_CreateWindow(lua_State* L) {
     }
 
     lua_getfield(L, 1, "Title");
-    const char* title = luaL_optstring(L, -1, settings.Title);
+    const char* title = luaL_optstring(L, -1, settings.Title.c_str());
     lua_getfield(L, 1, "Width");
     int width = luaL_optint(L, -1, settings.Width);
     lua_getfield(L, 1, "Height");
@@ -48,9 +48,15 @@ int w_CreateWindow(lua_State* L) {
     lua_getfield(L, 1, "Y");
     int y = luaL_optint(L, -1, settings.Y);
     lua_getfield(L, 1, "Resizable");
-    bool resizable = lua_isboolean(L, -1)
-      ? lua_toboolean(L, -1)
-      : settings.Resizable;
+    bool resizable = OPT_BOOL(L, -1, settings.Resizable);
+    lua_getfield(L, 1, "Borderless");
+    bool borderless = OPT_BOOL(L, -1, settings.Borderless);
+    lua_getfield(L, 1, "Visible");
+    bool visible = OPT_BOOL(L, -1, settings.Visible);
+    lua_getfield(L, 1, "Minimized");
+    bool minimized = OPT_BOOL(L, -1, settings.Minimized);
+    lua_getfield(L, 1, "Maximized");
+    bool maximized = OPT_BOOL(L, -1, settings.Maximized);
 
     settings.Title = title;
     settings.Width = width;
@@ -58,6 +64,10 @@ int w_CreateWindow(lua_State* L) {
     settings.X = x;
     settings.Y = y;
     settings.Resizable = resizable;
+    settings.Borderless = borderless;
+    settings.Visible = visible;
+    settings.Minimized = minimized;
+    settings.Maximized = maximized;
   }
 
   Hobby::Window* window = new Hobby::Window(settings);

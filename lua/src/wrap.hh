@@ -15,7 +15,10 @@ struct TextureWrapper {
 #define LIB_NAME "Hobby"
 #define TEXTURE_NAME "Texture"
 #define WINDOW_NAME "Window"
-#define GRAPHICS_NAME "Graphics"
+#define DRAW_NAME "Draw"
+
+#define OPT_BOOL(L, i, d) \
+  lua_isboolean(L, i) ? lua_toboolean(L, i) : (d)
 
 void RegisterModule(lua_State* L, const char* name, const luaL_Reg *functions);
 void RegisterFunctions(lua_State* L, const luaL_Reg* funcs);

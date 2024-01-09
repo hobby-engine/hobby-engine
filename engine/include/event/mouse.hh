@@ -3,6 +3,7 @@
 
 #include "event.hh"
 #include "vec2.hh"
+#include "types.hh"
 
 namespace Hobby {
 
@@ -11,13 +12,13 @@ class MousePressedEvent : public Event {
   public:
     IMPL_BUS(MousePressedEvent);
 
-    MousePressedEvent(int button, Vec2 position)
+    MousePressedEvent(s32 button, Vec2 position)
       : _button(button),
         _position(position) {
     }
 
     /// @brief The button pressed.
-    inline int GetButton() const {
+    inline s32 GetButton() const {
       return _button;
     }
 
@@ -27,7 +28,7 @@ class MousePressedEvent : public Event {
     }
 
   private:
-    int _button;
+    s32 _button;
     Vec2 _position;
 };
 
@@ -36,13 +37,13 @@ class MouseReleasedEvent : public Event {
   public:
     IMPL_BUS(MouseReleasedEvent);
 
-    MouseReleasedEvent(int button, Vec2& position)
+    MouseReleasedEvent(s32 button, Vec2& position)
       : _button(button),
         _position(position) {
     }
 
     /// @brief The button released.
-    inline int GetButton() const {
+    inline s32 GetButton() const {
       return _button;
     }
 
@@ -52,7 +53,7 @@ class MouseReleasedEvent : public Event {
     }
 
   private:
-    int _button;
+    s32 _button;
     Vec2& _position;
 };
 

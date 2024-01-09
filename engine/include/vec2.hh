@@ -3,15 +3,17 @@
 
 #include <cmath>
 
+#include "types.hh"
+
 namespace Hobby {
 
 /// Represents a point or vector in 2D space.
 class Vec2 {
   public:
     /// @brief Position on the X axis. W is an alias.
-    union { double X, W; };
+    union { f64 X, W; };
     /// @brief Position on the Y axis. H is an alias.
-    union { double Y, H; };
+    union { f64 Y, H; };
 
     /// @brief Default vector initialized to (0, 0)
     static const Vec2 ZERO;
@@ -27,7 +29,7 @@ class Vec2 {
     static const Vec2 RIGHT;
 
     /// @brief Initialize with x and y.
-    Vec2(double x = 0, double y = 0)
+    Vec2(f64 x = 0, f64 y = 0)
       : X(x), Y(y) {
     }
 
@@ -37,21 +39,21 @@ class Vec2 {
     }
 
     /// @brief Get the length of a vector.
-    inline double Length() const;
+    inline f64 Length() const;
     /// @brief Get the dot product of two vectors.
     /// @param other The vector to get the dot product with.
-    inline double Dot(Vec2 other) const;
+    inline f64 Dot(Vec2 other) const;
     /// @brief Get the angle of a vector.
-    inline double Angle() const;
+    inline f64 Angle() const;
     /// @brief Get the angle between two vectors.
     /// @param other The vector to compare against.
-    inline double AngleTo(Vec2 other) const;
+    inline f64 AngleTo(Vec2 other) const;
     /// @brief Get the angle from one point to other.
     /// @param other The point to get an angle to.
-    inline double AngleToPoint(Vec2 other) const;
+    inline f64 AngleToPoint(Vec2 other) const;
     /// @brief Get the distance to another point.
     /// @param other The point to get the distance to.
-    inline double DistanceTo(Vec2 other) const;
+    inline f64 DistanceTo(Vec2 other) const;
     /// @brief Get the direction to another point, in the form of a vector.
     /// @param other The point to get the direction towards.
     inline Vec2 DirectionTo(Vec2 other) const;
@@ -60,7 +62,7 @@ class Vec2 {
     inline Vec2 Normalized() const;
     /// @brief Rotate a vector, while preserving the magnitude.
     /// @param radians The angle to rotate by, in radians.
-    inline Vec2 Rotated(double radians) const;
+    inline Vec2 Rotated(f64 radians) const;
     /// @brief Reflect a vector off a normal.
     /// @param normal The normal of the surface to reflect off of.
     Vec2 Reflect(Vec2 normal) const;
@@ -95,7 +97,7 @@ class Vec2 {
       return Vec2(X * rhs.X, Y * rhs.Y);
     }
 
-    Vec2 operator*(double rhs) const {
+    Vec2 operator*(f64 rhs) const {
       return Vec2(X * rhs, Y * rhs);
     }
 
@@ -105,7 +107,7 @@ class Vec2 {
       return *this;
     }
 
-    Vec2 operator*=(double rhs) {
+    Vec2 operator*=(f64 rhs) {
       X *= rhs;
       Y *= rhs;
       return *this;
@@ -115,7 +117,7 @@ class Vec2 {
       return Vec2(X / rhs.X, Y / rhs.Y);
     }
 
-    Vec2 operator/(double rhs) const {
+    Vec2 operator/(f64 rhs) const {
       return Vec2(X / rhs, Y / rhs);
     }
 
@@ -125,7 +127,7 @@ class Vec2 {
       return *this;
     }
 
-    Vec2 operator/=(double rhs) {
+    Vec2 operator/=(f64 rhs) {
       X /= rhs;
       Y /= rhs;
       return *this;

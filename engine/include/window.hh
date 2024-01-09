@@ -1,73 +1,58 @@
-#ifndef _HOBBY_ENGINE_WINDOW_H
-#define _HOBBY_ENGINE_WINDOW_H
-
-#include "SDL2/SDL.h"
+#ifndef _HOBBY_WINDOW_H
+#define _HOBBY_WINDOW_H
 
 #include "vec2.hh"
+#include <string>
+
+struct SDL_Window;
+struct SDL_Renderer;
 
 namespace Hobby {
 
-/// @brief Settings to initialize a window with.
+namespace Draw {
+
+struct DrawState;
+
+}
+
 struct WindowSettings {
-  const char* Title = "Point Engine";
+  std::string Title = "Hobby Engine";
+  int X = -1, Y = -1;
   int Width = 800, Height = 400;
-  int X = SDL_WINDOWPOS_CENTERED, Y = SDL_WINDOWPOS_CENTERED;
   bool Resizable = true;
+  bool Borderless = false;
+  bool Visible = true;
+  bool Minimized = false;
+  bool Maximized = false;
 };
 
-/// @brief Holds and manages window state and events.
-///
-/// This class is a singleton. Constructors will throw an error if they see more
-/// than one instance.
 class Window {
-    friend class Graphics;
+    friend Draw::DrawState;
+    friend class Texture;
   public:
-    /// @brief Default constructor. Uses the default settings in `WindowSettings`.
     Window();
-    /// @brief Constructor to use custom settings.
     Window(const WindowSettings& settings);
-    ~Window();
     
-    /// @brief Get the title of the window.
-    const char* GetTitle() const;
-    /// @brief Set the title of the window.
-    /// @param title The new title.
-    void SetTitle(const char* title);
-    /// @brief Get the position of the window.
-    Vec2 GetPosition() const;
-    /// @brief Set the position of the window.
-    /// @param position The new position.
-    void SetPosition(const Vec2& position);
-    /// @brief Get the size of the window.
+    void SetTitle(const std::string& title);
+    std::string GetTitle() const;
+    void SetSize(Vec2 size);
     Vec2 GetSize() const;
-    /// @brief Set the size of the window.
-    /// @param size The new size.
-    void SetSize(const Vec2& size);
 
-    /// @brief Update window and events.
+    bool ShouldClose() const;
+    void Close();
+
     void Update();
-
-    /// @brief Check if whether the window should close yet.
-    inline bool ShouldClose() const {
-      return _shouldClose;
-    }
-    /// @brief Close the window.
-    inline void Close() {
-      _shouldClose = true;
-    }
   private:
-    /// @brief Initialize window state.
-    void InitializeWindow(const WindowSettings& settings);
 
-    // State
-    SDL_Window* _window;
-    SDL_GLContext _context;
+    void Initialize(const WindowSettings& settings);
+
     bool _shouldClose = false;
-    
-    // We don't allow more than one window.
-    static bool _alreadyInstanced;
+    std::string _windowTitle;
+
+    SDL_Window* _window;
+    SDL_Renderer* _renderer;
 };
 
 } // namespace Hobby
 
-#endif // _HOBBY_ENGINE_WINDOW_H
+#endif // _HOBBY_ENGINE_H

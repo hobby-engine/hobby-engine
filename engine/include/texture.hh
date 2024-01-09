@@ -1,36 +1,32 @@
-#ifndef _HOBBY_ENGINE_TEXTURE_H
-#define _HOBBY_ENGINE_TEXTURE_H
+#ifndef _HOBBY_TEXTURE_H
+#define _HOBBY_TEXTURE_H
 
 #include <string>
 
-#include "SDL2/SDL.h"
-
-#include "quad.hh"
 #include "vec2.hh"
-#include "shader.hh"
-#include "graphics.hh"
+#include "window.hh"
+
+struct SDL_Texture;
+struct SDL_Renderer;
 
 namespace Hobby {
 
-/// TEXTURES AAAAAA
 class Texture {
-  public:
-    /// @brief Load texture from path.
-    Texture(std::string path);
-    ~Texture();
+public:
+  Texture(const std::string& path);
+  ~Texture();
 
-    /// @brief Draw the texture.
-    void Draw(Vec2 position);
-    /// @brief Set a new quad.
-    void SetQuad(Quad quad);
+  Vec2 GetSize() const;
+  void Draw(Vec2 position) const;
 
-  private:
-    int _width, _height, _nrChannels;
-    Quad _quad;
-    Shader _shader;
-    unsigned int _glTexture;
+  static void Initialize(const Window& window);
+
+private:
+  static SDL_Renderer* Renderer;
+
+  SDL_Texture* _texture;
 };
 
 } // namespace Hobby
 
-#endif // _HOBBY_ENGINE_TEXTURE_H
+#endif // _HOBBY_TEXTURE_H

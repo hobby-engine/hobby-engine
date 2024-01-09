@@ -3,7 +3,7 @@
 #define TEXTURE_MEMBERS "textureMembers"
 
 static int w_CreateTexture(lua_State* L) {
-  const char* path = luaL_checkstring(L, 1);
+  std::string path = luaL_checkstring(L, 1);
 
   Hobby::Texture* texture = new Hobby::Texture(path);
   TextureWrapper* wrapper = static_cast<TextureWrapper*>(
@@ -20,8 +20,11 @@ static int w_Draw(lua_State* L) {
     return luaL_error(L, "Expected texture object.");
   }
 
+  float x = luaL_checknumber(L, 2);
+  float y = luaL_checknumber(L, 3);
+
   TextureWrapper* wrapper = static_cast<TextureWrapper*>(lua_touserdata(L, 1));
-  wrapper->texture->Draw(Hobby::Vec2(0, 0));
+  wrapper->texture->Draw(Hobby::Vec2(x, y));
   return 0;
 };
 

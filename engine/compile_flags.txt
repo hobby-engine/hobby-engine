@@ -2,6 +2,7 @@ clang++
 -Wall
 -Wextra
 -Ithirdparty/
+-Ithirdparty/glad/include/
 -Iinclude/
 -Isrc/
 -DPOINT_WIN
