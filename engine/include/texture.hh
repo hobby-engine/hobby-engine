@@ -17,7 +17,9 @@ public:
   ~Texture();
 
   Vec2 GetSize() const;
-  void Draw(Vec2 position) const;
+  int GetWidth() const;
+  int GetHeight() const;
+  void Draw(Vec2 position, double rotation = 0, Vec2 scale = Vec2(), Vec2 offset = Vec2()) const;
 
   static void Initialize(const Window& window);
 

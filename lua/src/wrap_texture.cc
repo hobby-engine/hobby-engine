@@ -22,9 +22,18 @@ static int w_Draw(lua_State* L) {
 
   float x = luaL_checknumber(L, 2);
   float y = luaL_checknumber(L, 3);
+  float rot = luaL_optnumber(L, 4, 0);
+  float sx = luaL_optnumber(L, 5, 1);
+  float sy = luaL_optnumber(L, 6, sx);
+  float ox = luaL_optnumber(L, 7, 0);
+  float oy = luaL_optnumber(L, 8, 0);
 
   TextureWrapper* wrapper = static_cast<TextureWrapper*>(lua_touserdata(L, 1));
-  wrapper->texture->Draw(Hobby::Vec2(x, y));
+  wrapper->texture->Draw(
+    Hobby::Vec2(x, y),
+    rot,
+    Hobby::Vec2(sx, sy),
+    Hobby::Vec2(ox, oy));
   return 0;
 };
 
@@ -38,6 +47,26 @@ static int w_GetSize(lua_State* L) {
   lua_pushnumber(L, size.W);
   lua_pushnumber(L, size.H);
   return 2;
+}
+
+static int w_GetWidth(lua_State* L) {
+  if (!lua_isuserdata(L, 1)) {
+    return luaL_error(L, "Expected texture object.");
+  }
+
+  TextureWrapper* wrapper = static_cast<TextureWrapper*>(lua_touserdata(L, 1));
+  lua_pushnumber(L, wrapper->texture->GetWidth());
+  return 1;
+}
+
+static int w_GetHeight(lua_State* L) {
+  if (!lua_isuserdata(L, 1)) {
+    return luaL_error(L, "Expected texture object.");
+  }
+
+  TextureWrapper* wrapper = static_cast<TextureWrapper*>(lua_touserdata(L, 1));
+  lua_pushnumber(L, wrapper->texture->GetHeight());
+  return 1;
 }
 
 static int w_TextureGc(lua_State* L) {
@@ -74,6 +103,8 @@ luaL_Reg textureMt[] = {
 luaL_Reg textureMembers[] = {
   { "Draw", w_Draw },
   { "GetSize", w_GetSize },
+  { "GetWidth", w_GetWidth },
+  { "GetHeight", w_GetHeight },
   { nullptr, nullptr },
 };
 

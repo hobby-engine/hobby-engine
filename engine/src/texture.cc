@@ -36,20 +36,51 @@ Vec2 Texture::GetSize() const {
   return Vec2(width, height);
 }
 
-void Texture::Draw(Vec2 position) const {
+int Texture::GetWidth() const {
+  int width;
+  SDL_QueryTexture(_texture, nullptr, nullptr, &width, nullptr);
+  return width;
+}
+
+int Texture::GetHeight() const {
+  int height;
+  SDL_QueryTexture(_texture, nullptr, nullptr, nullptr, &height);
+  return height;
+}
+
+void Texture::Draw(Vec2 position, double rotation, Vec2 scale, Vec2 offset) const {
   int width, height;
   SDL_QueryTexture(_texture, nullptr, nullptr, &width, &height);
+
+  float scaleX = scale.X, scaleY = scale.Y;
+
+  int flip = 0;
+  if (scaleX < 0) {
+    flip |= SDL_FLIP_HORIZONTAL;
+    scaleX *= -1;
+  }
+  if (scaleY < 0) {
+    flip |= SDL_FLIP_VERTICAL;
+    scaleY *= -1;
+  }
+
+  SDL_Point center = {
+    static_cast<int>(offset.X), static_cast<int>(offset.Y),
+  };
 
   SDL_Rect dest = {
     static_cast<int>(position.X),
     static_cast<int>(position.Y),
-    width, height
+    static_cast<int>(width * scaleX),
+    static_cast<int>(height * scaleY),
   };
   
-  SDL_RenderCopy(
-    Renderer, 
-    _texture,
-    nullptr, &dest);
+  SDL_RenderCopyEx(
+    Renderer, _texture,
+    nullptr, &dest,
+    rotation, &center,
+    static_cast<SDL_RendererFlip>(flip)
+  );
 }
 
 } // namespace Hobby
