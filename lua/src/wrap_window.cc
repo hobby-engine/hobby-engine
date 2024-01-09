@@ -1,6 +1,5 @@
-#include "window.hh"
-
 #include "wrap.hh"
+
 #include <iostream>
 
 #define WINDOW_MEMBERS "windowMembers"
@@ -23,6 +22,62 @@ int w_Update(lua_State* L) {
   WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
   window->window->Update();
   return 0;
+}
+
+int w_Close(lua_State* L) {
+  if (!lua_isuserdata(L, 1)) {
+    return luaL_error(L, "Expected window object.");
+  }
+
+  WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
+  window->window->Update();
+  return 0;
+}
+
+int w_SetTitle(lua_State* L) {
+  if (!lua_isuserdata(L, 1)) {
+    return luaL_error(L, "Expected window object.");
+  }
+
+  WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
+  window->window->SetTitle(luaL_checkstring(L, 2));
+  return 0;
+}
+
+int w_GetTitle(lua_State* L) {
+  if (!lua_isuserdata(L, 1)) {
+    return luaL_error(L, "Expected window object.");
+  }
+
+  WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
+  std::string title = window->window->GetTitle();
+  lua_pushstring(L, title.c_str());
+  return 1;
+}
+
+int w_SetSize(lua_State* L) {
+  if (!lua_isuserdata(L, 1)) {
+    return luaL_error(L, "Expected window object.");
+  }
+
+  int x = luaL_checkinteger(L, 2);
+  int y = luaL_checkinteger(L, 3);
+
+  WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
+  window->window->SetSize(Hobby::Vec2(x, y));
+  return 0;
+}
+
+int w_GetSize(lua_State* L) {
+  if (!lua_isuserdata(L, 1)) {
+    return luaL_error(L, "Expected window object.");
+  }
+
+  WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
+  Hobby::Vec2 size = window->window->GetSize();
+  lua_pushinteger(L, size.W);
+  lua_pushinteger(L, size.H);
+  return 2;
 }
 
 int w_CreateWindow(lua_State* L) {
@@ -113,6 +168,11 @@ luaL_Reg windowMt[] = {
 
 luaL_Reg windowMembers[] = {
   { "ShouldClose", w_ShouldClose },
+  { "Close", w_Close },
+  { "SetTitle", w_SetTitle },
+  { "GetTitle", w_GetTitle },
+  { "SetSize", w_SetSize },
+  { "GetSize", w_GetSize },
   { "Update", w_Update },
   { nullptr, nullptr },
 };

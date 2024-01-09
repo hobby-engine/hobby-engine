@@ -10,6 +10,7 @@
 #include "event/key.hh"
 #include "event/mouse.hh"
 #include "texture.hh"
+#include "time.hh"
 #include "transform.hh"
 #include "types.hh"
 #include "window.hh"

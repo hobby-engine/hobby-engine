@@ -6,6 +6,7 @@ set(ENGINE_SOURCE_FILES
   src/event_impl.cc
   src/window.cc
   src/texture.cc
+  src/time.cc
   src/draw.cc
 )
 
@@ -17,6 +18,7 @@ set(ENGINE_HEADER_FILES
   include/draw.hh
   include/texture.hh
   include/input_types.hh
+  include/time.hh
   include/transform.hh
   include/types.hh
   include/event.hh
