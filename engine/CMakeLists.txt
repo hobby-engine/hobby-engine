@@ -2,6 +2,7 @@ find_library(LIB_SDL SDL2)
 find_library(LIB_SDL_IMAGE SDL2_image)
 
 set(ENGINE_SOURCE_FILES
+  src/app.cc
   src/vec2.cc
   src/event_impl.cc
   src/window.cc
@@ -15,6 +16,7 @@ set(ENGINE_SDL2_FILES
 
 set(ENGINE_HEADER_FILES
   include/hobby.hh
+  include/app.hh
   include/draw.hh
   include/texture.hh
   include/input_types.hh

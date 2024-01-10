@@ -4,6 +4,7 @@
 /// @namespace Hobby
 /// @brief The Hobby Engine namespace. Everything Hobby does is inside this namespace.
 
+#include "app.hh"
 #include "color.hh"
 #include "draw.hh"
 #include "event.hh"
