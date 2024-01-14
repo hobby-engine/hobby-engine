@@ -15,7 +15,7 @@ Anyway, please, stare at the logo:
   <img alt="Hobby Engine logo" width="256px" height="256px">
 </picture>
 
-Hopefully you've stared at the logo for a good 20 or 30 seconds now. Now, if you want to see the grand total of 1 other variations of the logo, because you love staring at good logos so much, check out [the assets directory](assets/).
+Hopefully you've stared at the logo for a good 20 or 30 seconds now. Now, if you want to see the other variations of the logo, because you love staring at good logos so much, check out [the assets directory](assets/).
 
 ## Building
 This should hopefully work. If not, then make a PR to fix my silliness.
@@ -42,7 +42,7 @@ $ make
 - Shaders
 - UI system
 
-### Low-Priority Planned Features
+### Low-Priority Planned Features (Probably not gonna happen)
 - Level Editor
   - Keyframe animation
 - Custom language
