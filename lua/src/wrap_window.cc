@@ -10,7 +10,7 @@ int w_ShouldClose(lua_State* L) {
   }
 
   WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
-  lua_pushboolean(L, window->window->ShouldClose());
+  lua_pushboolean(L, window->Window->ShouldClose());
   return 1;
 }
 
@@ -20,7 +20,7 @@ int w_Update(lua_State* L) {
   }
 
   WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
-  window->window->Update();
+  window->Window->Update();
   return 0;
 }
 
@@ -30,7 +30,7 @@ int w_Close(lua_State* L) {
   }
 
   WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
-  window->window->Update();
+  window->Window->Update();
   return 0;
 }
 
@@ -40,7 +40,7 @@ int w_SetTitle(lua_State* L) {
   }
 
   WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
-  window->window->SetTitle(luaL_checkstring(L, 2));
+  window->Window->SetTitle(luaL_checkstring(L, 2));
   return 0;
 }
 
@@ -50,7 +50,7 @@ int w_GetTitle(lua_State* L) {
   }
 
   WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
-  std::string title = window->window->GetTitle();
+  std::string title = window->Window->GetTitle();
   lua_pushstring(L, title.c_str());
   return 1;
 }
@@ -64,7 +64,7 @@ int w_SetSize(lua_State* L) {
   int y = luaL_checkinteger(L, 3);
 
   WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
-  window->window->SetSize(Hobby::Vec2(x, y));
+  window->Window->SetSize(Hobby::Vec2(x, y));
   return 0;
 }
 
@@ -74,7 +74,7 @@ int w_GetSize(lua_State* L) {
   }
 
   WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
-  Hobby::Vec2 size = window->window->GetSize();
+  Hobby::Vec2 size = window->Window->GetSize();
   lua_pushinteger(L, size.W);
   lua_pushinteger(L, size.H);
   return 2;
@@ -125,14 +125,30 @@ int w_CreateWindow(lua_State* L) {
     settings.Maximized = maximized;
   }
 
-  Hobby::Window* window = new Hobby::Window(settings);
+  Hobby::Window* window;
+  try {
+    window = new Hobby::Window(settings);
+  } catch (std::exception& e) {
+    return luaL_error(L, e.what());
+  }
+
   WindowWrapper* wrapper = static_cast<WindowWrapper*>(
     lua_newuserdata(L, sizeof(WindowWrapper)));
-  wrapper->window = window;
+  wrapper->Window = window;
+  wrapper->OwnsWindow = true;
   luaL_getmetatable(L, "windowmt");
   lua_setmetatable(L, -2);
 
   return 1;
+}
+
+void WindowUserdata(lua_State* L, Hobby::Window* window) {
+  WindowWrapper* wrapper = static_cast<WindowWrapper*>(
+    lua_newuserdata(L, sizeof(WindowWrapper)));
+  wrapper->Window = window;
+  wrapper->OwnsWindow = false;
+  luaL_getmetatable(L, "windowmt");
+  lua_setmetatable(L, -2);
 }
 
 static int w_WindowGc(lua_State* L) {
@@ -141,7 +157,9 @@ static int w_WindowGc(lua_State* L) {
   }
 
   WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
-  delete window->window;
+  if (window->OwnsWindow) {
+    delete window->Window;
+  }
 
   return 0;
 }

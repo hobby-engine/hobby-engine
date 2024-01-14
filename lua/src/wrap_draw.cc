@@ -7,7 +7,7 @@ int w_DrawInitialize(lua_State* L) {
   }
 
   WindowWrapper* window = static_cast<WindowWrapper*>(lua_touserdata(L, 1));
-  Hobby::Draw::Initialize(*window->window);
+  Hobby::Draw::Initialize(*window->Window);
   return 0;
 }
 
@@ -54,7 +54,7 @@ static int w_DrawDrawTexture(lua_State* L) {
   float y = luaL_checknumber(L, 3);
 
   TextureWrapper* wrapper = static_cast<TextureWrapper*>(lua_touserdata(L, 1));
-  Hobby::Draw::DrawTexture(*wrapper->texture, Hobby::Vec2(x, y));
+  Hobby::Draw::DrawTexture(*wrapper->Texture, Hobby::Vec2(x, y));
   return 0;
 };
 

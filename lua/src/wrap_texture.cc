@@ -1,14 +1,21 @@
 #include "wrap.hh"
+#include <exception>
 
 #define TEXTURE_MEMBERS "textureMembers"
 
 static int w_CreateTexture(lua_State* L) {
   std::string path = luaL_checkstring(L, 1);
 
-  Hobby::Texture* texture = new Hobby::Texture(path);
+  Hobby::Texture* texture;
+  try {
+    texture = new Hobby::Texture(path);
+  } catch (std::exception& e) {
+    return luaL_error(L, e.what());
+  }
+
   TextureWrapper* wrapper = static_cast<TextureWrapper*>(
     lua_newuserdata(L, sizeof(TextureWrapper)));
-  wrapper->texture = texture;
+  wrapper->Texture = texture;
   luaL_getmetatable(L, "texturemt");
   lua_setmetatable(L, -2);
 
@@ -29,7 +36,7 @@ static int w_Draw(lua_State* L) {
   float oy = luaL_optnumber(L, 8, 0);
 
   TextureWrapper* wrapper = static_cast<TextureWrapper*>(lua_touserdata(L, 1));
-  wrapper->texture->Draw(
+  wrapper->Texture->Draw(
     Hobby::Vec2(x, y),
     rot,
     Hobby::Vec2(sx, sy),
@@ -43,7 +50,7 @@ static int w_GetSize(lua_State* L) {
   }
 
   TextureWrapper* wrapper = static_cast<TextureWrapper*>(lua_touserdata(L, 1));
-  Hobby::Vec2 size = wrapper->texture->GetSize();
+  Hobby::Vec2 size = wrapper->Texture->GetSize();
   lua_pushnumber(L, size.W);
   lua_pushnumber(L, size.H);
   return 2;
@@ -55,7 +62,7 @@ static int w_GetWidth(lua_State* L) {
   }
 
   TextureWrapper* wrapper = static_cast<TextureWrapper*>(lua_touserdata(L, 1));
-  lua_pushnumber(L, wrapper->texture->GetWidth());
+  lua_pushnumber(L, wrapper->Texture->GetWidth());
   return 1;
 }
 
@@ -65,7 +72,7 @@ static int w_GetHeight(lua_State* L) {
   }
 
   TextureWrapper* wrapper = static_cast<TextureWrapper*>(lua_touserdata(L, 1));
-  lua_pushnumber(L, wrapper->texture->GetHeight());
+  lua_pushnumber(L, wrapper->Texture->GetHeight());
   return 1;
 }
 
@@ -75,7 +82,7 @@ static int w_TextureGc(lua_State* L) {
   }
 
   TextureWrapper* wrapper = static_cast<TextureWrapper*>(lua_touserdata(L, 1));
-  delete wrapper->texture;
+  delete wrapper->Texture;
 
   return 0;
 }

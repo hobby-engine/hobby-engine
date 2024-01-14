@@ -6,6 +6,7 @@ set(LUA_SOURCE_FILES
   src/wrap_window.cc
   src/wrap_draw.cc
   src/wrap_time.cc
+  src/wrap_app.cc
 )
 
 add_executable(
