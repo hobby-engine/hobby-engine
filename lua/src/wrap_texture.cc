@@ -1,5 +1,8 @@
-#include "wrap.hh"
+#include "wrap_texture.hh"
+
 #include <exception>
+
+#include "wrap.hh"
 
 #define TEXTURE_MEMBERS "textureMembers"
 

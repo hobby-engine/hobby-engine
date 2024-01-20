@@ -4,6 +4,8 @@
 
 #include "SDL2/SDL.h"
 
+#include "input_types.hh"
+
 namespace Hobby {
 
 Window::Window() {

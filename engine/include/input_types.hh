@@ -3,8 +3,7 @@
 
 namespace Hobby::Input {
 
-/// @brief Human-readable names for any key you can press.
-enum class Key {
+enum class KeyType {
   UNKNOWN,
 
   RETURN,
@@ -250,6 +249,8 @@ enum class Key {
   SOFTRIGHT,
   CALL,
   ENDCALL,
+
+  KEY_COUNT,
 }; // Key
 
 } // namespace Hobby::input

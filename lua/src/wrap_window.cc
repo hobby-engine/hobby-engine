@@ -1,6 +1,8 @@
-#include "wrap.hh"
+#include "wrap_window.hh"
 
 #include <iostream>
+
+#include "wrap.hh"
 
 #define WINDOW_MEMBERS "windowMembers"
 

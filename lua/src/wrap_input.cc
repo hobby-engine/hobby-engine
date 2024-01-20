@@ -1,0 +1,284 @@
+#include "wrap_input.hh"
+
+#include <ios>
+#include <map>
+
+#include "input_types.hh"
+#include "wrap.hh"
+
+std::map<std::string, Hobby::Input::KeyType> translate;
+
+void CreateMap();
+
+int w_IsKeyDown(lua_State* L) {
+  std::string keyName = luaL_checkstring(L, 1);
+  transform(keyName.begin(), keyName.end(), keyName.begin(), toupper);
+
+  if (!translate.count(keyName)) {
+    lua_pushboolean(L, false);
+    return 1;
+  }
+
+  Hobby::Input::KeyType key = translate[keyName];
+
+  lua_pushboolean(L, Hobby::Input::IsKeyDown(key));
+  return 1;
+}
+
+luaL_Reg inputLib[] = {
+  { "IsKeyDown", w_IsKeyDown },
+  { nullptr, nullptr },
+};
+
+int WrapInput(lua_State* L) {
+  CreateMap();
+  RegisterModule(L, INPUT_NAME, inputLib);
+  return LUA_OK;
+}
+
+void CreateMap() {
+  translate["UNKNOWN"]            = Hobby::Input::KeyType::UNKNOWN;
+  translate["RETURN"]             = Hobby::Input::KeyType::RETURN;
+  translate["ESCAPE"]             = Hobby::Input::KeyType::ESCAPE;
+  translate["BACKSPACE"]          = Hobby::Input::KeyType::BACKSPACE;
+  translate["TAB"]                = Hobby::Input::KeyType::TAB;
+  translate["SPACE"]              = Hobby::Input::KeyType::SPACE;
+  translate["EXCLAIM"]            = Hobby::Input::KeyType::EXCLAIM;
+  translate["QUOTEDBL"]           = Hobby::Input::KeyType::QUOTEDBL;
+  translate["HASH"]               = Hobby::Input::KeyType::HASH;
+  translate["PERCENT"]            = Hobby::Input::KeyType::PERCENT;
+  translate["DOLLAR"]             = Hobby::Input::KeyType::DOLLAR;
+  translate["AMPERSAND"]          = Hobby::Input::KeyType::AMPERSAND;
+  translate["QUOTE"]              = Hobby::Input::KeyType::QUOTE;
+  translate["LEFTPAREN"]          = Hobby::Input::KeyType::LEFTPAREN;
+  translate["RIGHTPAREN"]         = Hobby::Input::KeyType::RIGHTPAREN;
+  translate["ASTERISK"]           = Hobby::Input::KeyType::ASTERISK;
+  translate["PLUS"]               = Hobby::Input::KeyType::PLUS;
+  translate["COMMA"]              = Hobby::Input::KeyType::COMMA;
+  translate["MINUS"]              = Hobby::Input::KeyType::MINUS;
+  translate["PERIOD"]             = Hobby::Input::KeyType::PERIOD;
+  translate["SLASH"]              = Hobby::Input::KeyType::SLASH;
+  translate["K0"]                 = Hobby::Input::KeyType::K0;
+  translate["K1"]                 = Hobby::Input::KeyType::K1;
+  translate["K2"]                 = Hobby::Input::KeyType::K2;
+  translate["K3"]                 = Hobby::Input::KeyType::K3;
+  translate["K4"]                 = Hobby::Input::KeyType::K4;
+  translate["K5"]                 = Hobby::Input::KeyType::K5;
+  translate["K6"]                 = Hobby::Input::KeyType::K6;
+  translate["K7"]                 = Hobby::Input::KeyType::K7;
+  translate["K8"]                 = Hobby::Input::KeyType::K8;
+  translate["K9"]                 = Hobby::Input::KeyType::K9;
+  translate["COLON"]              = Hobby::Input::KeyType::COLON;
+  translate["SEMICOLON"]          = Hobby::Input::KeyType::SEMICOLON;
+  translate["LESS"]               = Hobby::Input::KeyType::LESS;
+  translate["EQUALS"]             = Hobby::Input::KeyType::EQUALS;
+  translate["GREATER"]            = Hobby::Input::KeyType::GREATER;
+  translate["QUESTION"]           = Hobby::Input::KeyType::QUESTION;
+  translate["AT"]                 = Hobby::Input::KeyType::AT;
+  translate["LEFTBRACKET"]        = Hobby::Input::KeyType::LEFTBRACKET;
+  translate["BACKSLASH"]          = Hobby::Input::KeyType::BACKSLASH;
+  translate["RIGHTBRACKET"]       = Hobby::Input::KeyType::RIGHTBRACKET;
+  translate["CARET"]              = Hobby::Input::KeyType::CARET;
+  translate["UNDERSCORE"]         = Hobby::Input::KeyType::UNDERSCORE;
+  translate["BACKQUOTE"]          = Hobby::Input::KeyType::BACKQUOTE;
+  translate["A"]                  = Hobby::Input::KeyType::A;
+  translate["B"]                  = Hobby::Input::KeyType::B;
+  translate["C"]                  = Hobby::Input::KeyType::C;
+  translate["D"]                  = Hobby::Input::KeyType::D;
+  translate["E"]                  = Hobby::Input::KeyType::E;
+  translate["F"]                  = Hobby::Input::KeyType::F;
+  translate["G"]                  = Hobby::Input::KeyType::G;
+  translate["H"]                  = Hobby::Input::KeyType::H;
+  translate["I"]                  = Hobby::Input::KeyType::I;
+  translate["J"]                  = Hobby::Input::KeyType::J;
+  translate["K"]                  = Hobby::Input::KeyType::K;
+  translate["L"]                  = Hobby::Input::KeyType::L;
+  translate["M"]                  = Hobby::Input::KeyType::M;
+  translate["N"]                  = Hobby::Input::KeyType::N;
+  translate["O"]                  = Hobby::Input::KeyType::O;
+  translate["P"]                  = Hobby::Input::KeyType::P;
+  translate["Q"]                  = Hobby::Input::KeyType::Q;
+  translate["R"]                  = Hobby::Input::KeyType::R;
+  translate["S"]                  = Hobby::Input::KeyType::S;
+  translate["T"]                  = Hobby::Input::KeyType::T;
+  translate["U"]                  = Hobby::Input::KeyType::U;
+  translate["V"]                  = Hobby::Input::KeyType::V;
+  translate["W"]                  = Hobby::Input::KeyType::W;
+  translate["X"]                  = Hobby::Input::KeyType::X;
+  translate["Y"]                  = Hobby::Input::KeyType::Y;
+  translate["Z"]                  = Hobby::Input::KeyType::Z;
+  translate["CAPSLOCK"]           = Hobby::Input::KeyType::CAPSLOCK;
+  translate["F1"]                 = Hobby::Input::KeyType::F1;
+  translate["F2"]                 = Hobby::Input::KeyType::F2;
+  translate["F3"]                 = Hobby::Input::KeyType::F3;
+  translate["F4"]                 = Hobby::Input::KeyType::F4;
+  translate["F5"]                 = Hobby::Input::KeyType::F5;
+  translate["F6"]                 = Hobby::Input::KeyType::F6;
+  translate["F7"]                 = Hobby::Input::KeyType::F7;
+  translate["F8"]                 = Hobby::Input::KeyType::F8;
+  translate["F9"]                 = Hobby::Input::KeyType::F9;
+  translate["F10"]                = Hobby::Input::KeyType::F10;
+  translate["F11"]                = Hobby::Input::KeyType::F11;
+  translate["F12"]                = Hobby::Input::KeyType::F12;
+  translate["PRINTSCREEN"]        = Hobby::Input::KeyType::PRINTSCREEN;
+  translate["SCROLLLOCK"]         = Hobby::Input::KeyType::SCROLLLOCK;
+  translate["PAUSE"]              = Hobby::Input::KeyType::PAUSE;
+  translate["INSERT"]             = Hobby::Input::KeyType::INSERT;
+  translate["HOME"]               = Hobby::Input::KeyType::HOME;
+  translate["PAGEUP"]             = Hobby::Input::KeyType::PAGEUP;
+  translate["DELETE"]             = Hobby::Input::KeyType::DELETE;
+  translate["END"]                = Hobby::Input::KeyType::END;
+  translate["PAGEDOWN"]           = Hobby::Input::KeyType::PAGEDOWN;
+  translate["RIGHT"]              = Hobby::Input::KeyType::RIGHT;
+  translate["LEFT"]               = Hobby::Input::KeyType::LEFT;
+  translate["DOWN"]               = Hobby::Input::KeyType::DOWN;
+  translate["UP"]                 = Hobby::Input::KeyType::UP;
+  translate["NUMLOCKCLEAR"]       = Hobby::Input::KeyType::NUMLOCKCLEAR;
+  translate["KP_DIVIDE"]          = Hobby::Input::KeyType::KP_DIVIDE;
+  translate["KP_MULTIPLY"]        = Hobby::Input::KeyType::KP_MULTIPLY;
+  translate["KP_MINUS"]           = Hobby::Input::KeyType::KP_MINUS;
+  translate["KP_PLUS"]            = Hobby::Input::KeyType::KP_PLUS;
+  translate["KP_ENTER"]           = Hobby::Input::KeyType::KP_ENTER;
+  translate["KP_1"]               = Hobby::Input::KeyType::KP_1;
+  translate["KP_2"]               = Hobby::Input::KeyType::KP_2;
+  translate["KP_3"]               = Hobby::Input::KeyType::KP_3;
+  translate["KP_4"]               = Hobby::Input::KeyType::KP_4;
+  translate["KP_5"]               = Hobby::Input::KeyType::KP_5;
+  translate["KP_6"]               = Hobby::Input::KeyType::KP_6;
+  translate["KP_7"]               = Hobby::Input::KeyType::KP_7;
+  translate["KP_8"]               = Hobby::Input::KeyType::KP_8;
+  translate["KP_9"]               = Hobby::Input::KeyType::KP_9;
+  translate["KP_0"]               = Hobby::Input::KeyType::KP_0;
+  translate["KP_PERIOD"]          = Hobby::Input::KeyType::KP_PERIOD;
+  translate["APPLICATION"]        = Hobby::Input::KeyType::APPLICATION;
+  translate["POWER"]              = Hobby::Input::KeyType::POWER;
+  translate["KP_EQUALS"]          = Hobby::Input::KeyType::KP_EQUALS;
+  translate["F13"]                = Hobby::Input::KeyType::F13;
+  translate["F14"]                = Hobby::Input::KeyType::F14;
+  translate["F15"]                = Hobby::Input::KeyType::F15;
+  translate["F16"]                = Hobby::Input::KeyType::F16;
+  translate["F17"]                = Hobby::Input::KeyType::F17;
+  translate["F18"]                = Hobby::Input::KeyType::F18;
+  translate["F19"]                = Hobby::Input::KeyType::F19;
+  translate["F20"]                = Hobby::Input::KeyType::F20;
+  translate["F21"]                = Hobby::Input::KeyType::F21;
+  translate["F22"]                = Hobby::Input::KeyType::F22;
+  translate["F23"]                = Hobby::Input::KeyType::F23;
+  translate["F24"]                = Hobby::Input::KeyType::F24;
+  translate["EXECUTE"]            = Hobby::Input::KeyType::EXECUTE;
+  translate["HELP"]               = Hobby::Input::KeyType::HELP;
+  translate["MENU"]               = Hobby::Input::KeyType::MENU;
+  translate["SELECT"]             = Hobby::Input::KeyType::SELECT;
+  translate["STOP"]               = Hobby::Input::KeyType::STOP;
+  translate["AGAIN"]              = Hobby::Input::KeyType::AGAIN;
+  translate["UNDO"]               = Hobby::Input::KeyType::UNDO;
+  translate["CUT"]                = Hobby::Input::KeyType::CUT;
+  translate["COPY"]               = Hobby::Input::KeyType::COPY;
+  translate["PASTE"]              = Hobby::Input::KeyType::PASTE;
+  translate["FIND"]               = Hobby::Input::KeyType::FIND;
+  translate["MUTE"]               = Hobby::Input::KeyType::MUTE;
+  translate["VOLUMEUP"]           = Hobby::Input::KeyType::VOLUMEUP;
+  translate["VOLUMEDOWN"]         = Hobby::Input::KeyType::VOLUMEDOWN;
+  translate["KP_COMMA"]           = Hobby::Input::KeyType::KP_COMMA;
+  translate["KP_EQUALSAS400"]     = Hobby::Input::KeyType::KP_EQUALSAS400;
+  translate["ALTERASE"]           = Hobby::Input::KeyType::ALTERASE;
+  translate["SYSREQ"]             = Hobby::Input::KeyType::SYSREQ;
+  translate["CANCEL"]             = Hobby::Input::KeyType::CANCEL;
+  translate["CLEAR"]              = Hobby::Input::KeyType::CLEAR;
+  translate["PRIOR"]              = Hobby::Input::KeyType::PRIOR;
+  translate["RETURN2"]            = Hobby::Input::KeyType::RETURN2;
+  translate["SEPARATOR"]          = Hobby::Input::KeyType::SEPARATOR;
+  translate["OUT"]                = Hobby::Input::KeyType::OUT;
+  translate["OPER"]               = Hobby::Input::KeyType::OPER;
+  translate["CLEARAGAIN"]         = Hobby::Input::KeyType::CLEARAGAIN;
+  translate["CRSEL"]              = Hobby::Input::KeyType::CRSEL;
+  translate["EXSEL"]              = Hobby::Input::KeyType::EXSEL;
+  translate["KP_00"]              = Hobby::Input::KeyType::KP_00;
+  translate["KP_000"]             = Hobby::Input::KeyType::KP_000;
+  translate["THOUSANDSSEPARATOR"] = Hobby::Input::KeyType::THOUSANDSSEPARATOR;
+  translate["DECIMALSEPARATOR"]   = Hobby::Input::KeyType::DECIMALSEPARATOR;
+  translate["CURRENCYUNIT"]       = Hobby::Input::KeyType::CURRENCYUNIT;
+  translate["CURRENCYSUBUNIT"]    = Hobby::Input::KeyType::CURRENCYSUBUNIT;
+  translate["KP_LEFTPAREN"]       = Hobby::Input::KeyType::KP_LEFTPAREN;
+  translate["KP_RIGHTPAREN"]      = Hobby::Input::KeyType::KP_RIGHTPAREN;
+  translate["KP_LEFTBRACE"]       = Hobby::Input::KeyType::KP_LEFTBRACE;
+  translate["KP_RIGHTBRACE"]      = Hobby::Input::KeyType::KP_RIGHTBRACE;
+  translate["KP_TAB"]             = Hobby::Input::KeyType::KP_TAB;
+  translate["KP_BACKSPACE"]       = Hobby::Input::KeyType::KP_BACKSPACE;
+  translate["KP_A"]               = Hobby::Input::KeyType::KP_A;
+  translate["KP_B"]               = Hobby::Input::KeyType::KP_B;
+  translate["KP_C"]               = Hobby::Input::KeyType::KP_C;
+  translate["KP_D"]               = Hobby::Input::KeyType::KP_D;
+  translate["KP_E"]               = Hobby::Input::KeyType::KP_E;
+  translate["KP_F"]               = Hobby::Input::KeyType::KP_F;
+  translate["KP_XOR"]             = Hobby::Input::KeyType::KP_XOR;
+  translate["KP_POWER"]           = Hobby::Input::KeyType::KP_POWER;
+  translate["KP_PERCENT"]         = Hobby::Input::KeyType::KP_PERCENT;
+  translate["KP_LESS"]            = Hobby::Input::KeyType::KP_LESS;
+  translate["KP_GREATER"]         = Hobby::Input::KeyType::KP_GREATER;
+  translate["KP_AMPERSAND"]       = Hobby::Input::KeyType::KP_AMPERSAND;
+  translate["KP_DBLAMPERSAND"]    = Hobby::Input::KeyType::KP_DBLAMPERSAND;
+  translate["KP_VERTICALBAR"]     = Hobby::Input::KeyType::KP_VERTICALBAR;
+  translate["KP_DBLVERTICALBAR"]  = Hobby::Input::KeyType::KP_DBLVERTICALBAR;
+  translate["KP_COLON"]           = Hobby::Input::KeyType::KP_COLON;
+  translate["KP_HASH"]            = Hobby::Input::KeyType::KP_HASH;
+  translate["KP_SPACE"]           = Hobby::Input::KeyType::KP_SPACE;
+  translate["KP_AT"]              = Hobby::Input::KeyType::KP_AT;
+  translate["KP_EXCLAM"]          = Hobby::Input::KeyType::KP_EXCLAM;
+  translate["KP_MEMSTORE"]        = Hobby::Input::KeyType::KP_MEMSTORE;
+  translate["KP_MEMRECALL"]       = Hobby::Input::KeyType::KP_MEMRECALL;
+  translate["KP_MEMCLEAR"]        = Hobby::Input::KeyType::KP_MEMCLEAR;
+  translate["KP_MEMADD"]          = Hobby::Input::KeyType::KP_MEMADD;
+  translate["KP_MEMSUBTRACT"]     = Hobby::Input::KeyType::KP_MEMSUBTRACT;
+  translate["KP_MEMMULTIPLY"]     = Hobby::Input::KeyType::KP_MEMMULTIPLY;
+  translate["KP_MEMDIVIDE"]       = Hobby::Input::KeyType::KP_MEMDIVIDE;
+  translate["KP_PLUSMINUS"]       = Hobby::Input::KeyType::KP_PLUSMINUS;
+  translate["KP_CLEAR"]           = Hobby::Input::KeyType::KP_CLEAR;
+  translate["KP_CLEARENTRY"]      = Hobby::Input::KeyType::KP_CLEARENTRY;
+  translate["KP_BINARY"]          = Hobby::Input::KeyType::KP_BINARY;
+  translate["KP_OCTAL"]           = Hobby::Input::KeyType::KP_OCTAL;
+  translate["KP_DECIMAL"]         = Hobby::Input::KeyType::KP_DECIMAL;
+  translate["KP_HEXADECIMAL"]     = Hobby::Input::KeyType::KP_HEXADECIMAL;
+  translate["LCTRL"]              = Hobby::Input::KeyType::LCTRL;
+  translate["LSHIFT"]             = Hobby::Input::KeyType::LSHIFT;
+  translate["LALT"]               = Hobby::Input::KeyType::LALT;
+  translate["LGUI"]               = Hobby::Input::KeyType::LGUI;
+  translate["RCTRL"]              = Hobby::Input::KeyType::RCTRL;
+  translate["RSHIFT"]             = Hobby::Input::KeyType::RSHIFT;
+  translate["RALT"]               = Hobby::Input::KeyType::RALT;
+  translate["RGUI"]               = Hobby::Input::KeyType::RGUI;
+  translate["MODE"]               = Hobby::Input::KeyType::MODE;
+  translate["AUDIONEXT"]          = Hobby::Input::KeyType::AUDIONEXT;
+  translate["AUDIOPREV"]          = Hobby::Input::KeyType::AUDIOPREV;
+  translate["AUDIOSTOP"]          = Hobby::Input::KeyType::AUDIOSTOP;
+  translate["AUDIOPLAY"]          = Hobby::Input::KeyType::AUDIOPLAY;
+  translate["AUDIOMUTE"]          = Hobby::Input::KeyType::AUDIOMUTE;
+  translate["MEDIASELECT"]        = Hobby::Input::KeyType::MEDIASELECT;
+  translate["WWW"]                = Hobby::Input::KeyType::WWW;
+  translate["MAIL"]               = Hobby::Input::KeyType::MAIL;
+  translate["CALCULATOR"]         = Hobby::Input::KeyType::CALCULATOR;
+  translate["COMPUTER"]           = Hobby::Input::KeyType::COMPUTER;
+  translate["AC_SEARCH"]          = Hobby::Input::KeyType::AC_SEARCH;
+  translate["AC_HOME"]            = Hobby::Input::KeyType::AC_HOME;
+  translate["AC_BACK"]            = Hobby::Input::KeyType::AC_BACK;
+  translate["AC_FORWARD"]         = Hobby::Input::KeyType::AC_FORWARD;
+  translate["AC_STOP"]            = Hobby::Input::KeyType::AC_STOP;
+  translate["AC_REFRESH"]         = Hobby::Input::KeyType::AC_REFRESH;
+  translate["AC_BOOKMARKS"]       = Hobby::Input::KeyType::AC_BOOKMARKS;
+  translate["BRIGHTNESSDOWN"]     = Hobby::Input::KeyType::BRIGHTNESSDOWN;
+  translate["BRIGHTNESSUP"]       = Hobby::Input::KeyType::BRIGHTNESSUP;
+  translate["DISPLAYSWITCH"]      = Hobby::Input::KeyType::DISPLAYSWITCH;
+  translate["KBDILLUMTOGGLE"]     = Hobby::Input::KeyType::KBDILLUMTOGGLE;
+  translate["KBDILLUMDOWN"]       = Hobby::Input::KeyType::KBDILLUMDOWN;
+  translate["KBDILLUMUP"]         = Hobby::Input::KeyType::KBDILLUMUP;
+  translate["EJECT"]              = Hobby::Input::KeyType::EJECT;
+  translate["SLEEP"]              = Hobby::Input::KeyType::SLEEP;
+  translate["APP1"]               = Hobby::Input::KeyType::APP1;
+  translate["APP2"]               = Hobby::Input::KeyType::APP2;
+  translate["AUDIOREWIND"]        = Hobby::Input::KeyType::AUDIOREWIND;
+  translate["AUDIOFASTFORWARD"]   = Hobby::Input::KeyType::AUDIOFASTFORWARD;
+  translate["SOFTLEFT"]           = Hobby::Input::KeyType::SOFTLEFT;
+  translate["SOFTRIGHT"]          = Hobby::Input::KeyType::SOFTRIGHT;
+  translate["CALL"]               = Hobby::Input::KeyType::CALL;
+  translate["ENDCALL"]            = Hobby::Input::KeyType::ENDCALL;
+}

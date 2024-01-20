@@ -3,12 +3,13 @@ find_library(LIB_SDL_IMAGE SDL2_image)
 
 set(ENGINE_SOURCE_FILES
   src/app.cc
-  src/vec2.cc
+  src/draw.cc
   src/event_impl.cc
-  src/window.cc
+  src/input.cc
   src/texture.cc
   src/time.cc
-  src/draw.cc
+  src/window.cc
+  src/vec2.cc
 )
 
 set(ENGINE_SDL2_FILES
@@ -20,6 +21,7 @@ set(ENGINE_HEADER_FILES
   include/draw.hh
   include/texture.hh
   include/input_types.hh
+  include/input.hh
   include/time.hh
   include/transform.hh
   include/types.hh

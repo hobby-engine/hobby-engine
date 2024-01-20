@@ -1,3 +1,5 @@
+#include "wrap_time.hh"
+
 #include "wrap.hh"
 
 int w_TimeGetDelta(lua_State* L) {

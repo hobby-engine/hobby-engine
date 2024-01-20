@@ -1,4 +1,7 @@
+#include "wrap_draw.hh"
+
 #include "draw.hh"
+
 #include "wrap.hh"
 
 int w_DrawInitialize(lua_State* L) {

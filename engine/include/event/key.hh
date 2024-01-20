@@ -11,13 +11,13 @@ class KeyPressedEvent : public Event {
   public:
     IMPL_BUS(KeyPressedEvent);
     
-    KeyPressedEvent(Input::Key key, bool isRepeated) 
+    KeyPressedEvent(Input::KeyType key, bool isRepeated) 
       : _key(key),
         _isRepeated(isRepeated) {
     }
 
     /// @brief Get the key that was pressed.
-    inline Input::Key GetKey() const {
+    inline Input::KeyType GetKey() const {
       return _key;
     }
 
@@ -26,7 +26,7 @@ class KeyPressedEvent : public Event {
       return _isRepeated;
     }
   private:
-    Input::Key _key;
+    Input::KeyType _key;
     bool _isRepeated;
 };
 
@@ -35,17 +35,17 @@ class KeyReleasedEvent : public Event {
   public:
     IMPL_BUS(KeyReleasedEvent);
 
-    KeyReleasedEvent(Input::Key key)
+    KeyReleasedEvent(Input::KeyType key)
       : _key(key) {
     }
 
     /// @brief Get the key that was pressed.
-    inline Input::Key GetKey() const {
+    inline Input::KeyType GetKey() const {
       return _key;
     }
 
   private:
-    Input::Key _key;
+    Input::KeyType _key;
 };
 
 } // namespace Hobby

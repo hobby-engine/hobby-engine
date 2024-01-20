@@ -1,6 +1,9 @@
+#include "wrap_app.hh"
+
+#include <iostream>
+
 #include "window.hh"
 #include "wrap.hh"
-#include <iostream>
 
 #define APP_MEMBERS "appMembers"
 

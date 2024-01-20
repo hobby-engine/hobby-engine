@@ -60,6 +60,7 @@ int main(int argc, char* args[]) {
   WrapWindow(L);
   WrapGraphics(L);
   WrapTime(L);
+  WrapInput(L);
 
   int loadRes = luaL_dofile(L, path.c_str());
   if (loadRes != LUA_OK) {
