@@ -26,7 +26,7 @@ $ make
 Not supported
 
 ### Planned Features
-- Rendering
+- Rendering System
 - Input
 - Events
 - 2D audio
@@ -36,8 +36,6 @@ Not supported
 - Tilemaps
 - Pathfinding
 - Input System
-- OpenGL Rendering
-- Shaders
 - UI system
 
 ### Low-Priority Planned Features (Probably not gonna happen)
