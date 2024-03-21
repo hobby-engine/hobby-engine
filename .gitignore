@@ -1,5 +1,6 @@
-build/
-test/
-doxygen_output/
+bin/
 
-CustomOpts.cmake
+*.zip
+*.o
+*.d
+compile_flags.txt

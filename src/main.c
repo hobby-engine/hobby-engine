@@ -6,6 +6,7 @@
 #include "linmath.h"
 
 #include "basic_types.h"
+#include "log.h"
 #include "shader.h"
 #include "time.h"
 
@@ -32,10 +33,7 @@ void onFramebufferSizeChanged(GLFWwindow* window, s32 width, s32 height) {
 }
 
 int main() {
-  if (!glfwInit()) {
-    fprintf(stderr, "Failed to initialize GLFW.\n");
-    exit(1);
-  }
+  hb_assert(glfwInit(), "Failed to initialize GLFW.\n");
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -43,16 +41,14 @@ int main() {
 
   GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "GLFW window", NULL, NULL);
   if (!window) {
-    fprintf(stderr, "Failed to create window.\n");
     glfwTerminate();
-    exit(1);
+    hb_error("Failed to create window.\n");
   }
 
   glfwMakeContextCurrent(window);
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    fprintf(stderr, "Failed to initialize GLAD.\n");
-    exit(1);
+    hb_error("Failed to initialize GLAD.\n");
   }
 
   glfwSetFramebufferSizeCallback(window, onFramebufferSizeChanged);
