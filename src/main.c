@@ -10,44 +10,38 @@
 #include "log.h"
 #include "shader.h"
 #include "time.h"
+#include "vertex_array.h"
+#include "vertex_buffer.h"
 #include "window.h"
 
 #define WIDTH 800
 #define HEIGHT 600
 
-#define TEXTURE_SHADER_VERT "res/texture.vs"
-#define TEXTURE_SHADER_FRAG "res/texture.fs"
-
-f32 vertices[] = {
-// Pos        Color      Uv
-  0,   0,     1, 1, 1,   0, 0,
-  0,   100,   1, 1, 1,   0, 1,
-  100, 100,   1, 1, 1,   1, 1,
-  100, 0,     1, 1, 1,   1, 0,
-};
-
 s32 main() {
   hb_Window* window = hb_createWindow("Hobby", WIDTH, HEIGHT);
   hb_Engine engine = hb_createEngine(window);
-  hb_Shader shaderProgram = hb_loadShader("res/texture.vert", "res/texture.frag");
+  hb_Shader shaderProgram = hb_loadShader("res/color.vert", "res/color.frag");
 
   u32 varr;
   glGenVertexArrays(1, &varr);
 
-  u32 vbuf;
-  glGenBuffers(1, &vbuf);
-  glBindVertexArray(varr);
-  glBindBuffer(GL_ARRAY_BUFFER, vbuf);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+  hb_VertexArray vertexArray = hb_createVertexArray();
 
-  size_t stride = 7 * sizeof(f32);
+  hb_VertexBuffer vertexBuffer = hb_createVertexBuffer(
+      hb_BUFFER_TYPE_ARRAY_BUFFER, true);
+  hb_setVertexBufferData(&vertexBuffer, 5 * 4 * sizeof(f32), (f32[]) {
+    0,   0,     1, 1, 1,
+    0,   100,   1, 1, 1,
+    100, 100,   1, 1, 1,
+    100, 0,     1, 1, 1,
+  });
+  hb_bindVertexBuffer(&vertexBuffer);
 
-  glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, stride, (void*)0);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)(2 * sizeof(f32)));
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)(5 * sizeof(f32)));
-  glEnableVertexAttribArray(0);
-  glEnableVertexAttribArray(1);
-  glEnableVertexAttribArray(2);
+  size_t stride = 5 * sizeof(f32);
+  hb_setVertexArrayAttribute(
+    &vertexArray, &vertexBuffer, 0, 2, GL_FLOAT, stride, 0);
+  hb_setVertexArrayAttribute(
+    &vertexArray, &vertexBuffer, 1, 3, GL_FLOAT, stride, 2 * sizeof(f32));
 
   f32 rotation = 0;
 
@@ -77,11 +71,14 @@ s32 main() {
     hb_useShader(&shaderProgram);
     hb_setShaderMat4(&shaderProgram, "projection", projection);
     hb_setShaderMat4(&shaderProgram, "transform", transform);
-    glBindVertexArray(varr);
+    hb_bindVertexArray(&vertexArray);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
     glfwSwapBuffers(window->glfwWindow);
   }
+
+  hb_destroyVertexBuffer(&vertexBuffer);
+  hb_destroyVertexArray(&vertexArray);
 
   hb_destroyShader(&shaderProgram);
   hb_destroyEngine(&engine);
