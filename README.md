@@ -29,6 +29,7 @@ Not supported
 - Rendering System
 - Input
 - Events
+- Lua scripting
 - 2D audio
 - Render textures
 - Virtual filesystem, save system
