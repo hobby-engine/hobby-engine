@@ -8,6 +8,7 @@
 
 typedef enum {
   hb_BUFFER_TYPE_ARRAY_BUFFER,
+  hb_BUFFER_TYPE_INDEX_BUFFER,
 } hb_BufferType;
 
 typedef struct {

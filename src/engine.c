@@ -10,6 +10,7 @@ hb_Engine hb_createEngine(hb_Window *window) {
   hb_Engine engine;
   engine.window = window;
   engine.time = hb_createTime();
+  engine.renderer = hb_createRenderer(window);
 
   return engine;
 }
