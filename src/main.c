@@ -32,7 +32,7 @@ void onFramebufferSizeChanged(GLFWwindow* window, s32 width, s32 height) {
   window_height = height;
 }
 
-int main() {
+s32 main() {
   hb_assert(glfwInit(), "Failed to initialize GLFW.\n");
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

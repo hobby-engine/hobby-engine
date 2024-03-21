@@ -24,9 +24,9 @@ DEPENDS = $(OBJ:.o=.d)
 BUILD = bin
 EXE = $(BUILD)/hobby_$(PROFILE)
 
-.PHONY: clean libs compile_flags
+.PHONY: clean compile_flags
 
-$(EXE): libs src/glad.o $(OBJ)
+$(EXE): src/glad.o $(OBJ)
 	@mkdir -p $(BUILD)
 	@echo "Compiling $(EXE)..."
 	@$(CC) -o $(EXE) $(OBJ) src/glad.o $(CFLAGS) $(LDFLAGS)
