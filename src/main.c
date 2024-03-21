@@ -1,18 +1,9 @@
 #include <stdio.h>
-#include <stdlib.h>
-
-#include "glad/glad.h"
-#include "glfw/glfw3.h"
-#include "linmath.h"
 
 #include "engine.h"
 #include "basic_types.h"
-#include "log.h"
 #include "renderer.h"
-#include "shader.h"
 #include "time.h"
-#include "vertex_array.h"
-#include "vertex_buffer.h"
 #include "window.h"
 
 #define WIDTH 800
@@ -25,14 +16,12 @@ s32 main() {
   while (!glfwWindowShouldClose(window->glfwWindow)) {
     hb_engineStep(&engine);
 
-    f32 dt = engine.time->deltaTime;
-
     glfwPollEvents();
 
     char title[16];
     sprintf(title, "%.5f", engine.time->fps);
-
     hb_windowSetTitle(window, title);
+
     hb_drawClear((hb_Color){0, 0, 0, 1});
 
     hb_drawSetColor((hb_Color){0, 1, 0, 1});

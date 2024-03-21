@@ -30,7 +30,7 @@ void hb_rendererStep(hb_Renderer* renderer) {
 }
 
 static void drawRectangle(u32 mode, f32 x, f32 y, f32 width, f32 height) {
-  hb_setVertexBufferData(&singleton->vertexBuffer, 2 * 4 * sizeof(f32), (f32[]) {
+  hb_setVertexBufferData(&singleton->vertexBuffer, 2 * 4 * sizeof(f32), (f32[]){
     0, 0,
     0, height,
     width, height,
