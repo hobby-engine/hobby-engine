@@ -2,13 +2,11 @@
 #define _HOBBY_RENDERER_H
 
 #include "shader.h"
+#include "color.h"
 #include "vertex_array.h"
 #include "vertex_buffer.h"
 #include "window.h"
-
-typedef struct {
-  float r, g, b, a;
-} hb_Color;
+#include "linmath.h"
 
 typedef struct {
   hb_Window* window;
@@ -19,10 +17,16 @@ typedef struct {
 
   hb_Shader colorShader;
 
+  mat4x4 projection;
+
   hb_Color currentColor;
 } hb_Renderer;
 
 hb_Renderer* hb_createRenderer(hb_Window* window);
+void hb_rendererStep(hb_Renderer* renderer);
+
+f32* hb_colorToArray(hb_Color color);
+
 void hb_drawClear(hb_Color color);
 void hb_drawPresent();
 void hb_drawSetColor(hb_Color color);

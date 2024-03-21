@@ -145,3 +145,7 @@ void hb_setShaderMat4(hb_Shader* program, const char* name, mat4x4 value) {
   glUniformMatrix4fv(glGetUniformLocation(program->glId, name),
                      1, GL_FALSE, *value);
 }
+
+void hb_setShaderColor(hb_Shader* program, const char* name, hb_Color value) {
+  glUniform4f(glGetUniformLocation(program->glId, name), value.r, value.g, value.b, value.a);
+}

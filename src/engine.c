@@ -24,4 +24,5 @@ void hb_destroyEngine(hb_Engine* engine) {
 
 void hb_engineStep(hb_Engine* engine) {
   hb_timeStep(engine->time);
+  hb_rendererStep(engine->renderer);
 }

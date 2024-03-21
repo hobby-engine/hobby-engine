@@ -15,36 +15,40 @@ hb_Renderer* hb_createRenderer(hb_Window* window) {
 
   renderer->colorShader = hb_loadShader("res/color.vert", "res/color.frag");
 
+  mat4x4_identity(renderer->projection);
+
   singleton = renderer;
 
   return renderer;
 }
 
+void hb_rendererStep(hb_Renderer* renderer) {
+  mat4x4_identity(renderer->projection);
+  mat4x4_ortho(
+      renderer->projection,
+      0, singleton->window->width, singleton->window->height, 0, -1, 1);
+}
+
 static void drawRectangle(u32 mode, f32 x, f32 y, f32 width, f32 height) {
-  hb_Color color = singleton->currentColor;
-  hb_setVertexBufferData(&singleton->vertexBuffer, 6 * 4 * sizeof(f32), (f32[]) {
-    0, 0,  color.r, color.g, color.b, color.a,
-    0, height,  color.r, color.g, color.b, color.a,
-    width, height,  color.r, color.g, color.b, color.a,
-    width, 0,  color.r, color.g, color.b, color.a,
+  hb_setVertexBufferData(&singleton->vertexBuffer, 2 * 4 * sizeof(f32), (f32[]) {
+    0, 0,
+    0, height,
+    width, height,
+    width, 0,
   });
 
   hb_setVertexArrayAttribute(
     &singleton->vertexArray, &singleton->vertexBuffer,
-    0, 2, GL_FLOAT, sizeof(f32) * 6, 0);
-  hb_setVertexArrayAttribute(
-    &singleton->vertexArray, &singleton->vertexBuffer,
-    1, 4, GL_FLOAT, sizeof(f32) * 6, 2 * sizeof(f32));
+    0, 2, GL_FLOAT, sizeof(f32) * 2, 0);
 
-  mat4x4 projection, transform;
-  mat4x4_identity(projection);
+  mat4x4 transform;
   mat4x4_identity(transform);
-  mat4x4_ortho(projection, 0, singleton->window->width, singleton->window->height, 0, -1, 1);
   mat4x4_translate(transform, x, y, 0);
 
   hb_useShader(&singleton->colorShader);
-  hb_setShaderMat4(&singleton->colorShader, "projection", projection);
+  hb_setShaderMat4(&singleton->colorShader, "projection", singleton->projection);
   hb_setShaderMat4(&singleton->colorShader, "transform", transform);
+  hb_setShaderColor(&singleton->colorShader, "color", singleton->currentColor);
   hb_bindVertexArray(&singleton->vertexArray);
   glDrawArrays(mode, 0, 4);
 }

@@ -3,6 +3,7 @@
 
 #include "basic_types.h"
 #include "linmath.h"
+#include "color.h"
 
 typedef enum {
   hb_SHADER_TYPE_VERTEX,
@@ -23,5 +24,6 @@ void hb_setShaderVec2(hb_Shader* program, const char* name, vec2 value);
 void hbesetShaderVec3(hb_Shader* program, const char* name, vec3 value);
 void hb_setShaderVec4(hb_Shader* program, const char* name, vec4 value);
 void hb_setShaderMat4(hb_Shader* program, const char* name, mat4x4 value);
+void hb_setShaderColor(hb_Shader* program, const char* name, hb_Color value);
 
 #endif
