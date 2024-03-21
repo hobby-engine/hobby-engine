@@ -13,7 +13,7 @@ static void logMessage(FILE* file, const char* prefix, const char* format, va_li
 void hb_log(const char* format, ...) {
   va_list args;
   va_start(args, format);
-  logMessage(stderr, "[LOG] ", format, args);
+  logMessage(stdout, "[LOG] ", format, args);
   va_end(args);
 }
 
