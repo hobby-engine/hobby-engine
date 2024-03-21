@@ -25,8 +25,6 @@ typedef struct {
 hb_Renderer* hb_createRenderer(hb_Window* window);
 void hb_rendererStep(hb_Renderer* renderer);
 
-f32* hb_colorToArray(hb_Color color);
-
 void hb_drawClear(hb_Color color);
 void hb_drawPresent();
 void hb_drawSetColor(hb_Color color);
