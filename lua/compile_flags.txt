@@ -1,6 +1,0 @@
-clang++
--Wall
--Wextra
--Isrc/
--Ithirdparty/
--I../engine/include/
