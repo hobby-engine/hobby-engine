@@ -3,6 +3,9 @@ LDFLAGS = -lglfw -lm
 CFLAGS = -std=c11 -Wall -Wextra
 CFLAGS += -Ithird -Ithird/glad/include
 
+RM = rm
+RMDIR = rm -r
+
 ifndef PROFILE
 	PROFILE = debug
 endif
@@ -37,9 +40,9 @@ src/glad.o:
 	@$(CC) -o $@ -c $< $(CFLAGS) -MMD -MP
 
 clean:
-	rm $(wildcard src/*.o)
-	rm $(wildcard src/*.d)
-	rm -r $(BUILD)
+	$(RM) $(wildcard src/*.o)
+	$(RM) $(wildcard src/*.d)
+	$(RMDIR) $(BUILD)
 
 compile_flags:
 	@echo "" > compile_flags.txt
