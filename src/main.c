@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "engine.h"
 #include "basic_types.h"
@@ -9,12 +11,21 @@
 #define WIDTH 800
 #define HEIGHT 600
 
+f32 randf(f32 min, f32 max) {
+  f32 r = (f32)(rand() % 1000) / 1000;
+  return r * (max - min) + min;
+}
+
 s32 main() {
+  srand(time(NULL));
+
   hb_Window* window = hb_createWindow("Hobby", WIDTH, HEIGHT);
   hb_Engine engine = hb_createEngine(window);
 
   while (!glfwWindowShouldClose(window->glfwWindow)) {
     hb_engineStep(&engine);
+
+    printf("%d\n", engine.renderer->drawCalls);
 
     glfwPollEvents();
 
@@ -25,9 +36,22 @@ s32 main() {
     hb_drawClear((hb_Color){0, 0, 0, 1});
 
     hb_drawSetColor((hb_Color){0, 1, 0, 1});
-    hb_drawRectangle(10, 10, 50, 50);
-    hb_drawSetColor((hb_Color){1, 0.4, 0.6, 1});
-    hb_drawRectangleOutline(10, 10, 50, 50);
+
+    f32 w = 50, h = 50;
+
+    s32 i = 0;
+    for (f32 x = 0; x < 10; x++) {
+      for (f32 y = 0; y < 10; y++) {
+        f32 dx = x * (w + 10) + 10;
+        f32 dy = y * (h + 10) + 10;
+        srand(i);
+        hb_drawSetColor(
+          (hb_Color){randf(0, 1), randf(0, 1), randf(0, 1), 1});
+        hb_drawRectangle(dx, dy, w, h);
+
+        i++;
+      }
+    }
 
     hb_drawPresent();
   }

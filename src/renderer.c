@@ -8,13 +8,11 @@ static hb_Renderer* singleton;
 hb_Renderer* hb_createRenderer(hb_Window* window) {
   hb_Renderer* renderer = (hb_Renderer*)malloc(sizeof(hb_Renderer));
   renderer->window = window;
-
   renderer->vertexBuffer = hb_createVertexBuffer(hb_BUFFER_TYPE_ARRAY_BUFFER, false);
   renderer->vertexArray = hb_createVertexArray();
   renderer->currentColor = (hb_Color){1., 1., 1., 1.};
-
   renderer->colorShader = hb_loadShader("res/color.vert", "res/color.frag");
-
+  renderer->drawCalls = 0;
   mat4x4_identity(renderer->projection);
 
   singleton = renderer;
@@ -23,6 +21,9 @@ hb_Renderer* hb_createRenderer(hb_Window* window) {
 }
 
 void hb_rendererStep(hb_Renderer* renderer) {
+  renderer->drawCalls = renderer->currentFrameDrawCalls;
+  renderer->currentFrameDrawCalls = 0;
+
   mat4x4_identity(renderer->projection);
   mat4x4_ortho(
       renderer->projection,
@@ -51,6 +52,8 @@ static void drawRectangle(u32 mode, f32 x, f32 y, f32 width, f32 height) {
   hb_setShaderColor(&singleton->colorShader, "color", singleton->currentColor);
   hb_bindVertexArray(&singleton->vertexArray);
   glDrawArrays(mode, 0, 4);
+
+  singleton->currentFrameDrawCalls++;
 }
 
 void hb_drawRectangleOutline(f32 x, f32 y, f32 width, f32 height) {

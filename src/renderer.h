@@ -20,6 +20,8 @@ typedef struct {
   mat4x4 projection;
 
   hb_Color currentColor;
+
+  u32 drawCalls, currentFrameDrawCalls;
 } hb_Renderer;
 
 hb_Renderer* hb_createRenderer(hb_Window* window);
