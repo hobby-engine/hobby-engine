@@ -9,6 +9,7 @@
 #include "log.h"
 #include "shader.h"
 #include "time.h"
+#include "window.h"
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -24,34 +25,8 @@ f32 vertices[] = {
   100, 0,     1, 1, 1,   1, 0,
 };
 
-s32 window_width, window_height;
-
-void onFramebufferSizeChanged(GLFWwindow* window, s32 width, s32 height) {
-  glViewport(0, 0, width, height);
-  window_width = width;
-  window_height = height;
-}
-
 s32 main() {
-  hb_assert(glfwInit(), "Failed to initialize GLFW.\n");
-
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-  GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "GLFW window", NULL, NULL);
-  if (!window) {
-    glfwTerminate();
-    hb_error("Failed to create window.\n");
-  }
-
-  glfwMakeContextCurrent(window);
-
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    hb_error("Failed to initialize GLAD.\n");
-  }
-
-  glfwSetFramebufferSizeCallback(window, onFramebufferSizeChanged);
+  hb_Window* window = hb_createWindow("GLFW Window", WIDTH, HEIGHT);
 
   hb_ShaderProgram shaderProgram = hb_loadShaderProgram(
       "res/texture.vert", "res/texture.frag");
@@ -77,7 +52,7 @@ s32 main() {
   hb_Time time = hb_createTime();
   f32 rotation = 0;
 
-  while (!glfwWindowShouldClose(window)) {
+  while (!glfwWindowShouldClose(window->glfwWindow)) {
     hb_step(&time);
 
     f32 dt = time.deltaTime;
@@ -86,13 +61,17 @@ s32 main() {
 
     rotation += dt;
 
+    char title[16];
+    sprintf(title, "%.5f", time.fps);
+    hb_windowSetTitle(window, title);
+
     glClearColor(1, 0.3, 0.6, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
     mat4x4 projection, transform;
     mat4x4_identity(projection);
     mat4x4_identity(transform);
-    mat4x4_ortho(projection, 0, window_width, window_height, 0, -1, 1);
+    mat4x4_ortho(projection, 0, window->width, window->height, 0, -1, 1);
     mat4x4_translate(transform, 150, 150, 0);
     mat4x4_rotate_Z(transform, transform, rotation);
 
@@ -102,12 +81,12 @@ s32 main() {
     glBindVertexArray(varr);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
-    glfwSwapBuffers(window);
+    glfwSwapBuffers(window->glfwWindow);
   }
 
   hb_destroyShaderProgram(&shaderProgram);
+  hb_destroyWindow(window);
 
-  glfwDestroyWindow(window);
   glfwTerminate();
   return 0;
 }
