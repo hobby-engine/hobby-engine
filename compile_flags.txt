@@ -1,9 +1,0 @@
-
--std=c11
--Wall
--Wextra
--Ithird
--Ithird/glad/include
--O0
--g
--fsanitize=address
