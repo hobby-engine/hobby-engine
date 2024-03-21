@@ -1,9 +1,10 @@
 # Hobby Engine
 
+## !! WARNING !! Very early in development
+
 A game engine made to be simple. Primarily a 2D engine, though 3D is not off the table as a feature.
 <br>
-I want this engine to be like Love2D, in the sense that your game uses the paradigm you want, and is structured how you want.
-But I want it to be like Godot, in the sense that it actually has features.
+This engine should do all the hard/annoying stuff for you. Things like rendering, audio, input, object processing, physics. All the easy stuff should be left to the user.
 <br>
 The name comes from the species of bird known as Hobbies, and the fact that this is, in fact, a hobby project.
 <br>
@@ -15,22 +16,20 @@ Anyway, please, stare at the logo:
   <img alt="Hobby Engine logo" width="256px" height="256px">
 </picture>
 
-Hopefully you've stared at the logo for a good 20 or 30 seconds now. Now, if you want to see the other variations of the logo, because you love staring at good logos so much, check out [the assets directory](assets/).
-
 ## Building
-This should hopefully work. If not, then make a PR to fix my silliness.
-```bash
-$ mkdir build ; cd build
-$ cmake ..
+#### Linux
+Download GLFW from your favorite package manager and run:
+```
 $ make
 ```
-
-## Features
-- Rendering
-- Input
-- Events
+#### Windows
+Not supported
 
 ### Planned Features
+- Rendering System
+- Input
+- Events
+- Lua scripting
 - 2D audio
 - Render textures
 - Virtual filesystem, save system
@@ -38,8 +37,6 @@ $ make
 - Tilemaps
 - Pathfinding
 - Input System
-- OpenGL Rendering
-- Shaders
 - UI system
 
 ### Low-Priority Planned Features (Probably not gonna happen)
