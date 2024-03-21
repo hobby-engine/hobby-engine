@@ -12,7 +12,8 @@ typedef struct {
   u32 framesRendered;
 } hb_Time;
 
-hb_Time hb_createTime();
-void hb_step(hb_Time* time);
+hb_Time* hb_createTime();
+void hb_destroyTime(hb_Time* time);
+void hb_timeStep(hb_Time* time);
 
 #endif // _HOBBY_TIME_H

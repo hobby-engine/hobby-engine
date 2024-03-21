@@ -5,6 +5,7 @@
 #include "glfw/glfw3.h"
 #include "linmath.h"
 
+#include "engine.h"
 #include "basic_types.h"
 #include "log.h"
 #include "shader.h"
@@ -26,10 +27,9 @@ f32 vertices[] = {
 };
 
 s32 main() {
-  hb_Window* window = hb_createWindow("GLFW Window", WIDTH, HEIGHT);
-
-  hb_ShaderProgram shaderProgram = hb_loadShaderProgram(
-      "res/texture.vert", "res/texture.frag");
+  hb_Window* window = hb_createWindow("Hobby", WIDTH, HEIGHT);
+  hb_Engine engine = hb_createEngine(window);
+  hb_Shader shaderProgram = hb_loadShader("res/texture.vert", "res/texture.frag");
 
   u32 varr;
   glGenVertexArrays(1, &varr);
@@ -49,20 +49,19 @@ s32 main() {
   glEnableVertexAttribArray(1);
   glEnableVertexAttribArray(2);
 
-  hb_Time time = hb_createTime();
   f32 rotation = 0;
 
   while (!glfwWindowShouldClose(window->glfwWindow)) {
-    hb_step(&time);
+    hb_engineStep(&engine);
 
-    f32 dt = time.deltaTime;
+    f32 dt = engine.time->deltaTime;
 
     glfwPollEvents();
 
     rotation += dt;
 
     char title[16];
-    sprintf(title, "%.5f", time.fps);
+    sprintf(title, "%.5f", engine.time->fps);
     hb_windowSetTitle(window, title);
 
     glClearColor(1, 0.3, 0.6, 1);
@@ -75,18 +74,16 @@ s32 main() {
     mat4x4_translate(transform, 150, 150, 0);
     mat4x4_rotate_Z(transform, transform, rotation);
 
-    hb_useShaderProgram(&shaderProgram);
-    hb_setShaderProgramMat4(&shaderProgram, "projection", projection);
-    hb_setShaderProgramMat4(&shaderProgram, "transform", transform);
+    hb_useShader(&shaderProgram);
+    hb_setShaderMat4(&shaderProgram, "projection", projection);
+    hb_setShaderMat4(&shaderProgram, "transform", transform);
     glBindVertexArray(varr);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
     glfwSwapBuffers(window->glfwWindow);
   }
 
-  hb_destroyShaderProgram(&shaderProgram);
-  hb_destroyWindow(window);
-
-  glfwTerminate();
+  hb_destroyShader(&shaderProgram);
+  hb_destroyEngine(&engine);
   return 0;
 }

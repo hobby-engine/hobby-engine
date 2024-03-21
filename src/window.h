@@ -13,6 +13,7 @@ typedef struct {
 } hb_Window;
 
 hb_Window* hb_createWindow(const char* title, s32 width, s32 height);
+void hb_setupWindow(hb_Window* window);
 void hb_destroyWindow(hb_Window* window);
 
 void hb_windowSetTitle(hb_Window* window, const char* title);
