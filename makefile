@@ -1,7 +1,7 @@
 CC = gcc
-LDFLAGS = -lm third/glfw/src/libglfw3.a
 CFLAGS = -std=c11 -Wall -Wextra
 CFLAGS += -Ithird -Ithird/glad/include -Ithird/glfw/include
+LDFLAGS = -lm -Lbin -lglfw3
 
 RM = rm
 RMDIR = rm -r
@@ -30,7 +30,7 @@ EXE = $(BUILD)/hobby_$(PROFILE)
 $(EXE): third/glfw/src/libglfw3.a $(LIB_OBJ) $(OBJ) 
 	@mkdir -p $(BUILD)
 	@echo "Compiling $(EXE)..."
-	@$(CC) -o $(EXE) $(OBJ) $(LIB_OBJ) $(CFLAGS) $(LDFLAGS)
+	$(CC) -o $(EXE) $(OBJ) $(LIB_OBJ) $(CFLAGS) $(LDFLAGS)
 
 src/stb_image.o:
 	@echo "Compiling stb_image..."
@@ -41,8 +41,10 @@ src/glad.o:
 	@$(CC) -o src/glad.o -c third/glad/src/glad.c $(CFLAGS)
 
 third/glfw/src/libglfw3.a:
+	@mkdir -p $(BUILD)
 	@echo "Compiling GLFW..."
-	@cd third/glfw && cmake . && make
+	@cd third/glfw && cmake . -D BUILD_SHARED_LIBS=ON && make
+	@cp third/glfw/src/libglfw.so.3.5 $(BUILD)/libglfw3.so
 
 %_$(PROFILE).o: %.c
 	@echo "Compiling $< -> $@..."
