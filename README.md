@@ -25,8 +25,12 @@ $ make
 #### Windows
 Not supported
 
-### Planned Features
+### Features
 - Rendering System
+- Shaders
+
+### Planned Features
+- Textures
 - Input
 - Events
 - Lua scripting
