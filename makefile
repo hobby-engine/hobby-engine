@@ -22,7 +22,7 @@ SRC = src/engine.c src/log.c src/main.c src/renderer.c src/shader.c \
 			src/texture.c src/time.c src/vertex_array.c src/vertex_buffer.c \
 			src/window.c \
 			src/lua_wrap/lua_wrapper.c src/lua_wrap/lua_wrap_renderer.c \
-			src/lua_wrap/lua_wrap_time.c
+			src/lua_wrap/lua_wrap_time.c src/lua_wrap/lua_wrap_texture.c
 OBJ = $(SRC:.c=_$(PROFILE).o)
 LIB_OBJ = src/glad_$(PROFILE).o src/stb_image_$(PROFILE).o
 DEPENDS = $(OBJ:.o=.d)

@@ -34,6 +34,21 @@ static int wrap_drawSetCircleResolution(lua_State* L) {
   return 0;
 }
 
+static int wrap_drawTexture(lua_State* L) {
+  hb_LuaTexture* wrapper = (hb_LuaTexture*)lua_touserdata(L, 1);
+  f64 x = lua_tonumber(L, 2);
+  f64 y = lua_tonumber(L, 3);
+  f64 rot = luaL_optnumber(L, 4, 0);
+  f64 scalex = luaL_optnumber(L, 5, 1);
+  f64 scaley = luaL_optnumber(L, 6, scalex);
+  f64 offsetx = luaL_optnumber(L, 7, 0);
+  f64 offsety = luaL_optnumber(L, 8, 0);
+
+  hb_drawTextureExt(&wrapper->texture, x, y, rot, scalex, scaley, offsetx, offsety);
+
+  return 0;
+}
+
 static int wrap_drawRectangle(lua_State* L) {
   f64 x = lua_tonumber(L, 1);
   f64 y = lua_tonumber(L, 2);
@@ -107,6 +122,7 @@ luaL_Reg renderer[] = {
   {"present", wrap_drawPresent},
   {"setColor", wrap_drawSetColor},
   {"setCircleResolution", wrap_drawSetCircleResolution},
+  {"texture", wrap_drawTexture},
   {"rectangleOutline", wrap_drawRectangleOutline},
   {"rectangle", wrap_drawRectangle},
   {"circleOutline", wrap_drawCircleOutline},

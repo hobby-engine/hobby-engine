@@ -6,7 +6,6 @@
 #include "renderer.h"
 #include "window.h"
 
-#define PI 3.14159265358979323846
 #define WIDTH 800
 #define HEIGHT 600
 

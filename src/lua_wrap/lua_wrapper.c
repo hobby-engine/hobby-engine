@@ -29,6 +29,7 @@ hb_LuaWrapper* hb_createLuaWrapper(hb_Engine* engine) {
 
   hb_luaWrapRenderer(L);
   hb_luaWrapTime(L);
+  hb_luaWrapTexture(L);
 
   s32 res = luaL_dofile(L, "main.lua");
   if (res != LUA_OK) {
