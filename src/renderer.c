@@ -7,9 +7,7 @@
 
 #include "vertex_array.h"
 #include "vertex_buffer.h"
-
-#define PI 3.14159265358979323846
-#define TAU (PI * 2)
+#include "hbmath.h"
 
 static hb_Renderer* singleton;
 
@@ -23,7 +21,7 @@ hb_Renderer* hb_createRenderer(hb_Window* window) {
   renderer->colorShader = hb_loadShader("res/color.vert", "res/color.frag");
   renderer->textureShader = hb_loadShader("res/texture.vert", "res/texture.frag");
   renderer->drawCalls = 0;
-  renderer->circleResolution = 24;
+  renderer->circleResolution = -1;
   mat4x4_identity(renderer->projection);
 
   singleton = renderer;
@@ -162,13 +160,19 @@ void hb_drawRectangle(f32 x, f32 y, f32 width, f32 height) {
 }
 
 static void drawEllipse(u32 mode, f32 x, f32 y, f32 rx, f32 ry) {
-  const u32 circleResolution = singleton->circleResolution;
+  s32 circleResolution = singleton->circleResolution;
+  // Manually figure something out
+  if (circleResolution == -1) {
+    // this is a formula to find the perimeter of an ellipse
+    circleResolution = fmax(2 * hb_PI * sqrt((rx + ry) / 2), 8);
+    printf("cr: %d\n", circleResolution);
+  }
 
   f32 points[circleResolution * 2];
 
-  for (u32 i = 0; i < circleResolution; i++) {
-    u32 index = i * 2;
-    f32 angle = ((f32)i / circleResolution) * TAU;
+  for (s32 i = 0; i < circleResolution; i++) {
+    s32 index = i * 2;
+    f32 angle = ((f32)i / circleResolution) * hb_TAU;
     points[index]   = cos(angle) * rx;
     points[index+1] = sin(angle) * ry;
   }

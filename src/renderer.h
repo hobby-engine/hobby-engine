@@ -24,7 +24,7 @@ typedef struct {
   hb_Color currentColor;
 
   u32 drawCalls, currentFrameDrawCalls;
-  u32 circleResolution;
+  s32 circleResolution;
 } hb_Renderer;
 
 hb_Renderer* hb_createRenderer(hb_Window* window);
