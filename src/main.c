@@ -28,10 +28,14 @@ s32 main() {
 
   hb_Texture texture = hb_createTexture("res/test_img.png");
 
+  f32 rot = 0;
+
   while (!glfwWindowShouldClose(engine.window->glfwWindow)) {
     hb_engineStep(&engine);
 
-    printf("%d\n", engine.renderer->drawCalls);
+    f32 dt = engine.time->deltaTime;
+
+    rot += dt;
 
     glfwPollEvents();
 
@@ -59,7 +63,10 @@ s32 main() {
       }
     }
 
-    hb_drawTexture(&texture, 200, 200, PI / 4, 0.25, 0.25);
+    f32 width = texture.width, height = texture.height;
+    hb_drawTextureExt(&texture,
+      (f32)engine.window->width / 2, (f32)engine.window->height / 2,
+      rot, 0.25, 0.25, width / 2, height / 2);
 
     hb_drawPresent();
   }
