@@ -33,6 +33,8 @@ s32 main() {
 
   f32 rot = 0;
 
+  glfwSwapInterval(0);
+
   while (!glfwWindowShouldClose(engine.window->glfwWindow)) {
     hb_engineStep(&engine);
 
