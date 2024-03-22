@@ -36,13 +36,13 @@ void hb_setupWindow(hb_Window* window) {
     window->width, window->height, window->title, NULL, NULL);
   if (!glfwWindow) {
     glfwTerminate();
-    hb_error("Failed to create window.\n");
+    hb_fatal("Failed to create window.\n");
   }
 
   glfwMakeContextCurrent(glfwWindow);
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    hb_error("Failed to initialize GLAD.\n");
+    hb_fatal("Failed to initialize GLAD.\n");
   }
 
   glfwSetFramebufferSizeCallback(glfwWindow, onFramebufferSizeChanged);

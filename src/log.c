@@ -24,12 +24,19 @@ void hb_warn(const char* format, ...) {
   va_end(args);
 }
 
+void hb_fatal(const char* format, ...) {
+  va_list args;
+  va_start(args, format);
+  logMessage(stderr, "[FATAL] ", format, args);
+  va_end(args);
+  exit(1);
+}
+
 void hb_error(const char* format, ...) {
   va_list args;
   va_start(args, format);
   logMessage(stderr, "[ERROR] ", format, args);
   va_end(args);
-  exit(1);
 }
 
 void hb_assert(bool cond, const char* format, ...) {
@@ -38,7 +45,17 @@ void hb_assert(bool cond, const char* format, ...) {
   }
   va_list args;
   va_start(args, format);
-  logMessage(stderr, "[ASSERT] ", format, args);
+  logMessage(stderr, "[ERROR] ", format, args);
+  va_end(args);
+}
+
+void hb_fatalAssert(bool cond, const char* format, ...) {
+  if (cond) {
+    return;
+  }
+  va_list args;
+  va_start(args, format);
+  logMessage(stderr, "[FATAL] ", format, args);
   va_end(args);
   exit(1);
 }

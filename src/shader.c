@@ -12,7 +12,7 @@ static char* loadFile(const char* path) {
   FILE* file = fopen(path, "rb");
   if (!file) {
     printf("%s\n", path);
-    hb_error("Failed to open file '%s'.", path);
+    hb_fatal("Failed to open file '%s'.", path);
   }
 
   fseek(file, 0, SEEK_END);
@@ -20,10 +20,10 @@ static char* loadFile(const char* path) {
   rewind(file);
 
   char* buf = (char*)malloc(fileLength + 1);
-  hb_assert(buf != NULL, "Not enough memory to read '%s'.", path);
+  hb_fatalAssert(buf != NULL, "Not enough memory to read '%s'.", path);
 
   size_t bytesRead = fread(buf, sizeof(char), fileLength, file);
-  hb_assert(bytesRead == fileLength, "Failed to read '%s'.", path);
+  hb_fatalAssert(bytesRead == fileLength, "Failed to read '%s'.", path);
 
   buf[bytesRead] = '\0';
 
@@ -51,9 +51,9 @@ static void compileShader(u32 shader, const char* path) {
     char errorMessage[512];
     glGetShaderInfoLog(shader, 512, NULL, errorMessage);
     if (path == NULL) {
-      hb_error("Error compiling: %s", errorMessage);
+      hb_fatal("Error compiling: %s", errorMessage);
     } else {
-      hb_error("Error compiling '%s': %s", path, errorMessage);
+      hb_fatal("Error compiling '%s': %s", path, errorMessage);
     }
   }
 }
@@ -82,7 +82,7 @@ static void linkProgram(hb_Shader* program) {
   if (!success) {
     char errorMessage[512];
     glGetProgramInfoLog(program->glId, 512, NULL, errorMessage);
-    hb_error(errorMessage);
+    hb_fatal(errorMessage);
   }
 }
 

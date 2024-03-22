@@ -4,7 +4,7 @@
 #include "glfw/glfw3.h"
 
 hb_Engine hb_createEngine(hb_Window *window) {
-  hb_assert(glfwInit(), "Failed to initialize GLFW.\n");
+  hb_fatalAssert(glfwInit(), "Failed to initialize GLFW.\n");
   hb_setupWindow(window);
 
   hb_Engine engine;
