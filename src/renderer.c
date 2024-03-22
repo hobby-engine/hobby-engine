@@ -64,12 +64,13 @@ void hb_drawTexture(hb_Texture* texture, f32 x, f32 y) {
 
   glBindTexture(GL_TEXTURE_2D, texture->glId);
   hb_bindVertexBuffer(&singleton->indexBuffer);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
   singleton->currentFrameDrawCalls++;
 }
 
-static void drawRectangle(u32 mode, f32 x, f32 y, f32 width, f32 height) {
+static void drawRectangle(f32 x, f32 y, f32 width, f32 height) {
   hb_setVertexBufferData(&singleton->vertexBuffer, 2 * 4 * sizeof(f32), (f32[]){
     0, 0,
     0, height,
@@ -94,17 +95,19 @@ static void drawRectangle(u32 mode, f32 x, f32 y, f32 width, f32 height) {
   hb_setShaderColor(&singleton->colorShader, "color", singleton->currentColor);
 
   hb_bindVertexBuffer(&singleton->indexBuffer);
-  glDrawElements(mode, 6, GL_UNSIGNED_INT, 0);
+  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
   singleton->currentFrameDrawCalls++;
 }
 
 void hb_drawRectangleOutline(f32 x, f32 y, f32 width, f32 height) {
-  drawRectangle(GL_LINE_LOOP, x, y, width, height);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  drawRectangle(x, y, width, height);
 }
 
 void hb_drawRectangle(f32 x, f32 y, f32 width, f32 height) {
-  drawRectangle(GL_TRIANGLES, x, y, width, height);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  drawRectangle(x, y, width, height);
 }
 
 void hb_drawClear(hb_Color color) {

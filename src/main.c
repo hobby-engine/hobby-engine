@@ -50,7 +50,7 @@ s32 main() {
         srand(i);
         hb_drawSetColor(
           (hb_Color){randf(0, 1), randf(0, 1), randf(0, 1), 1});
-        hb_drawRectangle(dx, dy, w, h);
+        hb_drawRectangleOutline(dx, dy, w, h);
 
         i++;
       }
