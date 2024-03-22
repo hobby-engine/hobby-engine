@@ -1,7 +1,7 @@
 #include "engine.h"
 
 #include "log.h"
-#include "glfw/glfw3.h"
+#include "GLFW/glfw3.h"
 
 hb_Engine hb_createEngine() {
   hb_fatalAssert(glfwInit(), "Failed to initialize GLFW.\n");

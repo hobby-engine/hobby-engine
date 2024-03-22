@@ -1,5 +1,5 @@
 CC = gcc
-LDFLAGS = -lglfw -lm
+LDFLAGS = -lm third/glfw/src/libglfw3.a
 CFLAGS = -std=c11 -Wall -Wextra
 CFLAGS += -Ithird -Ithird/glad/include
 
@@ -27,7 +27,7 @@ EXE = $(BUILD)/hobby_$(PROFILE)
 
 .PHONY: clean compile_flags
 
-$(EXE): $(LIB_OBJ) $(OBJ)
+$(EXE): third/glfw/src/libglfw3.a $(LIB_OBJ) $(OBJ) 
 	@mkdir -p $(BUILD)
 	@echo "Compiling $(EXE)..."
 	@$(CC) -o $(EXE) $(OBJ) $(LIB_OBJ) $(CFLAGS) $(LDFLAGS)
@@ -40,6 +40,10 @@ src/glad.o:
 	@echo "Compiling GLAD..."
 	@$(CC) -o src/glad.o -c third/glad/src/glad.c $(CFLAGS)
 
+third/glfw/src/libglfw3.a:
+	@echo "Compiling GLFW..."
+	@cd third/glfw && cmake . && make
+
 %_$(PROFILE).o: %.c
 	@echo "Compiling $< -> $@..."
 	@$(CC) -o $@ -c $< $(CFLAGS) -MMD -MP
@@ -48,6 +52,7 @@ clean:
 	$(RM) $(wildcard src/*.o)
 	$(RM) $(wildcard src/*.d)
 	$(RMDIR) $(BUILD)
+	@cd third/glfw && cmake . && make clean
 
 compile_flags:
 	@echo "" > compile_flags.txt

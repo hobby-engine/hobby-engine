@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-#include "glfw/glfw3.h"
+#include "GLFW/glfw3.h"
 
 #define FPS_UPDATE_FREQ 1
 
