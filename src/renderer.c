@@ -1,7 +1,15 @@
 #include "renderer.h"
+
+#include <math.h>
+#include <stdio.h>
+
 #include "linmath.h"
+
 #include "vertex_array.h"
 #include "vertex_buffer.h"
+
+#define PI 3.14159265358979323846
+#define TAU (PI * 2)
 
 static hb_Renderer* singleton;
 
@@ -37,10 +45,10 @@ static void drawTexture(hb_Texture* texture, f32 x, f32 y, f32 rot, f32 sx, f32 
   s32 left = -ox * sx, right = (width - ox) * sx;
   s32 top = -oy * sy, bottom = (height - oy) * sy;
   hb_setVertexBufferData(&singleton->vertexBuffer, 4 * 4 * sizeof(f32), (f32[]){
-    left, top,                  0, 0,
-    left,  bottom,                   0, 1,
-    right, bottom,                    1, 1,
-    right, top,                   1, 0
+    left, top,     0, 0,
+    left,  bottom, 0, 1,
+    right, bottom, 1, 1,
+    right, top,    1, 0
   });
   //0 __3
   // |/|
@@ -133,6 +141,47 @@ void hb_drawRectangleOutline(f32 x, f32 y, f32 width, f32 height) {
 void hb_drawRectangle(f32 x, f32 y, f32 width, f32 height) {
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   drawRectangle(x, y, width, height);
+}
+
+static void drawCircle(u32 mode, f32 x, f32 y, f32 radius) {
+  const u32 resolution = 24;
+
+  f32 points[resolution * 2];
+
+  for (u32 i = 0; i < resolution; i++) {
+    u32 index = i * 2;
+    f32 angle = ((f32)i / resolution) * TAU;
+    points[index]   = cos(angle) * radius;
+    points[index+1] = sin(angle) * radius;
+  }
+
+  hb_setVertexBufferData(&singleton->vertexBuffer, 2 * resolution * sizeof(f32), points);
+
+  hb_setVertexArrayAttribute(
+    &singleton->vertexArray, &singleton->vertexBuffer,
+    0, 2, GL_FLOAT, sizeof(f32) * 2, 0);
+
+  mat4x4 transform;
+  mat4x4_identity(transform);
+  mat4x4_translate(transform, x, y, 0);
+
+  hb_useShader(&singleton->colorShader);
+  hb_setShaderMat4(&singleton->colorShader, "projection", singleton->projection);
+  hb_setShaderMat4(&singleton->colorShader, "transform", transform);
+  hb_setShaderColor(&singleton->colorShader, "color", singleton->currentColor);
+
+  hb_bindVertexArray(&singleton->vertexArray);
+  glDrawArrays(mode, 0, resolution);
+
+  singleton->currentFrameDrawCalls++;
+}
+
+void hb_drawCircleOutline(f32 x, f32 y, f32 radius) {
+  drawCircle(GL_LINE_LOOP, x, y, radius);
+}
+
+void hb_drawCircle(f32 x, f32 y, f32 radius) {
+  drawCircle(GL_TRIANGLE_FAN, x, y, radius);
 }
 
 void hb_drawClear(hb_Color color) {

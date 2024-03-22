@@ -62,7 +62,8 @@ s32 main() {
         srand(i);
         hb_drawSetColor(
           (hb_Color){randf(0, 1), randf(0, 1), randf(0, 1), 1});
-        hb_drawRectangle(dx, dy, w, h);
+        // hb_drawRectangle(dx, dy, w, h);
+        hb_drawCircleOutline(dx, dy, w / 2);
 
         i++;
       }
