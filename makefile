@@ -20,7 +20,7 @@ endif
 
 SRC = $(wildcard src/*.c)
 OBJ = $(SRC:.c=_$(PROFILE).o)
-LIB_OBJ = src/glad.o src/stb_image.o
+LIB_OBJ = src/glad_$(PROFILE).o src/stb_image_$(PROFILE).o
 DEPENDS = $(OBJ:.o=.d)
 BUILD = bin
 EXE = $(BUILD)/hobby_$(PROFILE)
@@ -34,13 +34,13 @@ $(EXE): libs $(OBJ)
 
 libs: third/glfw/src/libglfw3.a $(LIB_OBJ)
 
-src/stb_image.o:
+src/stb_image_$(PROFILE).o:
 	@echo "Compiling stb_image..."
-	@$(CC) -o src/stb_image.o -c third/stb/stb_image.c $(CFLAGS)
+	@$(CC) -o $@ -c third/stb/stb_image.c $(CFLAGS)
 
-src/glad.o:
+src/glad_$(PROFILE).o:
 	@echo "Compiling GLAD..."
-	@$(CC) -o src/glad.o -c third/glad/src/glad.c $(CFLAGS)
+	@$(CC) -o $@ -c third/glad/src/glad.c $(CFLAGS)
 
 third/glfw/src/libglfw3.a:
 	@echo "Compiling GLFW..."
