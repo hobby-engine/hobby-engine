@@ -163,7 +163,6 @@ static void drawEllipse(u32 mode, f32 x, f32 y, f32 rx, f32 ry) {
   s32 circleResolution = singleton->circleResolution;
   // Manually figure something out
   if (circleResolution == -1) {
-    // this is a formula to find the perimeter of an ellipse
     circleResolution = fmax(2 * hb_PI * sqrt((rx + ry) / 2), 8);
     printf("cr: %d\n", circleResolution);
   }
