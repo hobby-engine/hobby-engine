@@ -23,6 +23,7 @@ hb_Renderer* hb_createRenderer(hb_Window* window) {
   renderer->colorShader = hb_loadShader("res/color.vert", "res/color.frag");
   renderer->textureShader = hb_loadShader("res/texture.vert", "res/texture.frag");
   renderer->drawCalls = 0;
+  renderer->circleResolution = 24;
   mat4x4_identity(renderer->projection);
 
   singleton = renderer;
@@ -38,6 +39,23 @@ void hb_rendererStep(hb_Renderer* renderer) {
   mat4x4_ortho(
       renderer->projection,
       0, singleton->window->width, singleton->window->height, 0, -1, 1);
+}
+
+void hb_drawClear(hb_Color color) {
+  glClearColor(color.r, color.g, color.b, color.a);
+  glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void hb_drawPresent() {
+  glfwSwapBuffers(singleton->window->glfwWindow);
+}
+
+void hb_drawSetColor(hb_Color color) {
+  singleton->currentColor = color;
+}
+
+void hb_drawSetCircleResolution(u32 resolution) {
+  singleton->circleResolution = resolution;
 }
 
 static void drawTexture(hb_Texture* texture, f32 x, f32 y, f32 rot, f32 sx, f32 sy, f32 ox, f32 oy) {
@@ -144,18 +162,18 @@ void hb_drawRectangle(f32 x, f32 y, f32 width, f32 height) {
 }
 
 static void drawCircle(u32 mode, f32 x, f32 y, f32 radius) {
-  const u32 resolution = 24;
+  const u32 circleResolution = singleton->circleResolution;
 
-  f32 points[resolution * 2];
+  f32 points[circleResolution * 2];
 
-  for (u32 i = 0; i < resolution; i++) {
+  for (u32 i = 0; i < circleResolution; i++) {
     u32 index = i * 2;
-    f32 angle = ((f32)i / resolution) * TAU;
+    f32 angle = ((f32)i / circleResolution) * TAU;
     points[index]   = cos(angle) * radius;
     points[index+1] = sin(angle) * radius;
   }
 
-  hb_setVertexBufferData(&singleton->vertexBuffer, 2 * resolution * sizeof(f32), points);
+  hb_setVertexBufferData(&singleton->vertexBuffer, 2 * circleResolution * sizeof(f32), points);
 
   hb_setVertexArrayAttribute(
     &singleton->vertexArray, &singleton->vertexBuffer,
@@ -171,7 +189,7 @@ static void drawCircle(u32 mode, f32 x, f32 y, f32 radius) {
   hb_setShaderColor(&singleton->colorShader, "color", singleton->currentColor);
 
   hb_bindVertexArray(&singleton->vertexArray);
-  glDrawArrays(mode, 0, resolution);
+  glDrawArrays(mode, 0, circleResolution);
 
   singleton->currentFrameDrawCalls++;
 }
@@ -182,17 +200,4 @@ void hb_drawCircleOutline(f32 x, f32 y, f32 radius) {
 
 void hb_drawCircle(f32 x, f32 y, f32 radius) {
   drawCircle(GL_TRIANGLE_FAN, x, y, radius);
-}
-
-void hb_drawClear(hb_Color color) {
-  glClearColor(color.r, color.g, color.b, color.a);
-  glClear(GL_COLOR_BUFFER_BIT);
-}
-
-void hb_drawPresent() {
-  glfwSwapBuffers(singleton->window->glfwWindow);
-}
-
-void hb_drawSetColor(hb_Color color) {
-  singleton->currentColor = color;
 }

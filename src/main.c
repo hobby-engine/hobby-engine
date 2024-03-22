@@ -52,7 +52,9 @@ s32 main() {
 
     hb_drawSetColor((hb_Color){0, 1, 0, 1});
 
-    f32 w = 50, h = 50;
+    hb_drawSetCircleResolution(16);
+
+    f32 w = 10, h = 10;
 
     s32 i = 0;
     for (f32 x = 0; x < 10; x++) {
@@ -63,7 +65,7 @@ s32 main() {
         hb_drawSetColor(
           (hb_Color){randf(0, 1), randf(0, 1), randf(0, 1), 1});
         // hb_drawRectangle(dx, dy, w, h);
-        hb_drawCircleOutline(dx, dy, w / 2);
+        hb_drawCircle(dx, dy, w / 2);
 
         i++;
       }
