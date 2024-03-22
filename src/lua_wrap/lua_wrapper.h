@@ -6,6 +6,7 @@
 
 #define LUA_LIB_NAME "hobby"
 #define LUA_RENDERER_NAME "renderer"
+#define LUA_TIME_NAME "time"
 
 typedef struct {
   hb_Engine* engine;
@@ -13,12 +14,14 @@ typedef struct {
   s32 errorHandlerIndex;
 } hb_LuaWrapper;
 
-hb_LuaWrapper hb_createLuaWrapper(hb_Engine* engine);
+hb_LuaWrapper* hb_createLuaWrapper(hb_Engine* engine);
 
 void hb_destroyLuaWrapper(hb_LuaWrapper* wrapper);
-void hb_luaWrapRenderer(lua_State* L);
 void hb_callLuaCallback(hb_LuaWrapper* wrapper, const char* fnName);
 void hb_registerFunctions(lua_State* L, const luaL_Reg* funcs);
 void hb_registerModule(lua_State* L, const char* name, const luaL_Reg* functions);
+
+void hb_luaWrapRenderer(lua_State* L);
+void hb_luaWrapTime(lua_State* L);
 
 #endif // _HOBBY_LUA_WRAP_LUA_WRAPPER_H

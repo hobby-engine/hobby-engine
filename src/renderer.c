@@ -161,7 +161,7 @@ void hb_drawRectangle(f32 x, f32 y, f32 width, f32 height) {
   drawRectangle(x, y, width, height);
 }
 
-static void drawCircle(u32 mode, f32 x, f32 y, f32 radius) {
+static void drawEllipse(u32 mode, f32 x, f32 y, f32 rx, f32 ry) {
   const u32 circleResolution = singleton->circleResolution;
 
   f32 points[circleResolution * 2];
@@ -169,8 +169,8 @@ static void drawCircle(u32 mode, f32 x, f32 y, f32 radius) {
   for (u32 i = 0; i < circleResolution; i++) {
     u32 index = i * 2;
     f32 angle = ((f32)i / circleResolution) * TAU;
-    points[index]   = cos(angle) * radius;
-    points[index+1] = sin(angle) * radius;
+    points[index]   = cos(angle) * rx;
+    points[index+1] = sin(angle) * ry;
   }
 
   hb_setVertexBufferData(&singleton->vertexBuffer, 2 * circleResolution * sizeof(f32), points);
@@ -194,10 +194,18 @@ static void drawCircle(u32 mode, f32 x, f32 y, f32 radius) {
   singleton->currentFrameDrawCalls++;
 }
 
+void hb_drawEllipseOutline(f32 x, f32 y, f32 rx, f32 ry) {
+  drawEllipse(GL_LINE_LOOP, x, y, rx, ry);
+}
+
+void hb_drawEllipse(f32 x, f32 y, f32 rx, f32 ry) {
+  drawEllipse(GL_TRIANGLE_FAN, x, y, rx, ry);
+}
+
 void hb_drawCircleOutline(f32 x, f32 y, f32 radius) {
-  drawCircle(GL_LINE_LOOP, x, y, radius);
+  drawEllipse(GL_LINE_LOOP, x, y, radius, radius);
 }
 
 void hb_drawCircle(f32 x, f32 y, f32 radius) {
-  drawCircle(GL_TRIANGLE_FAN, x, y, radius);
+  drawEllipse(GL_TRIANGLE_FAN, x, y, radius, radius);
 }

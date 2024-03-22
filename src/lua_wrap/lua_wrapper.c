@@ -11,21 +11,24 @@ static int errorHandler(lua_State* L) {
   return 0;
 }
 
-hb_LuaWrapper hb_createLuaWrapper(hb_Engine* engine) {
-  hb_LuaWrapper wrapper;
-
-  wrapper.engine = engine;
+hb_LuaWrapper* hb_createLuaWrapper(hb_Engine* engine) {
   lua_State* L = luaL_newstate();
-  wrapper.L = L;
+
+  hb_LuaWrapper* wrapper = lua_newuserdata(L, sizeof(hb_LuaWrapper));
+  lua_setfield(L, LUA_REGISTRYINDEX, "wrapper");
+
+  wrapper->engine = engine;
+  wrapper->L = L;
   luaL_openlibs(L);
 
   lua_pushcfunction(L, errorHandler);
-  wrapper.errorHandlerIndex = lua_gettop(L);
+  wrapper->errorHandlerIndex = lua_gettop(L);
 
   lua_newtable(L);
   lua_setglobal(L, LUA_LIB_NAME);
 
   hb_luaWrapRenderer(L);
+  hb_luaWrapTime(L);
 
   s32 res = luaL_dofile(L, "main.lua");
   if (res != LUA_OK) {

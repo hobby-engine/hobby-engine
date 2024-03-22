@@ -19,26 +19,26 @@ s32 main() {
   hb_Engine engine = hb_createEngine();
   hb_windowSetSize(500, 500);
 
-  hb_LuaWrapper wrapper = hb_createLuaWrapper(&engine);
+  hb_LuaWrapper* wrapper = hb_createLuaWrapper(&engine);
 
-  hb_callLuaCallback(&wrapper, "start");
+  hb_callLuaCallback(wrapper, "start");
 
   glfwSwapInterval(0);
 
   while (!glfwWindowShouldClose(engine.window->glfwWindow)) {
     hb_engineStep(&engine);
 
-    hb_callLuaCallback(&wrapper, "step");
+    hb_callLuaCallback(wrapper, "step");
 
     glfwPollEvents();
 
     hb_drawClear((hb_Color){0, 0, 0, 1});
     hb_drawSetColor((hb_Color){1, 1, 1, 1});
-    hb_callLuaCallback(&wrapper, "draw");
+    hb_callLuaCallback(wrapper, "draw");
     hb_drawPresent();
   }
 
   hb_destroyEngine(&engine);
-  hb_destroyLuaWrapper(&wrapper);
+  hb_destroyLuaWrapper(wrapper);
   return 0;
 }

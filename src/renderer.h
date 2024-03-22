@@ -40,6 +40,8 @@ void hb_drawTextureOffset(hb_Texture* texture, f32 x, f32 y, f32 ox, f32 oy);
 void hb_drawTextureExt(hb_Texture* texture, f32 x, f32 y, f32 rot, f32 sx, f32 sy, f32 ox, f32 oy);
 void hb_drawRectangleOutline(f32 x, f32 y, f32 width, f32 height);
 void hb_drawRectangle(f32 x, f32 y, f32 width, f32 height);
+void hb_drawEllipseOutline(f32 x, f32 y, f32 rx, f32 ry);
+void hb_drawEllipse(f32 x, f32 y, f32 rx, f32 ey);
 void hb_drawCircleOutline(f32 x, f32 y, f32 radius);
 void hb_drawCircle(f32 x, f32 y, f32 radius);
 

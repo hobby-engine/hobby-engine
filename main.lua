@@ -1,22 +1,15 @@
-local function printTable(t)
-  print("{")
-  for k, v in pairs(t) do
-    if type(v) == "table" then
-      printTable(v)
-    else
-      print(k, v)
-    end
-  end
-  print("}")
-end
-
 function hobby.step()
+  print(hobby.time.getFps(), hobby.time.getDeltaTime(), hobby.renderer.getDrawCalls())
 end
 
 function hobby.draw()
-  hobby.renderer.setColor(1, 1, 1);
-  hobby.renderer.rectangle(10, 10, 50, 50);
-  hobby.renderer.circle(50 + 35, 35, 25);
-end
+  hobby.renderer.setColor(1, 0, 0)
+  hobby.renderer.rectangle(10, 10, 50, 50)
+  hobby.renderer.circle(50 + 35, 35, 25)
+  hobby.renderer.ellipse(200, 200, 25, 50)
 
-printTable(hobby)
+  hobby.renderer.setColor(0, 1, 0)
+  hobby.renderer.rectangleOutline(10, 10 + 50, 50, 50)
+  hobby.renderer.circleOutline(50 + 35, 35 + 50, 25)
+  hobby.renderer.ellipseOutline(200 + 50, 200, 25, 50)
+end
