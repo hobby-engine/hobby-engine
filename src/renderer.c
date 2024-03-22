@@ -12,6 +12,7 @@ hb_Renderer* hb_createRenderer(hb_Window* window) {
   renderer->vertexArray = hb_createVertexArray();
   renderer->currentColor = (hb_Color){1., 1., 1., 1.};
   renderer->colorShader = hb_loadShader("res/color.vert", "res/color.frag");
+  renderer->textureShader = hb_loadShader("res/texture.vert", "res/texture.frag");
   renderer->drawCalls = 0;
   mat4x4_identity(renderer->projection);
 
@@ -28,6 +29,36 @@ void hb_rendererStep(hb_Renderer* renderer) {
   mat4x4_ortho(
       renderer->projection,
       0, singleton->window->width, singleton->window->height, 0, -1, 1);
+}
+
+void hb_drawTexture(hb_Texture* texture, f32 x, f32 y) {
+  hb_setVertexBufferData(&singleton->vertexBuffer, 4 * 4 * sizeof(f32), (f32[]){
+    0, 0,                            0, 0,
+    0, texture->height,              0, 1,
+    texture->width, texture->height, 1, 1,
+    texture->width, 0,               1, 0
+  });
+
+  hb_setVertexArrayAttribute(
+    &singleton->vertexArray, &singleton->vertexBuffer,
+    0, 2, GL_FLOAT, sizeof(f32) * 4, 0);
+  hb_setVertexArrayAttribute(
+    &singleton->vertexArray, &singleton->vertexBuffer,
+    1, 2, GL_FLOAT, sizeof(f32) * 4, 2 * sizeof(f32));
+
+  mat4x4 transform;
+  mat4x4_identity(transform);
+  mat4x4_translate(transform, x, y, 0);
+
+  hb_useShader(&singleton->textureShader);
+  hb_setShaderMat4(&singleton->textureShader, "projection", singleton->projection);
+  hb_setShaderMat4(&singleton->textureShader, "transform", transform);
+
+  glBindTexture(GL_TEXTURE_2D, texture->glId);
+  hb_bindVertexArray(&singleton->vertexArray);
+  glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+  singleton->currentFrameDrawCalls++;
 }
 
 static void drawRectangle(u32 mode, f32 x, f32 y, f32 width, f32 height) {

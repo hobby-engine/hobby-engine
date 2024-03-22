@@ -5,6 +5,7 @@
 #include "engine.h"
 #include "basic_types.h"
 #include "renderer.h"
+#include "texture.h"
 #include "time.h"
 #include "window.h"
 
@@ -21,6 +22,8 @@ s32 main() {
 
   hb_Engine engine = hb_createEngine();
   hb_windowSetSize(500, 500);
+
+  hb_Texture texture = hb_createTexture("res/test_img.png");
 
   while (!glfwWindowShouldClose(engine.window->glfwWindow)) {
     hb_engineStep(&engine);
@@ -39,19 +42,21 @@ s32 main() {
 
     f32 w = 50, h = 50;
 
-    s32 i = 0;
-    for (f32 x = 0; x < 10; x++) {
-      for (f32 y = 0; y < 10; y++) {
-        f32 dx = x * (w + 10) + 10;
-        f32 dy = y * (h + 10) + 10;
-        srand(i);
-        hb_drawSetColor(
-          (hb_Color){randf(0, 1), randf(0, 1), randf(0, 1), 1});
-        hb_drawRectangle(dx, dy, w, h);
+    // s32 i = 0;
+    // for (f32 x = 0; x < 10; x++) {
+    //   for (f32 y = 0; y < 10; y++) {
+    //     f32 dx = x * (w + 10) + 10;
+    //     f32 dy = y * (h + 10) + 10;
+    //     srand(i);
+    //     hb_drawSetColor(
+    //       (hb_Color){randf(0, 1), randf(0, 1), randf(0, 1), 1});
+    //     hb_drawRectangle(dx, dy, w, h);
+    //
+    //     i++;
+    //   }
+    // }
 
-        i++;
-      }
-    }
+    hb_drawTexture(&texture, 50, 50);
 
     hb_drawPresent();
   }

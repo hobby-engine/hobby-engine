@@ -20,16 +20,21 @@ endif
 
 SRC = $(wildcard src/*.c)
 OBJ = $(SRC:.c=_$(PROFILE).o)
+LIB_OBJ = src/glad.o src/stb_image.o
 DEPENDS = $(OBJ:.o=.d)
 BUILD = bin
 EXE = $(BUILD)/hobby_$(PROFILE)
 
 .PHONY: clean compile_flags
 
-$(EXE): src/glad.o $(OBJ)
+$(EXE): $(LIB_OBJ) $(OBJ)
 	@mkdir -p $(BUILD)
 	@echo "Compiling $(EXE)..."
-	@$(CC) -o $(EXE) $(OBJ) src/glad.o $(CFLAGS) $(LDFLAGS)
+	@$(CC) -o $(EXE) $(OBJ) $(LIB_OBJ) $(CFLAGS) $(LDFLAGS)
+
+src/stb_image.o:
+	@echo "Compiling stb_image..."
+	@$(CC) -o src/stb_image.o -c third/stb/stb_image.c $(CFLAGS)
 
 src/glad.o:
 	@echo "Compiling GLAD..."
