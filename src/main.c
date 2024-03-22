@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
+
+#define PI 3.14159265358979323846
 
 #include "engine.h"
 #include "basic_types.h"
@@ -50,13 +53,13 @@ s32 main() {
         srand(i);
         hb_drawSetColor(
           (hb_Color){randf(0, 1), randf(0, 1), randf(0, 1), 1});
-        hb_drawRectangleOutline(dx, dy, w, h);
+        hb_drawRectangle(dx, dy, w, h);
 
         i++;
       }
     }
 
-    hb_drawTexture(&texture, 50, 50);
+    hb_drawTexture(&texture, 200, 200, PI / 4, 0.25, 0.25);
 
     hb_drawPresent();
   }
