@@ -49,6 +49,14 @@ static int wrap_drawTexture(lua_State* L) {
   return 0;
 }
 
+static int wrap_drawSprite(lua_State* L) {
+  hb_LuaSprite* wrapper = (hb_LuaSprite*)lua_touserdata(L, 1);
+
+  hb_drawSprite(&wrapper->sprite);
+
+  return 0;
+}
+
 static int wrap_drawRectangle(lua_State* L) {
   f64 x = lua_tonumber(L, 1);
   f64 y = lua_tonumber(L, 2);
@@ -123,6 +131,7 @@ luaL_Reg renderer[] = {
   {"setColor", wrap_drawSetColor},
   {"setCircleResolution", wrap_drawSetCircleResolution},
   {"texture", wrap_drawTexture},
+  {"sprite", wrap_drawSprite},
   {"rectangleOutline", wrap_drawRectangleOutline},
   {"rectangle", wrap_drawRectangle},
   {"circleOutline", wrap_drawCircleOutline},

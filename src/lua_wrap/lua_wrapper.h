@@ -20,6 +20,10 @@ typedef struct {
   hb_Texture texture;
 } hb_LuaTexture;
 
+typedef struct {
+  hb_Sprite sprite;
+} hb_LuaSprite;
+
 hb_LuaWrapper* hb_createLuaWrapper(hb_Engine* engine);
 
 void hb_destroyLuaWrapper(hb_LuaWrapper* wrapper);
