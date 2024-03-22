@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -std=c11 -Wall -Wextra
 CFLAGS += -Ithird -Ithird/glad/include -Ithird/glfw/include
-LDFLAGS = -lm -Lbin -lglfw3
+LDFLAGS = -lm third/glfw/src/libglfw3.a
 
 RM = rm
 RMDIR = rm -r
@@ -25,12 +25,14 @@ DEPENDS = $(OBJ:.o=.d)
 BUILD = bin
 EXE = $(BUILD)/hobby_$(PROFILE)
 
-.PHONY: clean compile_flags
+.PHONY: clean libs compile_flags
 
-$(EXE): third/glfw/src/libglfw3.a $(LIB_OBJ) $(OBJ) 
+$(EXE): libs $(OBJ) 
 	@mkdir -p $(BUILD)
 	@echo "Compiling $(EXE)..."
-	$(CC) -o $(EXE) $(OBJ) $(LIB_OBJ) $(CFLAGS) $(LDFLAGS)
+	@$(CC) -o $(EXE) $(OBJ) $(LIB_OBJ) $(CFLAGS) $(LDFLAGS)
+
+libs: third/glfw/src/libglfw3.a $(LIB_OBJ)
 
 src/stb_image.o:
 	@echo "Compiling stb_image..."
@@ -41,10 +43,8 @@ src/glad.o:
 	@$(CC) -o src/glad.o -c third/glad/src/glad.c $(CFLAGS)
 
 third/glfw/src/libglfw3.a:
-	@mkdir -p $(BUILD)
 	@echo "Compiling GLFW..."
-	@cd third/glfw && cmake . -D BUILD_SHARED_LIBS=ON && make
-	@cp third/glfw/src/libglfw.so.3.5 $(BUILD)/libglfw3.so
+	@cd third/glfw && cmake . && make
 
 %_$(PROFILE).o: %.c
 	@echo "Compiling $< -> $@..."
