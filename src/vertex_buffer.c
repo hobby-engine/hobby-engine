@@ -7,6 +7,7 @@
 static u32 getGlBufferType(hb_BufferType type) {
   switch (type) {
     case hb_BUFFER_TYPE_ARRAY_BUFFER: return GL_ARRAY_BUFFER;
+    case hb_BUFFER_TYPE_INDEX_BUFFER: return GL_ELEMENT_ARRAY_BUFFER;
     default:
       hb_error("Invalid buffer type.");
       return -1;

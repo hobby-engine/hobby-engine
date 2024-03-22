@@ -42,19 +42,19 @@ s32 main() {
 
     f32 w = 50, h = 50;
 
-    // s32 i = 0;
-    // for (f32 x = 0; x < 10; x++) {
-    //   for (f32 y = 0; y < 10; y++) {
-    //     f32 dx = x * (w + 10) + 10;
-    //     f32 dy = y * (h + 10) + 10;
-    //     srand(i);
-    //     hb_drawSetColor(
-    //       (hb_Color){randf(0, 1), randf(0, 1), randf(0, 1), 1});
-    //     hb_drawRectangle(dx, dy, w, h);
-    //
-    //     i++;
-    //   }
-    // }
+    s32 i = 0;
+    for (f32 x = 0; x < 10; x++) {
+      for (f32 y = 0; y < 10; y++) {
+        f32 dx = x * (w + 10) + 10;
+        f32 dy = y * (h + 10) + 10;
+        srand(i);
+        hb_drawSetColor(
+          (hb_Color){randf(0, 1), randf(0, 1), randf(0, 1), 1});
+        hb_drawRectangle(dx, dy, w, h);
+
+        i++;
+      }
+    }
 
     hb_drawTexture(&texture, 50, 50);
 

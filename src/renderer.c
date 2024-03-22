@@ -9,6 +9,7 @@ hb_Renderer* hb_createRenderer(hb_Window* window) {
   hb_Renderer* renderer = (hb_Renderer*)malloc(sizeof(hb_Renderer));
   renderer->window = window;
   renderer->vertexBuffer = hb_createVertexBuffer(hb_BUFFER_TYPE_ARRAY_BUFFER, false);
+  renderer->indexBuffer = hb_createVertexBuffer(hb_BUFFER_TYPE_INDEX_BUFFER, false);
   renderer->vertexArray = hb_createVertexArray();
   renderer->currentColor = (hb_Color){1., 1., 1., 1.};
   renderer->colorShader = hb_loadShader("res/color.vert", "res/color.frag");
@@ -38,6 +39,13 @@ void hb_drawTexture(hb_Texture* texture, f32 x, f32 y) {
     texture->width, texture->height, 1, 1,
     texture->width, 0,               1, 0
   });
+  //0 __3
+  // |/|
+  // --
+  //1  2
+  hb_setVertexBufferData(&singleton->indexBuffer, 6 * sizeof(u32), (u32[]){
+    0, 1, 2, 0, 2, 3 
+  });
 
   hb_setVertexArrayAttribute(
     &singleton->vertexArray, &singleton->vertexBuffer,
@@ -55,8 +63,8 @@ void hb_drawTexture(hb_Texture* texture, f32 x, f32 y) {
   hb_setShaderMat4(&singleton->textureShader, "transform", transform);
 
   glBindTexture(GL_TEXTURE_2D, texture->glId);
-  hb_bindVertexArray(&singleton->vertexArray);
-  glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+  hb_bindVertexBuffer(&singleton->indexBuffer);
+  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
   singleton->currentFrameDrawCalls++;
 }
@@ -67,6 +75,9 @@ static void drawRectangle(u32 mode, f32 x, f32 y, f32 width, f32 height) {
     0, height,
     width, height,
     width, 0,
+  });
+  hb_setVertexBufferData(&singleton->indexBuffer, 6 * sizeof(u32), (u32[]){
+    0, 1, 2, 0, 2, 3 
   });
 
   hb_setVertexArrayAttribute(
@@ -81,8 +92,9 @@ static void drawRectangle(u32 mode, f32 x, f32 y, f32 width, f32 height) {
   hb_setShaderMat4(&singleton->colorShader, "projection", singleton->projection);
   hb_setShaderMat4(&singleton->colorShader, "transform", transform);
   hb_setShaderColor(&singleton->colorShader, "color", singleton->currentColor);
-  hb_bindVertexArray(&singleton->vertexArray);
-  glDrawArrays(mode, 0, 4);
+
+  hb_bindVertexBuffer(&singleton->indexBuffer);
+  glDrawElements(mode, 6, GL_UNSIGNED_INT, 0);
 
   singleton->currentFrameDrawCalls++;
 }
@@ -92,7 +104,7 @@ void hb_drawRectangleOutline(f32 x, f32 y, f32 width, f32 height) {
 }
 
 void hb_drawRectangle(f32 x, f32 y, f32 width, f32 height) {
-  drawRectangle(GL_TRIANGLE_FAN, x, y, width, height);
+  drawRectangle(GL_TRIANGLES, x, y, width, height);
 }
 
 void hb_drawClear(hb_Color color) {
