@@ -2,6 +2,7 @@
 #define _HOBBY_TEXTURE_H
 
 #include "basic_types.h"
+#include "linmath.h"
 
 typedef enum {
   hb_TEXTURE_FILTER_NEAREST,
@@ -22,7 +23,16 @@ typedef struct {
   hb_TextureWrap wrap;
 } hb_Texture;
 
+typedef struct {
+  hb_Texture texture;
+  f32 x, y;
+  f32 rot;
+  f32 scalex, scaley;
+  f32 offsetx, offsety;
+} hb_Sprite;
+
 hb_Texture hb_createTexture(const char* path);
+hb_Sprite hb_createSprite(const char* path);
 void hb_setDefaultFilter(hb_TextureFilter min, hb_TextureFilter mag);
 void hb_setDefaultWrap(hb_TextureWrap wrap);
 

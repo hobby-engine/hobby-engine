@@ -73,6 +73,16 @@ hb_Texture hb_createTexture(const char* path) {
   return texture;
 }
 
+hb_Sprite hb_createSprite(const char* path) {
+  hb_Sprite sprite;
+  sprite.texture = hb_createTexture(path);
+  sprite.x = sprite.y = 0;
+  sprite.rot = 0;
+  sprite.scalex = sprite.scaley = 1;
+  sprite.offsetx = sprite.offsety = 0;
+  return sprite;
+}
+
 void hb_setDefaultFilter(hb_TextureFilter min, hb_TextureFilter mag) {
   defaultMin = min;
   defaultMag = mag;

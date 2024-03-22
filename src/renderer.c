@@ -74,6 +74,15 @@ static void drawTexture(hb_Texture* texture, f32 x, f32 y, f32 rot, f32 sx, f32 
   singleton->currentFrameDrawCalls++;
 }
 
+void hb_drawSprite(hb_Sprite* sprite) {
+  drawTexture(
+      &sprite->texture,
+      sprite->x, sprite->y,
+      sprite->rot,
+      sprite->scalex, sprite->scaley,
+      sprite->offsetx, sprite->offsety);
+}
+
 void hb_drawTexture(hb_Texture *texture, f32 x, f32 y) {
   drawTexture(texture, x, y, 0, 1, 1, 0, 0);
 }

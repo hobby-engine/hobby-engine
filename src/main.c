@@ -26,7 +26,10 @@ s32 main() {
   hb_Engine engine = hb_createEngine();
   hb_windowSetSize(500, 500);
 
-  hb_Texture texture = hb_createTexture("res/test_img.png");
+  hb_Sprite sprite = hb_createSprite("res/test_img.png");
+  sprite.offsetx = (f32)sprite.texture.width / 2;
+  sprite.offsety = (f32)sprite.texture.height / 2;
+  sprite.scalex = sprite.scaley = 0.2;
 
   f32 rot = 0;
 
@@ -63,10 +66,10 @@ s32 main() {
       }
     }
 
-    f32 width = texture.width, height = texture.height;
-    hb_drawTextureExt(&texture,
-      (f32)engine.window->width / 2, (f32)engine.window->height / 2,
-      rot, 0.25, 0.25, width / 2, height / 2);
+    sprite.rot = rot;
+    sprite.x = (f32)engine.window->width / 2;
+    sprite.y = (f32)engine.window->height / 2;
+    hb_drawSprite(&sprite);
 
     hb_drawPresent();
   }

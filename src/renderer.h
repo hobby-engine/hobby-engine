@@ -32,6 +32,7 @@ void hb_rendererStep(hb_Renderer* renderer);
 void hb_drawClear(hb_Color color);
 void hb_drawPresent();
 void hb_drawSetColor(hb_Color color);
+void hb_drawSprite(hb_Sprite* sprite);
 void hb_drawTexture(hb_Texture* texture, f32 x, f32 y);
 void hb_drawTextureOffset(hb_Texture* texture, f32 x, f32 y, f32 ox, f32 oy);
 void hb_drawTextureExt(hb_Texture* texture, f32 x, f32 y, f32 rot, f32 sx, f32 sy, f32 ox, f32 oy);
