@@ -39,14 +39,16 @@ void hb_error(const char* format, ...) {
   va_end(args);
 }
 
-void hb_assert(bool cond, const char* format, ...) {
+bool hb_assert(bool cond, const char* format, ...) {
   if (cond) {
-    return;
+    return true;
   }
   va_list args;
   va_start(args, format);
   logMessage(stderr, "[ERROR] ", format, args);
   va_end(args);
+
+  return false;
 }
 
 void hb_fatalAssert(bool cond, const char* format, ...) {

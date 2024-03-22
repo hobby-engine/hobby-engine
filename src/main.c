@@ -19,10 +19,10 @@ f32 randf(f32 min, f32 max) {
 s32 main() {
   srand(time(NULL));
 
-  hb_Window* window = hb_createWindow("Hobby", WIDTH, HEIGHT);
-  hb_Engine engine = hb_createEngine(window);
+  hb_Engine engine = hb_createEngine();
+  hb_windowSetSize(500, 500);
 
-  while (!glfwWindowShouldClose(window->glfwWindow)) {
+  while (!glfwWindowShouldClose(engine.window->glfwWindow)) {
     hb_engineStep(&engine);
 
     printf("%d\n", engine.renderer->drawCalls);
@@ -31,7 +31,7 @@ s32 main() {
 
     char title[16];
     sprintf(title, "%.5f", engine.time->fps);
-    hb_windowSetTitle(window, title);
+    hb_windowSetTitle(title);
 
     hb_drawClear((hb_Color){0, 0, 0, 1});
 

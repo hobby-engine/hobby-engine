@@ -3,20 +3,19 @@
 #include "log.h"
 #include "glfw/glfw3.h"
 
-hb_Engine hb_createEngine(hb_Window *window) {
+hb_Engine hb_createEngine() {
   hb_fatalAssert(glfwInit(), "Failed to initialize GLFW.\n");
-  hb_setupWindow(window);
 
   hb_Engine engine;
-  engine.window = window;
+  engine.window = hb_createWindow("Hobby Engine", 800, 600);
   engine.time = hb_createTime();
-  engine.renderer = hb_createRenderer(window);
+  engine.renderer = hb_createRenderer(engine.window);
 
   return engine;
 }
 
 void hb_destroyEngine(hb_Engine* engine) {
-  hb_destroyWindow(engine->window);
+  hb_destroyWindow();
   hb_destroyTime(engine->time);
 
   glfwTerminate();

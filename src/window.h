@@ -13,9 +13,9 @@ typedef struct {
 } hb_Window;
 
 hb_Window* hb_createWindow(const char* title, s32 width, s32 height);
-void hb_setupWindow(hb_Window* window);
-void hb_destroyWindow(hb_Window* window);
+void hb_destroyWindow();
 
-void hb_windowSetTitle(hb_Window* window, const char* title);
+void hb_windowSetTitle(const char* title);
+void hb_windowSetSize(s32 width, s32 height);
 
 #endif // _HOBBY_WINDOW_H
