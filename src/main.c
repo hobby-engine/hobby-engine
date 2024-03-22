@@ -1,17 +1,12 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <math.h>
 
-#define PI 3.14159265358979323846
-
+#include "lua_wrap/lua_wrapper.h"
 #include "engine.h"
 #include "basic_types.h"
 #include "renderer.h"
-#include "texture.h"
-#include "time.h"
 #include "window.h"
 
+#define PI 3.14159265358979323846
 #define WIDTH 800
 #define HEIGHT 600
 
@@ -21,64 +16,29 @@ f32 randf(f32 min, f32 max) {
 }
 
 s32 main() {
-  srand(time(NULL));
-
   hb_Engine engine = hb_createEngine();
   hb_windowSetSize(500, 500);
 
-  hb_Sprite sprite = hb_createSprite("res/test_img.png");
-  sprite.offsetx = (f32)sprite.texture.width / 2;
-  sprite.offsety = (f32)sprite.texture.height / 2;
-  sprite.scalex = sprite.scaley = 0.2;
+  hb_LuaWrapper wrapper = hb_createLuaWrapper(&engine);
 
-  f32 rot = 0;
+  hb_callLuaCallback(&wrapper, "start");
 
   glfwSwapInterval(0);
 
   while (!glfwWindowShouldClose(engine.window->glfwWindow)) {
     hb_engineStep(&engine);
 
-    f32 dt = engine.time->deltaTime;
-
-    rot += dt;
+    hb_callLuaCallback(&wrapper, "step");
 
     glfwPollEvents();
 
-    char title[16];
-    sprintf(title, "%.5f", engine.time->fps);
-    hb_windowSetTitle(title);
-
     hb_drawClear((hb_Color){0, 0, 0, 1});
-
-    hb_drawSetColor((hb_Color){0, 1, 0, 1});
-
-    hb_drawSetCircleResolution(16);
-
-    f32 w = 10, h = 10;
-
-    s32 i = 0;
-    for (f32 x = 0; x < 10; x++) {
-      for (f32 y = 0; y < 10; y++) {
-        f32 dx = x * (w + 10) + 10;
-        f32 dy = y * (h + 10) + 10;
-        srand(i);
-        hb_drawSetColor(
-          (hb_Color){randf(0, 1), randf(0, 1), randf(0, 1), 1});
-        // hb_drawRectangle(dx, dy, w, h);
-        hb_drawCircle(dx, dy, w / 2);
-
-        i++;
-      }
-    }
-
-    sprite.rot = rot;
-    sprite.x = (f32)engine.window->width / 2;
-    sprite.y = (f32)engine.window->height / 2;
-    hb_drawSprite(&sprite);
-
+    hb_drawSetColor((hb_Color){1, 1, 1, 1});
+    hb_callLuaCallback(&wrapper, "draw");
     hb_drawPresent();
   }
 
   hb_destroyEngine(&engine);
+  hb_destroyLuaWrapper(&wrapper);
   return 0;
 }

@@ -1,3 +1,6 @@
 [submodule "third/glfw"]
 	path = third/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "third/luajit"]
+	path = third/luajit
+	url = https://luajit.org/git/luajit.git
