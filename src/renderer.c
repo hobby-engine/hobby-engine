@@ -32,12 +32,12 @@ void hb_rendererStep(hb_Renderer* renderer) {
       0, singleton->window->width, singleton->window->height, 0, -1, 1);
 }
 
-void hb_drawTexture(hb_Texture* texture, f32 x, f32 y) {
+void hb_drawTexture(hb_Texture* texture, f32 x, f32 y, f32 rot, f32 sx, f32 sy) {
   hb_setVertexBufferData(&singleton->vertexBuffer, 4 * 4 * sizeof(f32), (f32[]){
-    0, 0,                            0, 0,
-    0, texture->height,              0, 1,
-    texture->width, texture->height, 1, 1,
-    texture->width, 0,               1, 0
+    0, 0,                                      0, 0,
+    0, texture->height * sy,                   0, 1,
+    texture->width * sx, texture->height * sy, 1, 1,
+    texture->width * sx, 0,                    1, 0
   });
   //0 __3
   // |/|
@@ -57,6 +57,7 @@ void hb_drawTexture(hb_Texture* texture, f32 x, f32 y) {
   mat4x4 transform;
   mat4x4_identity(transform);
   mat4x4_translate(transform, x, y, 0);
+  mat4x4_rotate_Z(transform, transform, rot);
 
   hb_useShader(&singleton->textureShader);
   hb_setShaderMat4(&singleton->textureShader, "projection", singleton->projection);
