@@ -1,7 +1,7 @@
 CC = gcc
 LDFLAGS = -lm third/glfw/src/libglfw3.a
 CFLAGS = -std=c11 -Wall -Wextra
-CFLAGS += -Ithird -Ithird/glad/include
+CFLAGS += -Ithird -Ithird/glad/include -Ithird/glfw/include
 
 RM = rm
 RMDIR = rm -r
