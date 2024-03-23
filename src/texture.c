@@ -32,7 +32,7 @@ static u32 getGlWrap(enum hb_TextureWrap wrap) {
   }
 }
 
-struct hb_Texture hb_createTexture(const char* path) {
+struct hb_Texture* hb_createTexture(const char* path) {
   s32 width, height, channelCount;
   u8* data = stbi_load(path, &width, &height, &channelCount, 0);
 
@@ -62,25 +62,34 @@ struct hb_Texture hb_createTexture(const char* path) {
 
   stbi_image_free(data);
 
-  struct hb_Texture texture;
-  texture.width = width;
-  texture.height = height;
-  texture.min = defaultMin;
-  texture.mag = defaultMag;
-  texture.wrap = defaultWrap;
-  texture.glId = glId;
+  struct hb_Texture* texture = malloc(sizeof(struct hb_Texture));
+  texture->width = width;
+  texture->height = height;
+  texture->min = defaultMin;
+  texture->mag = defaultMag;
+  texture->wrap = defaultWrap;
+  texture->glId = glId;
 
   return texture;
 }
 
-struct hb_Sprite hb_createSprite(const char* path) {
-  struct hb_Sprite sprite;
-  sprite.texture = hb_createTexture(path);
-  sprite.x = sprite.y = 0;
-  sprite.rot = 0;
-  sprite.scalex = sprite.scaley = 1;
-  sprite.offsetx = sprite.offsety = 0;
+struct hb_Sprite* hb_createSprite(const char* path) {
+  struct hb_Sprite* sprite = malloc(sizeof(struct hb_Sprite));
+  sprite->texture = hb_createTexture(path);
+  sprite->x = sprite->y = 0;
+  sprite->rot = 0;
+  sprite->scalex = sprite->scaley = 1;
+  sprite->offsetx = sprite->offsety = 0;
   return sprite;
+}
+
+void hb_destroyTexture(struct hb_Texture* texture) {
+  free(texture);
+}
+
+void hb_destroySprite(struct hb_Sprite* sprite) {
+  hb_destroyTexture(sprite->texture);
+  free(sprite);
 }
 
 void hb_setDefaultFilter(enum hb_TextureFilter min, enum hb_TextureFilter mag) {

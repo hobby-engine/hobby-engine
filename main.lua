@@ -1,4 +1,4 @@
-local texture = hobby.texture.createSprite("res/test_img.png")
+local texture = hobby.texture.create("res/test_img.png")
 local t = 0
 
 function hobby.step()

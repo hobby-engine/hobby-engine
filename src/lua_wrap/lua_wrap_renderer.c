@@ -35,7 +35,12 @@ static int wrap_drawSetCircleResolution(lua_State* L) {
 }
 
 static int wrap_drawTexture(lua_State* L) {
-  struct hb_LuaTexture* wrapper = lua_touserdata(L, 1);
+  struct hb_LuaData* wrapper = lua_touserdata(L, 1);
+  if (wrapper->type != hb_LUA_DATA_TYPE_TEXTURE) {
+    lua_pushstring(L, "Expected type of Texture.");
+    return lua_error(L);
+  }
+
   f64 x = lua_tonumber(L, 2);
   f64 y = lua_tonumber(L, 3);
   f64 rot = luaL_optnumber(L, 4, 0);
@@ -44,15 +49,19 @@ static int wrap_drawTexture(lua_State* L) {
   f64 offsetx = luaL_optnumber(L, 7, 0);
   f64 offsety = luaL_optnumber(L, 8, 0);
 
-  hb_drawTextureExt(&wrapper->texture, x, y, rot, scalex, scaley, offsetx, offsety);
+  hb_drawTextureExt(wrapper->data, x, y, rot, scalex, scaley, offsetx, offsety);
 
   return 0;
 }
 
 static int wrap_drawSprite(lua_State* L) {
-  struct hb_LuaSprite* wrapper = lua_touserdata(L, 1);
+  struct hb_LuaData* wrapper = lua_touserdata(L, 1);
+  if (wrapper->type != hb_LUA_DATA_TYPE_SPRITE) {
+    lua_pushstring(L, "Expected type of Sprite.");
+    return lua_error(L);
+  }
 
-  hb_drawSprite(&wrapper->sprite);
+  hb_drawSprite(wrapper->data);
 
   return 0;
 }

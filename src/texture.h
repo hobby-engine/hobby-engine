@@ -24,15 +24,18 @@ struct hb_Texture {
 };
 
 struct hb_Sprite {
-  struct hb_Texture texture;
+  struct hb_Texture* texture;
   f32 x, y;
   f32 rot;
   f32 scalex, scaley;
   f32 offsetx, offsety;
 };
 
-struct hb_Texture hb_createTexture(const char* path);
-struct hb_Sprite hb_createSprite(const char* path);
+struct hb_Texture* hb_createTexture(const char* path);
+struct hb_Sprite* hb_createSprite(const char* path);
+void hb_destroyTexture(struct hb_Texture* texture);
+void hb_destroySprite(struct hb_Sprite* sprite);
+
 void hb_setDefaultFilter(enum hb_TextureFilter min, enum hb_TextureFilter mag);
 void hb_setDefaultWrap(enum hb_TextureWrap wrap);
 

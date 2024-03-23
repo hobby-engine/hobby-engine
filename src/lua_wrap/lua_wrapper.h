@@ -10,18 +10,20 @@
 #define LUA_TIME_NAME "time"
 #define LUA_TEXTURE_NAME "texture"
 
+enum hb_LuaDataType {
+  hb_LUA_DATA_TYPE_TEXTURE,
+  hb_LUA_DATA_TYPE_SPRITE,
+};
+
+struct hb_LuaData {
+  enum hb_LuaDataType type;
+  void* data;
+};
+
 struct hb_LuaWrapper {
   struct hb_Engine* engine;
-  struct lua_State* L;
+  lua_State* L;
   s32 errorHandlerIndex;
-};
-
-struct hb_LuaTexture {
-  struct hb_Texture texture;
-};
-
-struct hb_LuaSprite {
-  struct hb_Sprite sprite;
 };
 
 struct hb_LuaWrapper* hb_createLuaWrapper(struct hb_Engine* engine);

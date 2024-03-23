@@ -6,9 +6,9 @@
 
 static int errorHandler(lua_State* L) {
   const char* errorMessage = lua_tostring(L, -1);
-  hb_fatal(errorMessage);
-
-  return 0;
+  hb_error("%s", errorMessage);
+  lua_close(L);
+  exit(1);
 }
 
 struct hb_LuaWrapper* hb_createLuaWrapper(struct hb_Engine* engine) {
@@ -46,7 +46,7 @@ void hb_callLuaCallback(struct hb_LuaWrapper* wrapper, const char* fnName) {
 
   lua_getfield(L, -1, fnName);
   if (lua_isfunction(L, -1)) {
-    lua_call(L, 0, 0);
+    lua_pcall(L, 0, 0, wrapper->errorHandlerIndex);
   }
   lua_pop(L, 1);
 }
