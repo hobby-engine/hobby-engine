@@ -19,6 +19,12 @@ function hobby.draw()
   hobby.renderer.circleOutline(50 + 35, 35 + 50, 25)
   hobby.renderer.ellipseOutline(200 + 50, 200, 25, 50)
 
+  hobby.renderer.polygon({
+    500, 500,
+    550, 550,
+    450, 550,
+  })
+
   hobby.renderer.texture(texture, 10, 250 + math.sin(t) * 20, 0, 0.2)
   hobby.renderer.circle(500, 250 + math.sin(t) * 20, 25)
 end

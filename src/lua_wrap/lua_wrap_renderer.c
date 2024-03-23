@@ -120,6 +120,38 @@ static int wrap_drawCircleOutline(lua_State* L) {
   return 0;
 }
 
+static int wrap_drawPolygon(lua_State* L) {
+  if (!lua_istable(L, 1)) {
+    lua_pushstring(L, "Expected table.");
+    return lua_error(L);
+  }
+  size_t polygonLength = lua_objlen(L, 1);
+  size_t verticeSize = polygonLength + 2;
+  f32 vertices[verticeSize];
+
+  lua_pushvalue(L, 1);
+  lua_pushnil(L);
+  while (lua_next(L, -2)) {
+    if (lua_isnumber(L, -2) && lua_isnumber(L, -1)) {
+      s32 index = lua_tointeger(L, -2) - 1;
+      f32 number = lua_tonumber(L, -1);
+      vertices[index] = number;
+    } else {
+      lua_pushstring(L, "Expected a table of indices with number values.");
+      return lua_error(L);
+    }
+
+    lua_pop(L, 1);
+  }
+
+  // Close
+  vertices[verticeSize - 2] = vertices[0];
+  vertices[verticeSize - 1] = vertices[1];
+  
+  hb_drawPolygon(vertices, polygonLength);
+  return 0;
+}
+
 static int wrap_getDrawCalls(lua_State* L) {
   lua_getfield(L, LUA_REGISTRYINDEX, "wrapper");
   struct hb_LuaWrapper* wrapper = lua_touserdata(L, -1);
@@ -141,6 +173,7 @@ luaL_Reg renderer[] = {
   {"circle", wrap_drawCircle},
   {"ellipseOutline", wrap_drawEllipseOutline},
   {"ellipse", wrap_drawEllipse},
+  {"polygon", wrap_drawPolygon},
   {"getDrawCalls", wrap_getDrawCalls},
   {NULL, NULL}
 };

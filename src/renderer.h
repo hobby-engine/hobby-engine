@@ -46,5 +46,6 @@ void hb_drawEllipseOutline(f32 x, f32 y, f32 rx, f32 ry);
 void hb_drawEllipse(f32 x, f32 y, f32 rx, f32 ey);
 void hb_drawCircleOutline(f32 x, f32 y, f32 radius);
 void hb_drawCircle(f32 x, f32 y, f32 radius);
+void hb_drawPolygon(f32* vertices, u32 count);
 
 #endif // _HOBBY_RENDERER_H

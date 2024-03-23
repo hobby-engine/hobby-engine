@@ -102,7 +102,7 @@ static void drawTexture(
 
 void hb_drawSprite(struct hb_Sprite* sprite) {
   drawTexture(
-      &sprite->texture,
+      sprite->texture,
       sprite->x, sprite->y,
       sprite->rot,
       sprite->scalex, sprite->scaley,
@@ -214,4 +214,26 @@ void hb_drawCircleOutline(f32 x, f32 y, f32 radius) {
 
 void hb_drawCircle(f32 x, f32 y, f32 radius) {
   drawEllipse(GL_TRIANGLE_FAN, x, y, radius, radius);
+}
+
+void hb_drawPolygon(f32* vertices, u32 count) {
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  hb_setVertexBufferData(&singleton->vertexBuffer, count * sizeof(f32), vertices);
+
+  hb_setVertexArrayAttribute(
+    &singleton->vertexArray, &singleton->vertexBuffer,
+    0, 2, GL_FLOAT, sizeof(f32) * 2, 0);
+
+  mat4x4 transform;
+  mat4x4_identity(transform);
+
+  hb_useShader(&singleton->colorShader);
+  hb_setShaderMat4(&singleton->colorShader, "projection", singleton->projection);
+  hb_setShaderMat4(&singleton->colorShader, "transform", transform);
+  hb_setShaderColor(&singleton->colorShader, "color", singleton->currentColor);
+
+  hb_bindVertexArray(&singleton->vertexArray);
+  glDrawArrays(GL_TRIANGLES, 0, count);
+
+  singleton->currentFrameDrawCalls++;
 }

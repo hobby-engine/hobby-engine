@@ -22,8 +22,6 @@ s32 main() {
 
   hb_callLuaCallback(wrapper, "start");
 
-  glfwSwapInterval(0);
-
   while (!glfwWindowShouldClose(engine.window->glfwWindow)) {
     hb_engineStep(&engine);
 
