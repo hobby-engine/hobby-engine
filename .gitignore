@@ -3,4 +3,6 @@ bin/
 *.zip
 *.o
 *.d
+
 compile_flags.txt
+.luarc.json
