@@ -11,10 +11,10 @@ static int errorHandler(lua_State* L) {
   return 0;
 }
 
-hb_LuaWrapper* hb_createLuaWrapper(hb_Engine* engine) {
+struct hb_LuaWrapper* hb_createLuaWrapper(struct hb_Engine* engine) {
   lua_State* L = luaL_newstate();
 
-  hb_LuaWrapper* wrapper = lua_newuserdata(L, sizeof(hb_LuaWrapper));
+  struct hb_LuaWrapper* wrapper = lua_newuserdata(L, sizeof(struct hb_LuaWrapper));
   lua_setfield(L, LUA_REGISTRYINDEX, "wrapper");
 
   wrapper->engine = engine;
@@ -40,7 +40,7 @@ hb_LuaWrapper* hb_createLuaWrapper(hb_Engine* engine) {
   return wrapper;
 }
 
-void hb_callLuaCallback(hb_LuaWrapper* wrapper, const char* fnName) {
+void hb_callLuaCallback(struct hb_LuaWrapper* wrapper, const char* fnName) {
   lua_State* L = wrapper->L;
   lua_getglobal(L, LUA_LIB_NAME);
 
@@ -51,7 +51,7 @@ void hb_callLuaCallback(hb_LuaWrapper* wrapper, const char* fnName) {
   lua_pop(L, 1);
 }
 
-void hb_destroyLuaWrapper(hb_LuaWrapper* wrapper) {
+void hb_destroyLuaWrapper(struct hb_LuaWrapper* wrapper) {
   lua_close(wrapper->L);
 }
 

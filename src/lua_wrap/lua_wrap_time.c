@@ -2,7 +2,7 @@
 
 static int wrap_getFps(lua_State* L) {
   lua_getfield(L, LUA_REGISTRYINDEX, "wrapper");
-  hb_LuaWrapper* wrapper = lua_touserdata(L, -1);
+  struct hb_LuaWrapper* wrapper = lua_touserdata(L, -1);
 
   lua_pushnumber(L, wrapper->engine->time->fps);
   return 1;
@@ -10,7 +10,7 @@ static int wrap_getFps(lua_State* L) {
 
 static int wrap_getDeltaTime(lua_State* L) {
   lua_getfield(L, LUA_REGISTRYINDEX, "wrapper");
-  hb_LuaWrapper* wrapper = lua_touserdata(L, -1);
+  struct hb_LuaWrapper* wrapper = lua_touserdata(L, -1);
   
   lua_pushnumber(L, wrapper->engine->time->deltaTime);
   return 1;

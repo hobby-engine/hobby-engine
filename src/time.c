@@ -6,8 +6,8 @@
 
 #define FPS_UPDATE_FREQ 1
 
-hb_Time* hb_createTime() {
-  hb_Time* time = (hb_Time*)malloc(sizeof(hb_Time));
+struct hb_Time* hb_createTime() {
+  struct hb_Time* time = malloc(sizeof(struct hb_Time));
   time->deltaTime = 0;
   time->lastFrameTime = 0;
 
@@ -17,11 +17,11 @@ hb_Time* hb_createTime() {
   return time;
 }
 
-void hb_destroyTime(hb_Time *time) {
+void hb_destroyTime(struct hb_Time *time) {
   free(time);
 }
 
-void hb_timeStep(hb_Time* time) {
+void hb_timeStep(struct hb_Time* time) {
   // Calculate delta time
   f32 currentTime = glfwGetTime();
   time->deltaTime = currentTime - time->lastFrameTime;

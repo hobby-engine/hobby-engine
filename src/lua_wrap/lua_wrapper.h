@@ -10,24 +10,24 @@
 #define LUA_TIME_NAME "time"
 #define LUA_TEXTURE_NAME "texture"
 
-typedef struct {
-  hb_Engine* engine;
-  lua_State* L;
+struct hb_LuaWrapper {
+  struct hb_Engine* engine;
+  struct lua_State* L;
   s32 errorHandlerIndex;
-} hb_LuaWrapper;
+};
 
-typedef struct {
-  hb_Texture texture;
-} hb_LuaTexture;
+struct hb_LuaTexture {
+  struct hb_Texture texture;
+};
 
-typedef struct {
-  hb_Sprite sprite;
-} hb_LuaSprite;
+struct hb_LuaSprite {
+  struct hb_Sprite sprite;
+};
 
-hb_LuaWrapper* hb_createLuaWrapper(hb_Engine* engine);
+struct hb_LuaWrapper* hb_createLuaWrapper(struct hb_Engine* engine);
 
-void hb_destroyLuaWrapper(hb_LuaWrapper* wrapper);
-void hb_callLuaCallback(hb_LuaWrapper* wrapper, const char* fnName);
+void hb_destroyLuaWrapper(struct hb_LuaWrapper* wrapper);
+void hb_callLuaCallback(struct hb_LuaWrapper* wrapper, const char* fnName);
 void hb_registerFunctions(lua_State* L, const luaL_Reg* funcs);
 void hb_registerModule(lua_State* L, const char* name, const luaL_Reg* functions);
 

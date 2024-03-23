@@ -9,35 +9,37 @@
 #include "window.h"
 #include "linmath.h"
 
-typedef struct {
-  hb_Window* window;
+struct hb_Renderer {
+  struct hb_Window* window;
 
-  hb_VertexBuffer vertexBuffer;
-  hb_VertexBuffer indexBuffer;
-  hb_VertexArray vertexArray;
+  struct hb_VertexBuffer vertexBuffer;
+  struct hb_VertexBuffer indexBuffer;
+  struct hb_VertexArray vertexArray;
 
-  hb_Shader colorShader;
-  hb_Shader textureShader;
+  struct hb_Shader colorShader;
+  struct hb_Shader textureShader;
 
   mat4x4 projection;
 
-  hb_Color currentColor;
+  struct hb_Color currentColor;
 
   u32 drawCalls, currentFrameDrawCalls;
   s32 circleResolution;
-} hb_Renderer;
+};
 
-hb_Renderer* hb_createRenderer(hb_Window* window);
-void hb_rendererStep(hb_Renderer* renderer);
+struct hb_Renderer* hb_createRenderer(struct hb_Window* window);
+void hb_rendererStep(struct hb_Renderer* renderer);
 
-void hb_drawClear(hb_Color color);
+void hb_drawClear(struct hb_Color color);
 void hb_drawPresent();
-void hb_drawSetColor(hb_Color color);
+void hb_drawSetColor(struct hb_Color color);
 void hb_drawSetCircleResolution(u32 resolution);
-void hb_drawSprite(hb_Sprite* sprite);
-void hb_drawTexture(hb_Texture* texture, f32 x, f32 y);
-void hb_drawTextureOffset(hb_Texture* texture, f32 x, f32 y, f32 ox, f32 oy);
-void hb_drawTextureExt(hb_Texture* texture, f32 x, f32 y, f32 rot, f32 sx, f32 sy, f32 ox, f32 oy);
+void hb_drawSprite(struct hb_Sprite* sprite);
+void hb_drawTexture(struct hb_Texture* texture, f32 x, f32 y);
+void hb_drawTextureOffset(struct hb_Texture* texture, f32 x, f32 y, f32 ox, f32 oy);
+void hb_drawTextureExt(
+  struct hb_Texture* texture,
+  f32 x, f32 y, f32 rot, f32 sx, f32 sy, f32 ox, f32 oy);
 void hb_drawRectangleOutline(f32 x, f32 y, f32 width, f32 height);
 void hb_drawRectangle(f32 x, f32 y, f32 width, f32 height);
 void hb_drawEllipseOutline(f32 x, f32 y, f32 rx, f32 ry);

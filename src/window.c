@@ -6,7 +6,7 @@
 
 #include "log.h"
 
-static hb_Window* singleton = NULL;
+static struct hb_Window* singleton = NULL;
 
 static void onFramebufferSizeChanged(GLFWwindow* window, s32 width, s32 height) {
   glViewport(0, 0, width, height);
@@ -14,12 +14,12 @@ static void onFramebufferSizeChanged(GLFWwindow* window, s32 width, s32 height) 
   singleton->height = height;
 }
 
-hb_Window* hb_createWindow(const char* title, s32 width, s32 height) {
+struct hb_Window* hb_createWindow(const char* title, s32 width, s32 height) {
   if (!hb_assert(singleton == NULL, "Cannot make more than one window.")) {
     return NULL;
   }
 
-  hb_Window* window = (hb_Window*)malloc(sizeof(hb_Window));
+  struct hb_Window* window = (struct hb_Window*)malloc(sizeof(struct hb_Window));
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);

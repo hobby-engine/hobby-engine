@@ -9,15 +9,15 @@
 #include "vertex_buffer.h"
 #include "hbmath.h"
 
-static hb_Renderer* singleton;
+static struct hb_Renderer* singleton;
 
-hb_Renderer* hb_createRenderer(hb_Window* window) {
-  hb_Renderer* renderer = (hb_Renderer*)malloc(sizeof(hb_Renderer));
+struct hb_Renderer* hb_createRenderer(struct hb_Window* window) {
+  struct hb_Renderer* renderer = malloc(sizeof(struct hb_Renderer));
   renderer->window = window;
   renderer->vertexBuffer = hb_createVertexBuffer(hb_BUFFER_TYPE_ARRAY_BUFFER, false);
   renderer->indexBuffer = hb_createVertexBuffer(hb_BUFFER_TYPE_INDEX_BUFFER, false);
   renderer->vertexArray = hb_createVertexArray();
-  renderer->currentColor = (hb_Color){1., 1., 1., 1.};
+  renderer->currentColor = (struct hb_Color){1., 1., 1., 1.};
   renderer->colorShader = hb_loadShader("res/color.vert", "res/color.frag");
   renderer->textureShader = hb_loadShader("res/texture.vert", "res/texture.frag");
   renderer->drawCalls = 0;
@@ -29,7 +29,7 @@ hb_Renderer* hb_createRenderer(hb_Window* window) {
   return renderer;
 }
 
-void hb_rendererStep(hb_Renderer* renderer) {
+void hb_rendererStep(struct hb_Renderer* renderer) {
   renderer->drawCalls = renderer->currentFrameDrawCalls;
   renderer->currentFrameDrawCalls = 0;
 
@@ -39,7 +39,7 @@ void hb_rendererStep(hb_Renderer* renderer) {
       0, singleton->window->width, singleton->window->height, 0, -1, 1);
 }
 
-void hb_drawClear(hb_Color color) {
+void hb_drawClear(struct hb_Color color) {
   glClearColor(color.r, color.g, color.b, color.a);
   glClear(GL_COLOR_BUFFER_BIT);
 }
@@ -48,7 +48,7 @@ void hb_drawPresent() {
   glfwSwapBuffers(singleton->window->glfwWindow);
 }
 
-void hb_drawSetColor(hb_Color color) {
+void hb_drawSetColor(struct hb_Color color) {
   singleton->currentColor = color;
 }
 
@@ -56,7 +56,9 @@ void hb_drawSetCircleResolution(u32 resolution) {
   singleton->circleResolution = resolution;
 }
 
-static void drawTexture(hb_Texture* texture, f32 x, f32 y, f32 rot, f32 sx, f32 sy, f32 ox, f32 oy) {
+static void drawTexture(
+    struct hb_Texture* texture,
+    f32 x, f32 y, f32 rot, f32 sx, f32 sy, f32 ox, f32 oy) {
   s32 width = texture->width, height = texture->height;
   s32 left = -ox * sx, right = (width - ox) * sx;
   s32 top = -oy * sy, bottom = (height - oy) * sy;
@@ -98,7 +100,7 @@ static void drawTexture(hb_Texture* texture, f32 x, f32 y, f32 rot, f32 sx, f32 
   singleton->currentFrameDrawCalls++;
 }
 
-void hb_drawSprite(hb_Sprite* sprite) {
+void hb_drawSprite(struct hb_Sprite* sprite) {
   drawTexture(
       &sprite->texture,
       sprite->x, sprite->y,
@@ -107,15 +109,17 @@ void hb_drawSprite(hb_Sprite* sprite) {
       sprite->offsetx, sprite->offsety);
 }
 
-void hb_drawTexture(hb_Texture *texture, f32 x, f32 y) {
+void hb_drawTexture(struct hb_Texture *texture, f32 x, f32 y) {
   drawTexture(texture, x, y, 0, 1, 1, 0, 0);
 }
 
-void hb_drawTextureOffset(hb_Texture *texture, f32 x, f32 y, f32 ox, f32 oy) {
+void hb_drawTextureOffset(struct hb_Texture *texture, f32 x, f32 y, f32 ox, f32 oy) {
   drawTexture(texture, x, y, 0, 1, 1, ox, oy);
 }
 
-void hb_drawTextureExt(hb_Texture *texture, f32 x, f32 y, f32 rot, f32 sx, f32 sy, f32 ox, f32 oy) {
+void hb_drawTextureExt(
+    struct hb_Texture *texture,
+    f32 x, f32 y, f32 rot, f32 sx, f32 sy, f32 ox, f32 oy) {
   drawTexture(texture, x, y, rot, sx, sy, ox, oy);
 }
 

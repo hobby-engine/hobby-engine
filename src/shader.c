@@ -32,7 +32,7 @@ static char* loadFile(const char* path) {
   return buf;
 }
 
-static inline int getGlShaderType(hb_ShaderType type) {
+static inline s32 getGlShaderType(enum hb_ShaderType type) {
   switch (type) {
     case hb_SHADER_TYPE_FRAGMENT:
       return GL_FRAGMENT_SHADER;
@@ -58,7 +58,8 @@ static void compileShader(u32 shader, const char* path) {
   }
 }
 
-static u32 createShader(const char* source, const char* path, hb_ShaderType type) {
+static u32 createShader(
+    const char* source, const char* path, enum hb_ShaderType type) {
   u32 id = glCreateShader(getGlShaderType(type));
   glShaderSource(id, 1, &source, NULL);
   compileShader(id, path);
@@ -66,15 +67,15 @@ static u32 createShader(const char* source, const char* path, hb_ShaderType type
   return id;
 }
 
-static hb_Shader createShaderProgram() {
+static struct hb_Shader createShaderProgram() {
   u32 id = glCreateProgram();
 
-  hb_Shader program;
+  struct hb_Shader program;
   program.glId = id;
   return program;
 }
 
-static void linkProgram(hb_Shader* program) {
+static void linkProgram(struct hb_Shader* program) {
   glLinkProgram(program->glId);
 
   int success;
@@ -86,10 +87,11 @@ static void linkProgram(hb_Shader* program) {
   }
 }
 
-hb_Shader hb_createInternalShader(const char* vertSource, const char* fragSource) {
+struct hb_Shader hb_createInternalShader(
+    const char* vertSource, const char* fragSource) {
   u32 vertex = createShader(vertSource, NULL, hb_SHADER_TYPE_VERTEX);
   u32 fragment = createShader(fragSource, NULL, hb_SHADER_TYPE_FRAGMENT);
-  hb_Shader program = createShaderProgram();
+  struct hb_Shader program = createShaderProgram();
 
   glAttachShader(program.glId, vertex);
   glAttachShader(program.glId, fragment);
@@ -98,14 +100,14 @@ hb_Shader hb_createInternalShader(const char* vertSource, const char* fragSource
   return program;
 }
 
-hb_Shader hb_loadShader(const char* vertPath, const char* fragPath) {
+struct hb_Shader hb_loadShader(const char* vertPath, const char* fragPath) {
   char* vertSource = loadFile(vertPath);
   char* fragSource = loadFile(fragPath);
 
   u32 vertex = createShader(vertSource, vertPath, hb_SHADER_TYPE_VERTEX);
   u32 fragment = createShader(fragSource, fragPath, hb_SHADER_TYPE_FRAGMENT);
 
-  hb_Shader program = createShaderProgram();
+  struct hb_Shader program = createShaderProgram();
 
   glAttachShader(program.glId, vertex);
   glAttachShader(program.glId, fragment);
@@ -117,35 +119,35 @@ hb_Shader hb_loadShader(const char* vertPath, const char* fragPath) {
   return program;
 }
 
-void hb_destroyShader(hb_Shader* program) {
+void hb_destroyShader(struct hb_Shader* program) {
   glDeleteProgram(program->glId);
 }
 
-void hb_useShader(hb_Shader* program) {
+void hb_useShader(struct hb_Shader* program) {
   glUseProgram(program->glId);
 }
 
-void hb_setShaderF32(hb_Shader* program, const char* name, f32 value) {
+void hb_setShaderF32(struct hb_Shader* program, const char* name, f32 value) {
   glUniform1f(glGetUniformLocation(program->glId, name), value);
 }
 
-void hb_setShaderVec2(hb_Shader* program, const char* name, vec2 value) {
+void hb_setShaderVec2(struct hb_Shader* program, const char* name, vec2 value) {
   glUniform2f(glGetUniformLocation(program->glId, name), value[0], value[1]);
 }
 
-void hb_setShaderProgramVec3(hb_Shader* program, const char* name, vec3 value) {
+void hb_setShaderProgramVec3(struct hb_Shader* program, const char* name, vec3 value) {
   glUniform3f(glGetUniformLocation(program->glId, name), value[0], value[1], value[3]);
 }
 
-void hb_setShaderVec4(hb_Shader* program, const char* name, vec4 value) {
+void hb_setShaderVec4(struct hb_Shader* program, const char* name, vec4 value) {
   glUniform4f(glGetUniformLocation(program->glId, name), value[0], value[1], value[3], value[4]);
 }
 
-void hb_setShaderMat4(hb_Shader* program, const char* name, mat4x4 value) {
+void hb_setShaderMat4(struct hb_Shader* program, const char* name, mat4x4 value) {
   glUniformMatrix4fv(glGetUniformLocation(program->glId, name),
                      1, GL_FALSE, *value);
 }
 
-void hb_setShaderColor(hb_Shader* program, const char* name, hb_Color value) {
+void hb_setShaderColor(struct hb_Shader* program, const char* name, struct hb_Color value) {
   glUniform4f(glGetUniformLocation(program->glId, name), value.r, value.g, value.b, value.a);
 }

@@ -3,7 +3,7 @@
 static int wrap_createTexture(lua_State* L) {
   const char* path = lua_tostring(L, 1);
 
-  hb_LuaTexture* wrapper = (hb_LuaTexture*)lua_newuserdata(L, sizeof(hb_LuaTexture));
+  struct hb_LuaTexture* wrapper = lua_newuserdata(L, sizeof(struct hb_LuaTexture));
   wrapper->texture = hb_createTexture(path);
   
   return 1;
@@ -12,7 +12,7 @@ static int wrap_createTexture(lua_State* L) {
 static int wrap_createSprite(lua_State* L) {
   const char* path = lua_tostring(L, 1);
 
-  hb_LuaSprite* wrapper = (hb_LuaSprite*)lua_newuserdata(L, sizeof(hb_LuaSprite));
+  struct hb_LuaSprite* wrapper = lua_newuserdata(L, sizeof(struct hb_LuaSprite));
   wrapper->sprite = hb_createSprite(path);
   
   return 1;

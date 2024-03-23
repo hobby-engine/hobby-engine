@@ -15,10 +15,10 @@ f32 randf(f32 min, f32 max) {
 }
 
 s32 main() {
-  hb_Engine engine = hb_createEngine();
+  struct hb_Engine engine = hb_createEngine();
   hb_windowSetSize(500, 500);
 
-  hb_LuaWrapper* wrapper = hb_createLuaWrapper(&engine);
+  struct hb_LuaWrapper* wrapper = hb_createLuaWrapper(&engine);
 
   hb_callLuaCallback(wrapper, "start");
 
@@ -31,8 +31,8 @@ s32 main() {
 
     glfwPollEvents();
 
-    hb_drawClear((hb_Color){0, 0, 0, 1});
-    hb_drawSetColor((hb_Color){1, 1, 1, 1});
+    hb_drawClear((struct hb_Color){0, 0, 0, 1});
+    hb_drawSetColor((struct hb_Color){1, 1, 1, 1});
     hb_callLuaCallback(wrapper, "draw");
     hb_drawPresent();
   }

@@ -6,7 +6,7 @@ static int wrap_drawClear(lua_State* L) {
   f64 g = lua_tonumber(L, 2);
   f64 b = lua_tonumber(L, 3);
   f64 a = luaL_optnumber(L, 4, 1);
-  hb_drawClear((hb_Color){r, g, b, a});
+  hb_drawClear((struct hb_Color){r, g, b, a});
 
   return 0;
 }
@@ -22,7 +22,7 @@ static int wrap_drawSetColor(lua_State* L) {
   f64 g = lua_tonumber(L, 2);
   f64 b = lua_tonumber(L, 3);
   f64 a = luaL_optnumber(L, 4, 1);
-  hb_drawSetColor((hb_Color){r, g, b, a});
+  hb_drawSetColor((struct hb_Color){r, g, b, a});
 
   return 0;
 }
@@ -35,7 +35,7 @@ static int wrap_drawSetCircleResolution(lua_State* L) {
 }
 
 static int wrap_drawTexture(lua_State* L) {
-  hb_LuaTexture* wrapper = (hb_LuaTexture*)lua_touserdata(L, 1);
+  struct hb_LuaTexture* wrapper = lua_touserdata(L, 1);
   f64 x = lua_tonumber(L, 2);
   f64 y = lua_tonumber(L, 3);
   f64 rot = luaL_optnumber(L, 4, 0);
@@ -50,7 +50,7 @@ static int wrap_drawTexture(lua_State* L) {
 }
 
 static int wrap_drawSprite(lua_State* L) {
-  hb_LuaSprite* wrapper = (hb_LuaSprite*)lua_touserdata(L, 1);
+  struct hb_LuaSprite* wrapper = lua_touserdata(L, 1);
 
   hb_drawSprite(&wrapper->sprite);
 
@@ -119,7 +119,7 @@ static int wrap_drawCircleOutline(lua_State* L) {
 
 static int wrap_getDrawCalls(lua_State* L) {
   lua_getfield(L, LUA_REGISTRYINDEX, "wrapper");
-  hb_LuaWrapper* wrapper = lua_touserdata(L, -1);
+  struct hb_LuaWrapper* wrapper = lua_touserdata(L, -1);
 
   lua_pushinteger(L, wrapper->engine->renderer->drawCalls);
   return 1;

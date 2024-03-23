@@ -4,7 +4,7 @@
 
 #include "log.h"
 
-static u32 getGlBufferType(hb_BufferType type) {
+static u32 getGlBufferType(enum hb_BufferType type) {
   switch (type) {
     case hb_BUFFER_TYPE_ARRAY_BUFFER: return GL_ARRAY_BUFFER;
     case hb_BUFFER_TYPE_INDEX_BUFFER: return GL_ELEMENT_ARRAY_BUFFER;
@@ -14,8 +14,9 @@ static u32 getGlBufferType(hb_BufferType type) {
   }
 }
 
-hb_VertexBuffer hb_createVertexBuffer(hb_BufferType type, bool isStatic) {
-  hb_VertexBuffer buffer;
+struct hb_VertexBuffer hb_createVertexBuffer(
+    enum hb_BufferType type, bool isStatic) {
+  struct hb_VertexBuffer buffer;
 
   glGenBuffers(1, &buffer.glId);
 
@@ -25,15 +26,16 @@ hb_VertexBuffer hb_createVertexBuffer(hb_BufferType type, bool isStatic) {
   return buffer;
 }
 
-void hb_destroyVertexBuffer(hb_VertexBuffer* buffer) {
+void hb_destroyVertexBuffer(struct hb_VertexBuffer* buffer) {
   glDeleteBuffers(1, &buffer->glId);
 }
 
-void hb_bindVertexBuffer(hb_VertexBuffer* buffer) {
+void hb_bindVertexBuffer(struct hb_VertexBuffer* buffer) {
   glBindBuffer(getGlBufferType(buffer->type), buffer->glId);
 }
 
-void hb_setVertexBufferData(hb_VertexBuffer* buffer, size_t size, void* data) {
+void hb_setVertexBufferData(
+    struct hb_VertexBuffer* buffer, size_t size, void* data) {
   hb_bindVertexBuffer(buffer);
   glBufferData(
       getGlBufferType(buffer->type),

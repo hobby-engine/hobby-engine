@@ -4,11 +4,11 @@
 #include "log.h"
 #include "stb/stb_image.h"
 
-static hb_TextureFilter defaultMin = hb_TEXTURE_FILTER_LINEAR;
-static hb_TextureFilter defaultMag = hb_TEXTURE_FILTER_LINEAR;
-static hb_TextureWrap defaultWrap = hb_TEXTURE_WRAP_NONE;
+static enum hb_TextureFilter defaultMin = hb_TEXTURE_FILTER_LINEAR;
+static enum hb_TextureFilter defaultMag = hb_TEXTURE_FILTER_LINEAR;
+static enum hb_TextureWrap defaultWrap = hb_TEXTURE_WRAP_NONE;
 
-static u32 getGlFilter(hb_TextureFilter filter) {
+static u32 getGlFilter(enum hb_TextureFilter filter) {
   switch (filter) {
     case hb_TEXTURE_FILTER_LINEAR:
       return GL_LINEAR;
@@ -19,7 +19,7 @@ static u32 getGlFilter(hb_TextureFilter filter) {
   }
 }
 
-static u32 getGlWrap(hb_TextureWrap wrap) {
+static u32 getGlWrap(enum hb_TextureWrap wrap) {
   switch (wrap) {
     case hb_TEXTURE_WRAP_NONE:
       return GL_CLAMP_TO_BORDER;
@@ -32,7 +32,7 @@ static u32 getGlWrap(hb_TextureWrap wrap) {
   }
 }
 
-hb_Texture hb_createTexture(const char* path) {
+struct hb_Texture hb_createTexture(const char* path) {
   s32 width, height, channelCount;
   u8* data = stbi_load(path, &width, &height, &channelCount, 0);
 
@@ -62,7 +62,7 @@ hb_Texture hb_createTexture(const char* path) {
 
   stbi_image_free(data);
 
-  hb_Texture texture;
+  struct hb_Texture texture;
   texture.width = width;
   texture.height = height;
   texture.min = defaultMin;
@@ -73,8 +73,8 @@ hb_Texture hb_createTexture(const char* path) {
   return texture;
 }
 
-hb_Sprite hb_createSprite(const char* path) {
-  hb_Sprite sprite;
+struct hb_Sprite hb_createSprite(const char* path) {
+  struct hb_Sprite sprite;
   sprite.texture = hb_createTexture(path);
   sprite.x = sprite.y = 0;
   sprite.rot = 0;
@@ -83,11 +83,11 @@ hb_Sprite hb_createSprite(const char* path) {
   return sprite;
 }
 
-void hb_setDefaultFilter(hb_TextureFilter min, hb_TextureFilter mag) {
+void hb_setDefaultFilter(enum hb_TextureFilter min, enum hb_TextureFilter mag) {
   defaultMin = min;
   defaultMag = mag;
 }
 
-void hb_setDefaultWrap(hb_TextureWrap wrap) {
+void hb_setDefaultWrap(enum hb_TextureWrap wrap) {
   defaultWrap = wrap;
 }

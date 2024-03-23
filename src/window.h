@@ -6,13 +6,13 @@
 
 #include "basic_types.h"
 
-typedef struct {
+struct hb_Window {
   s32 width, height;
   char* title;
   GLFWwindow* glfwWindow;
-} hb_Window;
+};
 
-hb_Window* hb_createWindow(const char* title, s32 width, s32 height);
+struct hb_Window* hb_createWindow(const char* title, s32 width, s32 height);
 void hb_destroyWindow();
 
 void hb_windowSetTitle(const char* title);
