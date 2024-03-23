@@ -18,18 +18,22 @@ ifeq ($(PROFILE), release)
 	CFLAGS += -O3
 endif
 
+BUILD = bin
+
 SRC = src/engine.c src/log.c src/main.c src/renderer.c src/shader.c \
 			src/texture.c src/time.c src/vertex_array.c src/vertex_buffer.c \
 			src/window.c \
 			src/lua_wrap/lua_wrapper.c src/lua_wrap/lua_wrap_renderer.c \
-			src/lua_wrap/lua_wrap_time.c src/lua_wrap/lua_wrap_texture.c
-OBJ = $(SRC:.c=_$(PROFILE).o)
-LIB_OBJ = src/glad_$(PROFILE).o src/stb_image_$(PROFILE).o
-DEPENDS = $(OBJ:.o=.d)
-BUILD = bin
-EXE = $(BUILD)/hobby_$(PROFILE)
+			src/lua_wrap/lua_wrap_time.c src/lua_wrap/lua_wrap_texture.c \
+			third/stb/stb_image.c third/glad/src/glad.c
 
-.PHONY: all clean compile_flags libs lua
+OBJ = $(SRC:%.c=$(BUILD)/%_$(PROFILE).o)
+
+DEPENDS = $(OBJ:.o=.d)
+EXE = $(BUILD)/hobby_$(PROFILE)
+GLAD_OBJ = src/glad_$(PROFILE)
+
+.PHONY: all clean compile_flags libs lua glfw luajit
 
 all: libs $(EXE)
 
@@ -38,23 +42,22 @@ $(EXE): lua $(OBJ)
 	@echo "Compiling $(EXE)..."
 	@$(CC) -o $(EXE) $(OBJ) $(LIB_OBJ) $(CFLAGS) $(LDFLAGS)
 
-libs:
+libs: glfw luajit
+
+glfw:
 	@echo "Compiling GLFW..."
 	@cd third/glfw && cmake . && $(MAKE) --no-print-directory
+
+luajit:
 	@echo "Compiling LuaJIT..."
 	@cd third/luajit && $(MAKE) --no-print-directory
-	@echo "Compiling GLAD..."
-	@$(CC) -o src/glad_$(PROFILE).o -c third/glad/src/glad.c $(CFLAGS)
-	@echo "Compiling stb_image..."
-	@$(CC) -o src/stb_image_$(PROFILE).o -c third/stb/stb_image.c $(CFLAGS)
 
-%_$(PROFILE).o: %.c
+$(BUILD)/%_$(PROFILE).o: %.c
+	@mkdir -p $(@D)
 	@echo "Compiling $< -> $@..."
 	@$(CC) -o $@ -c $< $(CFLAGS) -MMD -MP
 
 clean:
-	$(RM) $(wildcard src/*.o)
-	$(RM) $(wildcard src/*.d)
 	$(RMDIR) $(BUILD)
 	@cd third/glfw && cmake . && make clean
 	@cd third/luajit && make clean
