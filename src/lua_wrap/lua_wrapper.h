@@ -32,6 +32,9 @@ void hb_destroyLuaWrapper(struct hb_LuaWrapper* wrapper);
 void hb_callLuaCallback(struct hb_LuaWrapper* wrapper, const char* fnName);
 void hb_registerFunctions(lua_State* L, const luaL_Reg* funcs);
 void hb_registerModule(lua_State* L, const char* name, const luaL_Reg* functions);
+const char* hb_getLuaTypeName(enum hb_LuaDataType type);
+void hb_ensureUserdataIsOfType(
+    lua_State* L, struct hb_LuaData* data, enum hb_LuaDataType type, s32 argn);
 
 void hb_luaWrapRenderer(lua_State* L);
 void hb_luaWrapTime(lua_State* L);

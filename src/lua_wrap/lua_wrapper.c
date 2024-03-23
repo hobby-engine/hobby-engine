@@ -71,3 +71,21 @@ void hb_registerModule(lua_State* L, const char* name, const luaL_Reg* functions
 
   lua_pop(L, 1); // lua lib
 }
+
+const char* hb_getLuaTypeName(enum hb_LuaDataType type) {
+  switch (type) {
+    case hb_LUA_DATA_TYPE_TEXTURE: return "Texture";
+    case hb_LUA_DATA_TYPE_SPRITE: return "Sprite";
+  }
+}
+
+void hb_ensureUserdataIsOfType(
+    lua_State* L, struct hb_LuaData* data, enum hb_LuaDataType type, s32 argn) {
+  if (data->type != type) {
+    char buf[64];
+    snprintf(buf, 64, "Function expected type %s for arg %d, got %s",
+        hb_getLuaTypeName(type), argn, hb_getLuaTypeName(data->type));
+    lua_pushstring(L, buf);
+    lua_error(L);
+  }
+}

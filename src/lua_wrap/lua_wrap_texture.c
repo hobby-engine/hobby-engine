@@ -28,10 +28,7 @@ static int wrap_createSprite(lua_State* L) {
 
 static int textureGc(lua_State* L) {
   struct hb_LuaData* wrapper = lua_touserdata(L, 1);
-  if (wrapper->type != hb_LUA_DATA_TYPE_TEXTURE) {
-    lua_pushstring(L, "Expected type of Texture.");
-    return lua_error(L);
-  }
+  hb_ensureUserdataIsOfType(L, wrapper, hb_LUA_DATA_TYPE_TEXTURE, 1);
 
   struct hb_Texture* texture = wrapper->data;
   hb_destroyTexture(texture);
@@ -41,10 +38,7 @@ static int textureGc(lua_State* L) {
 
 static int spriteGc(lua_State* L) {
   struct hb_LuaData* wrapper = lua_touserdata(L, 1);
-  if (wrapper->type != hb_LUA_DATA_TYPE_SPRITE) {
-    lua_pushstring(L, "Expected type of Sprite.");
-    return lua_error(L);
-  }
+  hb_ensureUserdataIsOfType(L, wrapper, hb_LUA_DATA_TYPE_SPRITE, 1);
 
   struct hb_Sprite* sprite = wrapper->data;
   hb_destroySprite(sprite);
