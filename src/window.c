@@ -6,19 +6,11 @@
 
 #include "log.h"
 
-static struct hb_Window* singleton = NULL;
-
 static void onFramebufferSizeChanged(hb_UNUSED GLFWwindow* window, s32 width, s32 height) {
   glViewport(0, 0, width, height);
-  singleton->width = width;
-  singleton->height = height;
 }
 
 struct hb_Window* hb_createWindow(const char* title, s32 width, s32 height) {
-  if (!hb_assert(singleton == NULL, "Cannot make more than one window.")) {
-    return NULL;
-  }
-
   struct hb_Window* window = (struct hb_Window*)malloc(sizeof(struct hb_Window));
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -46,24 +38,31 @@ struct hb_Window* hb_createWindow(const char* title, s32 width, s32 height) {
   window->title = (char*)malloc((strlen(title) + 1) * sizeof(char));
   strcpy(window->title, title);
 
-  singleton = window;
-
   return window;
 }
 
-void hb_destroyWindow() {
-  glfwDestroyWindow(singleton->glfwWindow);
-  free(singleton->title);
+void hb_destroyWindow(struct hb_Window* window) {
+  glfwDestroyWindow(window->glfwWindow);
+  free(window->title);
+  free(window);
 }
 
-void hb_windowSetTitle(const char* title) {
-  free(singleton->title);
-  singleton->title = (char*)malloc((strlen(title) + 1) * sizeof(char));
-  strcpy(singleton->title, title);
+void hb_windowStep(struct hb_Window* window) {
+  s32 width, height;
+  glfwGetWindowSize(window->glfwWindow, &width, &height);
 
-  glfwSetWindowTitle(singleton->glfwWindow, singleton->title);
+  window->width = width;
+  window->height = height;
 }
 
-void hb_windowSetSize(s32 width, s32 height) {
-  glfwSetWindowSize(singleton->glfwWindow, width, height);
+void hb_windowSetTitle(struct hb_Window* window, const char* title) {
+  free(window->title);
+  window->title = (char*)malloc((strlen(title) + 1) * sizeof(char));
+  strcpy(window->title, title);
+
+  glfwSetWindowTitle(window->glfwWindow, window->title);
+}
+
+void hb_windowSetSize(struct hb_Window* window, s32 width, s32 height) {
+  glfwSetWindowSize(window->glfwWindow, width, height);
 }

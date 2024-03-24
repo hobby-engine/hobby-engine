@@ -16,7 +16,6 @@ f32 randf(f32 min, f32 max) {
 
 s32 main() {
   struct hb_Engine engine = hb_createEngine();
-  hb_windowSetSize(500, 500);
 
   struct hb_LuaWrapper* wrapper = hb_createLuaWrapper(&engine);
 
@@ -30,12 +29,11 @@ s32 main() {
     glfwPollEvents();
 
     hb_drawClear((struct hb_Color){0, 0, 0, 1});
-    hb_drawSetColor((struct hb_Color){1, 1, 1, 1});
+    hb_drawSetColor(engine.renderer, (struct hb_Color){1, 1, 1, 1});
     hb_callLuaCallback(wrapper, "draw");
-    hb_drawPresent();
+    hb_drawPresent(engine.renderer);
   }
 
-  hb_destroyEngine(&engine);
   hb_destroyLuaWrapper(wrapper);
   return 0;
 }

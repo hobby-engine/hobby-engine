@@ -37,6 +37,7 @@ struct hb_LuaData* hb_pushLuaData(
   lua_State* L, void* data, enum hb_LuaDataType, const char* metatable);
 void hb_ensureUserdataIsOfType(
     lua_State* L, struct hb_LuaData* data, enum hb_LuaDataType type, s32 argn);
+struct hb_LuaWrapper* hb_getLuaWrapper(lua_State* L);
 
 void hb_luaWrapRenderer(lua_State* L);
 void hb_luaWrapTime(lua_State* L);

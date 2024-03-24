@@ -13,9 +13,10 @@ struct hb_Window {
 };
 
 struct hb_Window* hb_createWindow(const char* title, s32 width, s32 height);
-void hb_destroyWindow();
+void hb_destroyWindow(struct hb_Window* window);
+void hb_windowStep(struct hb_Window* window);
 
-void hb_windowSetTitle(const char* title);
-void hb_windowSetSize(s32 width, s32 height);
+void hb_windowSetTitle(struct hb_Window* window, const char* title);
+void hb_windowSetSize(struct hb_Window* window, s32 width, s32 height);
 
 #endif // _HOBBY_WINDOW_H

@@ -15,13 +15,15 @@ struct hb_Engine hb_createEngine() {
 }
 
 void hb_destroyEngine(struct hb_Engine* engine) {
-  hb_destroyWindow();
+  hb_destroyWindow(engine->window);
   hb_destroyTime(engine->time);
+  free(engine->renderer);
 
   glfwTerminate();
 }
 
 void hb_engineStep(struct hb_Engine* engine) {
+  hb_windowStep(engine->window);
   hb_timeStep(engine->time);
   hb_rendererStep(engine->renderer);
 }

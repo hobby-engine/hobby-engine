@@ -1,5 +1,6 @@
 #include "lua_wrapper.h"
 
+#include "engine.h"
 #include "lua.h"
 #include "luaheaders.h"
 #include "log.h"
@@ -14,7 +15,8 @@ static int errorHandler(lua_State* L) {
 struct hb_LuaWrapper* hb_createLuaWrapper(struct hb_Engine* engine) {
   lua_State* L = luaL_newstate();
 
-  struct hb_LuaWrapper* wrapper = lua_newuserdata(L, sizeof(struct hb_LuaWrapper));
+  struct hb_LuaWrapper* wrapper = malloc(sizeof(struct hb_LuaWrapper));
+  lua_pushlightuserdata(L, wrapper);
   lua_setfield(L, LUA_REGISTRYINDEX, "wrapper");
 
   wrapper->engine = engine;
@@ -40,6 +42,11 @@ struct hb_LuaWrapper* hb_createLuaWrapper(struct hb_Engine* engine) {
   return wrapper;
 }
 
+void hb_destroyLuaWrapper(struct hb_LuaWrapper* wrapper) {
+  lua_close(wrapper->L);
+  hb_destroyEngine(wrapper->engine);
+}
+
 void hb_callLuaCallback(struct hb_LuaWrapper* wrapper, const char* fnName) {
   lua_State* L = wrapper->L;
   lua_getglobal(L, LUA_LIB_NAME);
@@ -49,10 +56,6 @@ void hb_callLuaCallback(struct hb_LuaWrapper* wrapper, const char* fnName) {
     lua_pcall(L, 0, 0, wrapper->errorHandlerIndex);
   }
   lua_pop(L, 1);
-}
-
-void hb_destroyLuaWrapper(struct hb_LuaWrapper* wrapper) {
-  lua_close(wrapper->L);
 }
 
 void hb_registerFunctions(lua_State* L, const luaL_Reg* funcs) {
@@ -88,6 +91,13 @@ void hb_ensureUserdataIsOfType(
     lua_pushstring(L, buf);
     lua_error(L);
   }
+}
+
+struct hb_LuaWrapper* hb_getLuaWrapper(lua_State* L) {
+  lua_getfield(L, LUA_REGISTRYINDEX, "wrapper");
+  struct hb_LuaWrapper* wrapper = lua_touserdata(L, -1);
+  lua_pop(L, 1);
+  return wrapper;
 }
 
 struct hb_LuaData* hb_pushLuaData(

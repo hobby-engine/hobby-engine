@@ -12,31 +12,35 @@ static int wrap_drawClear(lua_State* L) {
 }
 
 static int wrap_drawPresent(hb_UNUSED lua_State* L) {
-  hb_drawPresent();
+  struct hb_LuaWrapper* wrapper = hb_getLuaWrapper(L);
+  hb_drawPresent(wrapper->engine->renderer);
 
   return 0;
 }
 
 static int wrap_drawSetColor(lua_State* L) {
+  struct hb_LuaWrapper* wrapper = hb_getLuaWrapper(L);
   f64 r = lua_tonumber(L, 1);
   f64 g = lua_tonumber(L, 2);
   f64 b = lua_tonumber(L, 3);
   f64 a = luaL_optnumber(L, 4, 1);
-  hb_drawSetColor((struct hb_Color){r, g, b, a});
+  hb_drawSetColor(wrapper->engine->renderer, (struct hb_Color){r, g, b, a});
 
   return 0;
 }
 
 static int wrap_drawSetCircleResolution(lua_State* L) {
+  struct hb_LuaWrapper* wrapper = hb_getLuaWrapper(L);
   f64 res = lua_tonumber(L, 1);
-  hb_drawSetCircleResolution(res);
+  hb_drawSetCircleResolution(wrapper->engine->renderer, res);
 
   return 0;
 }
 
 static int wrap_drawTexture(lua_State* L) {
-  struct hb_LuaData* wrapper = lua_touserdata(L, 1);
-  hb_ensureUserdataIsOfType(L, wrapper, hb_LUA_DATA_TYPE_TEXTURE, 1);
+  struct hb_LuaWrapper* wrapper = hb_getLuaWrapper(L);
+  struct hb_LuaData* texture = lua_touserdata(L, 1);
+  hb_ensureUserdataIsOfType(L, texture, hb_LUA_DATA_TYPE_TEXTURE, 1);
 
   f64 x = lua_tonumber(L, 2);
   f64 y = lua_tonumber(L, 3);
@@ -46,81 +50,89 @@ static int wrap_drawTexture(lua_State* L) {
   f64 offsetx = luaL_optnumber(L, 7, 0);
   f64 offsety = luaL_optnumber(L, 8, 0);
 
-  hb_drawTextureExt(wrapper->data, x, y, rot, scalex, scaley, offsetx, offsety);
+  hb_drawTextureExt(wrapper->engine->renderer, texture->data, x, y, rot, scalex, scaley, offsetx, offsety);
 
   return 0;
 }
 
 static int wrap_drawSprite(lua_State* L) {
-  struct hb_LuaData* wrapper = lua_touserdata(L, 1);
-  hb_ensureUserdataIsOfType(L, wrapper, hb_LUA_DATA_TYPE_SPRITE, 1);
+  struct hb_LuaWrapper* wrapper = hb_getLuaWrapper(L);
+  struct hb_LuaData* sprite = lua_touserdata(L, 1);
+  hb_ensureUserdataIsOfType(L, sprite, hb_LUA_DATA_TYPE_SPRITE, 1);
 
-  hb_drawSprite(wrapper->data);
+  hb_drawSprite(wrapper->engine->renderer, sprite->data);
 
   return 0;
 }
 
 static int wrap_drawRectangle(lua_State* L) {
+  struct hb_LuaWrapper* wrapper = hb_getLuaWrapper(L);
   f64 x = lua_tonumber(L, 1);
   f64 y = lua_tonumber(L, 2);
   f64 w = lua_tonumber(L, 3);
   f64 h = lua_tonumber(L, 4);
 
-  hb_drawRectangle(x, y, w, h);
+  hb_drawRectangle(wrapper->engine->renderer, x, y, w, h);
   return 0;
 }
 
 static int wrap_drawRectangleOutline(lua_State* L) {
+  struct hb_LuaWrapper* wrapper = hb_getLuaWrapper(L);
   f64 x = lua_tonumber(L, 1);
   f64 y = lua_tonumber(L, 2);
   f64 w = lua_tonumber(L, 3);
   f64 h = lua_tonumber(L, 4);
 
-  hb_drawRectangleOutline(x, y, w, h);
+  hb_drawRectangleOutline(wrapper->engine->renderer, x, y, w, h);
   return 0;
 }
 
 static int wrap_drawEllipse(lua_State* L) {
+  struct hb_LuaWrapper* wrapper = hb_getLuaWrapper(L);
   f64 x = lua_tonumber(L, 1);
   f64 y = lua_tonumber(L, 2);
   f64 rx = lua_tonumber(L, 3);
   f64 ry = lua_tonumber(L, 4);
 
-  hb_drawEllipse(x, y, rx, ry);
+  hb_drawEllipse(wrapper->engine->renderer, x, y, rx, ry);
 
   return 0;
 }
 
 static int wrap_drawEllipseOutline(lua_State* L) {
+  struct hb_LuaWrapper* wrapper = hb_getLuaWrapper(L);
   f64 x = lua_tonumber(L, 1);
   f64 y = lua_tonumber(L, 2);
   f64 rx = lua_tonumber(L, 3);
   f64 ry = lua_tonumber(L, 4);
 
-  hb_drawEllipseOutline(x, y, rx, ry);
+  hb_drawEllipseOutline(wrapper->engine->renderer, x, y, rx, ry);
 
   return 0;
 }
 
 static int wrap_drawCircle(lua_State* L) {
+  struct hb_LuaWrapper* wrapper = hb_getLuaWrapper(L);
   f64 x = lua_tonumber(L, 1);
   f64 y = lua_tonumber(L, 2);
   f64 r = lua_tonumber(L, 3);
 
-  hb_drawCircle(x, y, r);
+  hb_drawCircle(wrapper->engine->renderer, x, y, r);
   return 0;
 }
 
 static int wrap_drawCircleOutline(lua_State* L) {
+  struct hb_LuaWrapper* wrapper = hb_getLuaWrapper(L);
   f64 x = lua_tonumber(L, 1);
   f64 y = lua_tonumber(L, 2);
   f64 r = lua_tonumber(L, 3);
 
-  hb_drawCircleOutline(x, y, r);
+  hb_drawCircleOutline(wrapper->engine->renderer, x, y, r);
   return 0;
 }
 
 static int wrap_drawPolygon(lua_State* L) {
+  struct hb_LuaWrapper* wrapper = hb_getLuaWrapper(L);
   if (!lua_istable(L, 1)) {
     lua_pushstring(L, "Expected table.");
     return lua_error(L);
@@ -148,13 +160,12 @@ static int wrap_drawPolygon(lua_State* L) {
   vertices[verticeSize - 2] = vertices[0];
   vertices[verticeSize - 1] = vertices[1];
   
-  hb_drawPolygon(vertices, polygonLength);
+  hb_drawPolygon(wrapper->engine->renderer, vertices, polygonLength);
   return 0;
 }
 
 static int wrap_getDrawCalls(lua_State* L) {
-  lua_getfield(L, LUA_REGISTRYINDEX, "wrapper");
-  struct hb_LuaWrapper* wrapper = lua_touserdata(L, -1);
+  struct hb_LuaWrapper* wrapper = hb_getLuaWrapper(L);
 
   lua_pushinteger(L, wrapper->engine->renderer->drawCalls);
   return 1;
