@@ -1,7 +1,7 @@
 #ifndef _HOBBY_TIME_H
 #define _HOBBY_TIME_H
 
-#include "basic_types.h"
+#include "typedefs.h"
 
 struct hb_Time {
   f32 deltaTime;

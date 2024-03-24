@@ -1,7 +1,7 @@
 #ifndef _HOBBY_TEXTURE_H
 #define _HOBBY_TEXTURE_H
 
-#include "basic_types.h"
+#include "typedefs.h"
 #include "linmath.h"
 
 enum hb_TextureFilter {

@@ -2,7 +2,7 @@
 
 #include "lua_wrap/lua_wrapper.h"
 #include "engine.h"
-#include "basic_types.h"
+#include "typedefs.h"
 #include "renderer.h"
 #include "window.h"
 

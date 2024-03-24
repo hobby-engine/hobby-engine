@@ -1,7 +1,7 @@
 #ifndef _HOBBY_SHADER_H
 #define _HOBBY_SHADER_H
 
-#include "basic_types.h"
+#include "typedefs.h"
 #include "linmath.h"
 #include "color.h"
 

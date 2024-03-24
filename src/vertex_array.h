@@ -5,7 +5,7 @@
 
 #include "glad/glad.h"
 
-#include "basic_types.h"
+#include "typedefs.h"
 #include "vertex_buffer.h"
 
 struct hb_VertexArray {

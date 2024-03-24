@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "basic_types.h"
+#include "typedefs.h"
 
 enum hb_BufferType {
   hb_BUFFER_TYPE_ARRAY_BUFFER,

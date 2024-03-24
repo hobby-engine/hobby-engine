@@ -4,7 +4,7 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-#include "basic_types.h"
+#include "typedefs.h"
 
 struct hb_Window {
   s32 width, height;
