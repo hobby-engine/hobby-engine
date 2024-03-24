@@ -33,6 +33,8 @@ void hb_callLuaCallback(struct hb_LuaWrapper* wrapper, const char* fnName);
 void hb_registerFunctions(lua_State* L, const luaL_Reg* funcs);
 void hb_registerModule(lua_State* L, const char* name, const luaL_Reg* functions);
 const char* hb_getLuaTypeName(enum hb_LuaDataType type);
+struct hb_LuaData* hb_pushLuaData(
+  lua_State* L, void* data, enum hb_LuaDataType, const char* metatable);
 void hb_ensureUserdataIsOfType(
     lua_State* L, struct hb_LuaData* data, enum hb_LuaDataType type, s32 argn);
 

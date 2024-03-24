@@ -2,27 +2,13 @@
 
 static int wrap_createTexture(lua_State* L) {
   const char* path = lua_tostring(L, 1);
-
-  struct hb_LuaData* wrapper = lua_newuserdata(L, sizeof(struct hb_LuaData));
-  wrapper->data = hb_createTexture(path);
-  wrapper->type = hb_LUA_DATA_TYPE_TEXTURE;
-
-  luaL_getmetatable(L, "texturemt");
-  lua_setmetatable(L, -2);
-  
+  hb_pushLuaData(L, hb_createTexture(path), hb_LUA_DATA_TYPE_TEXTURE, "texturemt");
   return 1;
 }
 
 static int wrap_createSprite(lua_State* L) {
   const char* path = lua_tostring(L, 1);
-
-  struct hb_LuaData* wrapper = lua_newuserdata(L, sizeof(struct hb_LuaData));
-  wrapper->data = hb_createSprite(path);
-  wrapper->type = hb_LUA_DATA_TYPE_SPRITE;
-
-  luaL_getmetatable(L, "spritemt");
-  lua_setmetatable(L, -2);
-
+  hb_pushLuaData(L, hb_createSprite(path), hb_LUA_DATA_TYPE_SPRITE, "spritemt");
   return 1;
 }
 

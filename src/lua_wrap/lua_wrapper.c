@@ -89,3 +89,16 @@ void hb_ensureUserdataIsOfType(
     lua_error(L);
   }
 }
+
+struct hb_LuaData* hb_pushLuaData(
+    lua_State* L, void* data, enum hb_LuaDataType type, const char* metatable) {
+
+  struct hb_LuaData* wrapper = lua_newuserdata(L, sizeof(struct hb_LuaData));
+  wrapper->data = data;
+  wrapper->type = type;
+
+  luaL_getmetatable(L, metatable);
+  lua_setmetatable(L, -2);
+
+  return wrapper;
+}
