@@ -11,7 +11,7 @@ static int wrap_drawClear(lua_State* L) {
   return 0;
 }
 
-static int wrap_drawPresent(lua_State* L) {
+static int wrap_drawPresent(hb_UNUSED lua_State* L) {
   hb_drawPresent();
 
   return 0;

@@ -8,7 +8,7 @@
 
 static struct hb_Window* singleton = NULL;
 
-static void onFramebufferSizeChanged(GLFWwindow* window, s32 width, s32 height) {
+static void onFramebufferSizeChanged(hb_UNUSED GLFWwindow* window, s32 width, s32 height) {
   glViewport(0, 0, width, height);
   singleton->width = width;
   singleton->height = height;
