@@ -36,11 +36,6 @@ void hb_drawSetColor(struct hb_Renderer* renderer, struct hb_Color color);
 void hb_drawSetCircleResolution(struct hb_Renderer* renderer, u32 resolution);
 void hb_drawSprite(struct hb_Renderer* renderer, struct hb_Sprite* sprite);
 void hb_drawTexture(
-    struct hb_Renderer* renderer, struct hb_Texture* texture, f32 x, f32 y);
-void hb_drawTextureOffset(
-    struct hb_Renderer* renderer, struct hb_Texture* texture,
-    f32 x, f32 y, f32 ox, f32 oy);
-void hb_drawTextureExt(
   struct hb_Renderer* renderer, 
   struct hb_Texture* texture,
   f32 x, f32 y, f32 rot, f32 sx, f32 sy, f32 ox, f32 oy);

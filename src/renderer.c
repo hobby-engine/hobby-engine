@@ -109,17 +109,6 @@ void hb_drawSprite(struct hb_Renderer* renderer, struct hb_Sprite* sprite) {
 }
 
 void hb_drawTexture(
-    struct hb_Renderer* renderer, struct hb_Texture *texture, f32 x, f32 y) {
-  drawTexture(renderer, texture, x, y, 0, 1, 1, 0, 0);
-}
-
-void hb_drawTextureOffset(
-    struct hb_Renderer* renderer, struct hb_Texture *texture,
-    f32 x, f32 y, f32 ox, f32 oy) {
-  drawTexture(renderer, texture, x, y, 0, 1, 1, ox, oy);
-}
-
-void hb_drawTextureExt(
     struct hb_Renderer* renderer, 
     struct hb_Texture *texture,
     f32 x, f32 y, f32 rot, f32 sx, f32 sy, f32 ox, f32 oy) {

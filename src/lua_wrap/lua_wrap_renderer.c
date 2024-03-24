@@ -50,7 +50,7 @@ static int wrap_drawTexture(lua_State* L) {
   f64 offsetx = luaL_optnumber(L, 7, 0);
   f64 offsety = luaL_optnumber(L, 8, 0);
 
-  hb_drawTextureExt(wrapper->engine->renderer, texture->data, x, y, rot, scalex, scaley, offsetx, offsety);
+  hb_drawTexture(wrapper->engine->renderer, texture->data, x, y, rot, scalex, scaley, offsetx, offsety);
 
   return 0;
 }
