@@ -45,6 +45,7 @@ struct hb_LuaWrapper* hb_createLuaWrapper(struct hb_Engine* engine) {
 void hb_destroyLuaWrapper(struct hb_LuaWrapper* wrapper) {
   lua_close(wrapper->L);
   hb_destroyEngine(wrapper->engine);
+  free(wrapper);
 }
 
 void hb_callLuaCallback(struct hb_LuaWrapper* wrapper, const char* fnName) {
@@ -79,6 +80,9 @@ const char* hb_getLuaTypeName(enum hb_LuaDataType type) {
   switch (type) {
     case hb_LUA_DATA_TYPE_TEXTURE: return "Texture";
     case hb_LUA_DATA_TYPE_SPRITE: return "Sprite";
+    default:
+      hb_error("Invalid Lua data type. This should be unreachable.\n");
+      return NULL;
   }
 }
 

@@ -15,7 +15,8 @@ static u32 getGlFilter(enum hb_TextureFilter filter) {
     case hb_TEXTURE_FILTER_NEAREST:
       return GL_NEAREST;
     default:
-      hb_fatal("Invalid filter type.\n");
+      hb_fatal("Invalid filter type. This should be unreachable.\n");
+      return 0;
   }
 }
 
@@ -29,6 +30,9 @@ static u32 getGlWrap(enum hb_TextureWrap wrap) {
       return GL_MIRRORED_REPEAT;
     case hb_TEXTURE_WRAP_CLAMP:
       return GL_CLAMP_TO_EDGE;
+    default:
+      hb_fatal("Invalid filter type. This should be unreachable.\n");
+      return 0;
   }
 }
 

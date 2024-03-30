@@ -1,4 +1,4 @@
-CC = clang
+CC = gcc
 CFLAGS = -std=c11 -Wall -Wextra -Werror
 CFLAGS += -Isrc -Ithird -Ithird/glad/include -Ithird/glfw/include -Ithird/luajit/src
 LDFLAGS = -lm third/glfw/src/libglfw3.a third/luajit/src/libluajit.a
