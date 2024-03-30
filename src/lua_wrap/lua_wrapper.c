@@ -35,8 +35,8 @@ struct hb_LuaWrapper* hb_createLuaWrapper(struct hb_Engine* engine) {
 
   s32 res = luaL_dofile(L, "main.lua");
   if (res != LUA_OK) {
-    lua_close(L);
     errorHandler(L);
+    lua_close(L);
   }
 
   return wrapper;
@@ -89,11 +89,8 @@ const char* hb_getLuaTypeName(enum hb_LuaDataType type) {
 void hb_ensureUserdataIsOfType(
     lua_State* L, struct hb_LuaData* data, enum hb_LuaDataType type, s32 argn) {
   if (data->type != type) {
-    char buf[64];
-    snprintf(buf, 64, "Function expected type %s for arg %d, got %s",
-        hb_getLuaTypeName(type), argn, hb_getLuaTypeName(data->type));
-    lua_pushstring(L, buf);
-    lua_error(L);
+    luaL_error(L, "Function expected type %s for arg %d, got %s",
+      hb_getLuaTypeName(type), argn, hb_getLuaTypeName(data->type));
   }
 }
 

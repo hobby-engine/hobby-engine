@@ -31,8 +31,8 @@ struct hb_Sprite {
   f32 offsetx, offsety;
 };
 
-struct hb_Texture* hb_createTexture(const char* path);
-struct hb_Sprite* hb_createSprite(const char* path);
+struct hb_Texture* hb_loadTexture(const char* path);
+struct hb_Sprite* hb_loadSprite(const char* path);
 void hb_destroyTexture(struct hb_Texture* texture);
 void hb_destroySprite(struct hb_Sprite* sprite);
 

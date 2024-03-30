@@ -2,13 +2,13 @@
 
 static int wrap_createTexture(lua_State* L) {
   const char* path = lua_tostring(L, 1);
-  hb_pushLuaData(L, hb_createTexture(path), hb_LUA_DATA_TYPE_TEXTURE, "texturemt");
+  hb_pushLuaData(L, hb_loadTexture(path), hb_LUA_DATA_TYPE_TEXTURE, "texturemt");
   return 1;
 }
 
 static int wrap_createSprite(lua_State* L) {
   const char* path = lua_tostring(L, 1);
-  hb_pushLuaData(L, hb_createSprite(path), hb_LUA_DATA_TYPE_SPRITE, "spritemt");
+  hb_pushLuaData(L, hb_loadSprite(path), hb_LUA_DATA_TYPE_SPRITE, "spritemt");
   return 1;
 }
 
@@ -43,8 +43,8 @@ luaL_Reg spriteMt[] = {
 };
 
 luaL_Reg texture[] ={
-  {"create", wrap_createTexture},
-  {"createSprite", wrap_createSprite},
+  {"load", wrap_createTexture},
+  {"loadSprite", wrap_createSprite},
   {NULL, NULL},
 };
 

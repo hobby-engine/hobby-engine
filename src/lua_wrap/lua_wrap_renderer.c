@@ -134,8 +134,7 @@ static int wrap_drawCircleOutline(lua_State* L) {
 static int wrap_drawPolygon(lua_State* L) {
   struct hb_LuaWrapper* wrapper = hb_getLuaWrapper(L);
   if (!lua_istable(L, 1)) {
-    lua_pushstring(L, "Expected table.");
-    return lua_error(L);
+    return luaL_error(L, "Expected a table.");
   }
   size_t polygonLength = lua_objlen(L, 1);
   size_t verticeSize = polygonLength + 2;
@@ -149,8 +148,7 @@ static int wrap_drawPolygon(lua_State* L) {
       f32 number = lua_tonumber(L, -1);
       vertices[index] = number;
     } else {
-      lua_pushstring(L, "Expected a table of indices with number values.");
-      return lua_error(L);
+      return luaL_error(L, "Expected a table of indices with number values.");
     }
 
     lua_pop(L, 1);

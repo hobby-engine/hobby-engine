@@ -36,7 +36,7 @@ static u32 getGlWrap(enum hb_TextureWrap wrap) {
   }
 }
 
-struct hb_Texture* hb_createTexture(const char* path) {
+struct hb_Texture* hb_loadTexture(const char* path) {
   s32 width, height, channelCount;
   u8* data = stbi_load(path, &width, &height, &channelCount, 0);
 
@@ -77,9 +77,9 @@ struct hb_Texture* hb_createTexture(const char* path) {
   return texture;
 }
 
-struct hb_Sprite* hb_createSprite(const char* path) {
+struct hb_Sprite* hb_loadSprite(const char* path) {
   struct hb_Sprite* sprite = malloc(sizeof(struct hb_Sprite));
-  sprite->texture = hb_createTexture(path);
+  sprite->texture = hb_loadTexture(path);
   sprite->x = sprite->y = 0;
   sprite->rot = 0;
   sprite->scalex = sprite->scaley = 1;
