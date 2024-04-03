@@ -12,7 +12,7 @@ static char* loadFile(const char* path) {
   FILE* file = fopen(path, "rb");
   if (!file) {
     printf("%s\n", path);
-    hb_fatal("Failed to open file '%s'.", path);
+    fatal("Failed to open file '%s'.", path);
   }
 
   fseek(file, 0, SEEK_END);
@@ -20,10 +20,10 @@ static char* loadFile(const char* path) {
   rewind(file);
 
   char* buf = (char*)malloc(fileLength + 1);
-  hb_fatalAssert(buf != NULL, "Not enough memory to read '%s'.", path);
+  fatalAssert(buf != NULL, "Not enough memory to read '%s'.", path);
 
   size_t bytesRead = fread(buf, sizeof(char), fileLength, file);
-  hb_fatalAssert(bytesRead == fileLength, "Failed to read '%s'.", path);
+  fatalAssert(bytesRead == fileLength, "Failed to read '%s'.", path);
 
   buf[bytesRead] = '\0';
 
@@ -32,11 +32,11 @@ static char* loadFile(const char* path) {
   return buf;
 }
 
-static inline s32 getGlShaderType(enum hb_ShaderType type) {
+static inline s32 getGlShaderType(enum ShaderType type) {
   switch (type) {
-    case hb_SHADER_TYPE_FRAGMENT:
+    case SHADER_TYPE_FRAGMENT:
       return GL_FRAGMENT_SHADER;
-    case hb_SHADER_TYPE_VERTEX:
+    case SHADER_TYPE_VERTEX:
       return GL_VERTEX_SHADER;
   }
   return -1;
@@ -51,15 +51,15 @@ static void compileShader(u32 shader, const char* path) {
     char errorMessage[512];
     glGetShaderInfoLog(shader, 512, NULL, errorMessage);
     if (path == NULL) {
-      hb_fatal("Error compiling: %s", errorMessage);
+      fatal("Error compiling: %s", errorMessage);
     } else {
-      hb_fatal("Error compiling '%s': %s", path, errorMessage);
+      fatal("Error compiling '%s': %s", path, errorMessage);
     }
   }
 }
 
 static u32 createShader(
-    const char* source, const char* path, enum hb_ShaderType type) {
+    const char* source, const char* path, enum ShaderType type) {
   u32 id = glCreateShader(getGlShaderType(type));
   glShaderSource(id, 1, &source, NULL);
   compileShader(id, path);
@@ -67,15 +67,15 @@ static u32 createShader(
   return id;
 }
 
-static struct hb_Shader createShaderProgram() {
+static struct Shader createShaderProgram() {
   u32 id = glCreateProgram();
 
-  struct hb_Shader program;
+  struct Shader program;
   program.glId = id;
   return program;
 }
 
-static void linkProgram(struct hb_Shader* program) {
+static void linkProgram(struct Shader* program) {
   glLinkProgram(program->glId);
 
   int success;
@@ -83,15 +83,15 @@ static void linkProgram(struct hb_Shader* program) {
   if (!success) {
     char errorMessage[512];
     glGetProgramInfoLog(program->glId, 512, NULL, errorMessage);
-    hb_fatal(errorMessage);
+    fatal(errorMessage);
   }
 }
 
-struct hb_Shader hb_createInternalShader(
+struct Shader createInternalShader(
     const char* vertSource, const char* fragSource) {
-  u32 vertex = createShader(vertSource, NULL, hb_SHADER_TYPE_VERTEX);
-  u32 fragment = createShader(fragSource, NULL, hb_SHADER_TYPE_FRAGMENT);
-  struct hb_Shader program = createShaderProgram();
+  u32 vertex = createShader(vertSource, NULL, SHADER_TYPE_VERTEX);
+  u32 fragment = createShader(fragSource, NULL, SHADER_TYPE_FRAGMENT);
+  struct Shader program = createShaderProgram();
 
   glAttachShader(program.glId, vertex);
   glAttachShader(program.glId, fragment);
@@ -100,14 +100,14 @@ struct hb_Shader hb_createInternalShader(
   return program;
 }
 
-struct hb_Shader hb_loadShader(const char* vertPath, const char* fragPath) {
+struct Shader loadShader(const char* vertPath, const char* fragPath) {
   char* vertSource = loadFile(vertPath);
   char* fragSource = loadFile(fragPath);
 
-  u32 vertex = createShader(vertSource, vertPath, hb_SHADER_TYPE_VERTEX);
-  u32 fragment = createShader(fragSource, fragPath, hb_SHADER_TYPE_FRAGMENT);
+  u32 vertex = createShader(vertSource, vertPath, SHADER_TYPE_VERTEX);
+  u32 fragment = createShader(fragSource, fragPath, SHADER_TYPE_FRAGMENT);
 
-  struct hb_Shader program = createShaderProgram();
+  struct Shader program = createShaderProgram();
 
   glAttachShader(program.glId, vertex);
   glAttachShader(program.glId, fragment);
@@ -119,35 +119,35 @@ struct hb_Shader hb_loadShader(const char* vertPath, const char* fragPath) {
   return program;
 }
 
-void hb_destroyShader(struct hb_Shader* program) {
+void destroyShader(struct Shader* program) {
   glDeleteProgram(program->glId);
 }
 
-void hb_useShader(struct hb_Shader* program) {
+void useShader(struct Shader* program) {
   glUseProgram(program->glId);
 }
 
-void hb_setShaderF32(struct hb_Shader* program, const char* name, f32 value) {
+void setShaderF32(struct Shader* program, const char* name, f32 value) {
   glUniform1f(glGetUniformLocation(program->glId, name), value);
 }
 
-void hb_setShaderVec2(struct hb_Shader* program, const char* name, vec2 value) {
+void setShaderVec2(struct Shader* program, const char* name, vec2 value) {
   glUniform2f(glGetUniformLocation(program->glId, name), value[0], value[1]);
 }
 
-void hb_setShaderProgramVec3(struct hb_Shader* program, const char* name, vec3 value) {
+void setShaderProgramVec3(struct Shader* program, const char* name, vec3 value) {
   glUniform3f(glGetUniformLocation(program->glId, name), value[0], value[1], value[3]);
 }
 
-void hb_setShaderVec4(struct hb_Shader* program, const char* name, vec4 value) {
+void setShaderVec4(struct Shader* program, const char* name, vec4 value) {
   glUniform4f(glGetUniformLocation(program->glId, name), value[0], value[1], value[3], value[4]);
 }
 
-void hb_setShaderMat4(struct hb_Shader* program, const char* name, mat4x4 value) {
+void setShaderMat4(struct Shader* program, const char* name, mat4x4 value) {
   glUniformMatrix4fv(glGetUniformLocation(program->glId, name),
                      1, GL_FALSE, *value);
 }
 
-void hb_setShaderColor(struct hb_Shader* program, const char* name, struct hb_Color value) {
+void setShaderColor(struct Shader* program, const char* name, struct Color value) {
   glUniform4f(glGetUniformLocation(program->glId, name), value.r, value.g, value.b, value.a);
 }

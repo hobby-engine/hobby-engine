@@ -6,20 +6,20 @@
 
 #include "typedefs.h"
 
-enum hb_BufferType {
-  hb_BUFFER_TYPE_ARRAY_BUFFER,
-  hb_BUFFER_TYPE_INDEX_BUFFER,
+enum BufferType {
+  BUFFER_TYPE_ARRAY_BUFFER,
+  BUFFER_TYPE_INDEX_BUFFER,
 };
 
-struct hb_VertexBuffer {
+struct VertexBuffer {
   u32 glId;
-  enum hb_BufferType type;
+  enum BufferType type;
   bool isStatic;
 };
 
-struct hb_VertexBuffer hb_createVertexBuffer(enum hb_BufferType type, bool isStatic);
-void hb_destroyVertexBuffer(struct hb_VertexBuffer* buffer);
-void hb_setVertexBufferData(struct hb_VertexBuffer* buffer, size_t size, void* data);
-void hb_bindVertexBuffer(struct hb_VertexBuffer* buffer);
+struct VertexBuffer createVertexBuffer(enum BufferType type, bool isStatic);
+void destroyVertexBuffer(struct VertexBuffer* buffer);
+void setVertexBufferData(struct VertexBuffer* buffer, size_t size, void* data);
+void bindVertexBuffer(struct VertexBuffer* buffer);
 
 #endif // _HOBBY_VERTEX_BUFFER_H

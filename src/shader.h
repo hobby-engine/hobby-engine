@@ -5,25 +5,25 @@
 #include "linmath.h"
 #include "color.h"
 
-enum hb_ShaderType {
-  hb_SHADER_TYPE_VERTEX,
-  hb_SHADER_TYPE_FRAGMENT,
+enum ShaderType {
+  SHADER_TYPE_VERTEX,
+  SHADER_TYPE_FRAGMENT,
 };
 
-struct hb_Shader {
+struct Shader {
   u32 glId;
 };
 
-struct hb_Shader hb_createInternalShader(const char* vertSource, const char* fragSource);
-struct hb_Shader hb_loadShader(const char* vertPath, const char* fragPath);
-void hb_destroyShader(struct hb_Shader* program);
-void hb_useShader(struct hb_Shader* program);
+struct Shader createInternalShader(const char* vertSource, const char* fragSource);
+struct Shader loadShader(const char* vertPath, const char* fragPath);
+void destroyShader(struct Shader* program);
+void useShader(struct Shader* program);
 
-void hb_setShaderF32(struct hb_Shader* program, const char* name, f32 value);
-void hb_setShaderVec2(struct hb_Shader* program, const char* name, vec2 value);
-void hbesetShaderVec3(struct hb_Shader* program, const char* name, vec3 value);
-void hb_setShaderVec4(struct hb_Shader* program, const char* name, vec4 value);
-void hb_setShaderMat4(struct hb_Shader* program, const char* name, mat4x4 value);
-void hb_setShaderColor(struct hb_Shader* program, const char* name, struct hb_Color value);
+void setShaderF32(struct Shader* program, const char* name, f32 value);
+void setShaderVec2(struct Shader* program, const char* name, vec2 value);
+void setShaderVec3(struct Shader* program, const char* name, vec3 value);
+void setShaderVec4(struct Shader* program, const char* name, vec4 value);
+void setShaderMat4(struct Shader* program, const char* name, mat4x4 value);
+void setShaderColor(struct Shader* program, const char* name, struct Color value);
 
 #endif

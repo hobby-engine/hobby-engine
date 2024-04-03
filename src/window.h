@@ -6,17 +6,17 @@
 
 #include "typedefs.h"
 
-struct hb_Window {
+struct Window {
   s32 width, height;
   char* title;
   GLFWwindow* glfwWindow;
 };
 
-struct hb_Window* hb_createWindow(const char* title, s32 width, s32 height);
-void hb_destroyWindow(struct hb_Window* window);
-void hb_windowStep(struct hb_Window* window);
+struct Window* createWindow(const char* title, s32 width, s32 height);
+void destroyWindow(struct Window* window);
+void windowStep(struct Window* window);
 
-void hb_windowSetTitle(struct hb_Window* window, const char* title);
-void hb_windowSetSize(struct hb_Window* window, s32 width, s32 height);
+void windowSetTitle(struct Window* window, const char* title);
+void windowSetSize(struct Window* window, s32 width, s32 height);
 
 #endif // _HOBBY_WINDOW_H

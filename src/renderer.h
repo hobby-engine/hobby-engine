@@ -9,46 +9,46 @@
 #include "window.h"
 #include "linmath.h"
 
-struct hb_Renderer {
-  struct hb_Window* window;
+struct Renderer {
+  struct Window* window;
 
-  struct hb_VertexBuffer vertexBuffer;
-  struct hb_VertexBuffer indexBuffer;
-  struct hb_VertexArray vertexArray;
+  struct VertexBuffer vertexBuffer;
+  struct VertexBuffer indexBuffer;
+  struct VertexArray vertexArray;
 
-  struct hb_Shader colorShader;
-  struct hb_Shader textureShader;
+  struct Shader colorShader;
+  struct Shader textureShader;
 
   mat4x4 projection;
 
-  struct hb_Color currentColor;
+  struct Color currentColor;
 
   u32 drawCalls, currentFrameDrawCalls;
   s32 circleResolution;
 };
 
-struct hb_Renderer* hb_createRenderer(struct hb_Window* window);
-void hb_rendererStep(struct hb_Renderer* renderer);
+struct Renderer* createRenderer(struct Window* window);
+void rendererStep(struct Renderer* renderer);
 
-void hb_drawClear(struct hb_Color color);
-void hb_drawPresent(struct hb_Renderer* renderer);
-void hb_drawSetColor(struct hb_Renderer* renderer, struct hb_Color color);
-void hb_drawSetCircleResolution(struct hb_Renderer* renderer, u32 resolution);
-void hb_drawSprite(struct hb_Renderer* renderer, struct hb_Sprite* sprite);
-void hb_drawTexture(
-  struct hb_Renderer* renderer, 
-  struct hb_Texture* texture,
+void drawClear(struct Color color);
+void drawPresent(struct Renderer* renderer);
+void drawSetColor(struct Renderer* renderer, struct Color color);
+void drawSetCircleResolution(struct Renderer* renderer, u32 resolution);
+void drawSprite(struct Renderer* renderer, struct Sprite* sprite);
+void drawTexture(
+  struct Renderer* renderer, 
+  struct Texture* texture,
   f32 x, f32 y, f32 rot, f32 sx, f32 sy, f32 ox, f32 oy);
-void hb_drawRectangleOutline(
-  struct hb_Renderer* renderer, f32 x, f32 y, f32 width, f32 height);
-void hb_drawRectangle(
-  struct hb_Renderer* renderer, f32 x, f32 y, f32 width, f32 height);
-void hb_drawEllipseOutline(
-  struct hb_Renderer* renderer, f32 x, f32 y, f32 rx, f32 ry);
-void hb_drawEllipse(struct hb_Renderer* renderer, f32 x, f32 y, f32 rx, f32 ey);
-void hb_drawCircleOutline(
-  struct hb_Renderer* renderer, f32 x, f32 y, f32 radius);
-void hb_drawCircle(struct hb_Renderer* renderer, f32 x, f32 y, f32 radius);
-void hb_drawPolygon(struct hb_Renderer* renderer, f32* vertices, u32 count);
+void drawRectangleOutline(
+  struct Renderer* renderer, f32 x, f32 y, f32 width, f32 height);
+void drawRectangle(
+  struct Renderer* renderer, f32 x, f32 y, f32 width, f32 height);
+void drawEllipseOutline(
+  struct Renderer* renderer, f32 x, f32 y, f32 rx, f32 ry);
+void drawEllipse(struct Renderer* renderer, f32 x, f32 y, f32 rx, f32 ey);
+void drawCircleOutline(
+  struct Renderer* renderer, f32 x, f32 y, f32 radius);
+void drawCircle(struct Renderer* renderer, f32 x, f32 y, f32 radius);
+void drawPolygon(struct Renderer* renderer, f32* vertices, u32 count);
 
 #endif // _HOBBY_RENDERER_H

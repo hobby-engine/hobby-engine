@@ -10,37 +10,37 @@
 #define LUA_TIME_NAME "time"
 #define LUA_TEXTURE_NAME "texture"
 
-enum hb_LuaDataType {
-  hb_LUA_DATA_TYPE_TEXTURE,
-  hb_LUA_DATA_TYPE_SPRITE,
+enum LuaDataType {
+  LUA_DATA_TYPE_TEXTURE,
+  LUA_DATA_TYPE_SPRITE,
 };
 
-struct hb_LuaData {
-  enum hb_LuaDataType type;
+struct LuaData {
+  enum LuaDataType type;
   void* data;
 };
 
-struct hb_LuaWrapper {
-  struct hb_Engine* engine;
+struct LuaWrapper {
+  struct Engine* engine;
   lua_State* L;
   s32 errorHandlerIndex;
 };
 
-struct hb_LuaWrapper* hb_createLuaWrapper(struct hb_Engine* engine);
+struct LuaWrapper* createLuaWrapper(struct Engine* engine);
 
-void hb_destroyLuaWrapper(struct hb_LuaWrapper* wrapper);
-void hb_callLuaCallback(struct hb_LuaWrapper* wrapper, const char* fnName);
-void hb_registerFunctions(lua_State* L, const luaL_Reg* funcs);
-void hb_registerModule(lua_State* L, const char* name, const luaL_Reg* functions);
-const char* hb_getLuaTypeName(enum hb_LuaDataType type);
-struct hb_LuaData* hb_pushLuaData(
-  lua_State* L, void* data, enum hb_LuaDataType, const char* metatable);
-void hb_ensureUserdataIsOfType(
-    lua_State* L, struct hb_LuaData* data, enum hb_LuaDataType type, s32 argn);
-struct hb_LuaWrapper* hb_getLuaWrapper(lua_State* L);
+void destroyLuaWrapper(struct LuaWrapper* wrapper);
+void callLuaCallback(struct LuaWrapper* wrapper, const char* fnName);
+void registerFunctions(lua_State* L, const luaL_Reg* funcs);
+void registerModule(lua_State* L, const char* name, const luaL_Reg* functions);
+const char* getLuaTypeName(enum LuaDataType type);
+struct LuaData* pushLuaData(
+  lua_State* L, void* data, enum LuaDataType, const char* metatable);
+void ensureUserdataIsOfType(
+    lua_State* L, struct LuaData* data, enum LuaDataType type, s32 argn);
+struct LuaWrapper* getLuaWrapper(lua_State* L);
 
-void hb_luaWrapRenderer(lua_State* L);
-void hb_luaWrapTime(lua_State* L);
-void hb_luaWrapTexture(lua_State* L);
+void luaWrapRenderer(lua_State* L);
+void luaWrapTime(lua_State* L);
+void luaWrapTexture(lua_State* L);
 
 #endif // _HOBBY_LUA_WRAP_LUA_WRAPPER_H

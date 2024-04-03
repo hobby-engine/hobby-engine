@@ -3,27 +3,27 @@
 #include "log.h"
 #include "GLFW/glfw3.h"
 
-struct hb_Engine hb_createEngine() {
-  hb_fatalAssert(glfwInit(), "Failed to initialize GLFW.\n");
+struct Engine createEngine() {
+  fatalAssert(glfwInit(), "Failed to initialize GLFW.\n");
 
-  struct hb_Engine engine;
-  engine.window = hb_createWindow("Hobby Engine", 800, 600);
-  engine.time = hb_createTime();
-  engine.renderer = hb_createRenderer(engine.window);
+  struct Engine engine;
+  engine.window = createWindow("Hobby Engine", 800, 600);
+  engine.time = createTime();
+  engine.renderer = createRenderer(engine.window);
 
   return engine;
 }
 
-void hb_destroyEngine(struct hb_Engine* engine) {
-  hb_destroyWindow(engine->window);
-  hb_destroyTime(engine->time);
+void destroyEngine(struct Engine* engine) {
+  destroyWindow(engine->window);
+  destroyTime(engine->time);
   free(engine->renderer);
 
   glfwTerminate();
 }
 
-void hb_engineStep(struct hb_Engine* engine) {
-  hb_windowStep(engine->window);
-  hb_timeStep(engine->time);
-  hb_rendererStep(engine->renderer);
+void engineStep(struct Engine* engine) {
+  windowStep(engine->window);
+  timeStep(engine->time);
+  rendererStep(engine->renderer);
 }

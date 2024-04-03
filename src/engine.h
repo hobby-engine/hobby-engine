@@ -6,14 +6,14 @@
 
 #include "window.h"
 
-struct hb_Engine {
-  struct hb_Time* time;
-  struct hb_Window* window;
-  struct hb_Renderer* renderer;
+struct Engine {
+  struct Time* time;
+  struct Window* window;
+  struct Renderer* renderer;
 };
 
-struct hb_Engine hb_createEngine();
-void hb_destroyEngine(struct hb_Engine* engine);
-void hb_engineStep(struct hb_Engine* engine);
+struct Engine createEngine();
+void destroyEngine(struct Engine* engine);
+void engineStep(struct Engine* engine);
 
 #endif // _HOBBY_ENGINE_H

@@ -4,19 +4,19 @@
 
 #include "log.h"
 
-static u32 getGlBufferType(enum hb_BufferType type) {
+static u32 getGlBufferType(enum BufferType type) {
   switch (type) {
-    case hb_BUFFER_TYPE_ARRAY_BUFFER: return GL_ARRAY_BUFFER;
-    case hb_BUFFER_TYPE_INDEX_BUFFER: return GL_ELEMENT_ARRAY_BUFFER;
+    case BUFFER_TYPE_ARRAY_BUFFER: return GL_ARRAY_BUFFER;
+    case BUFFER_TYPE_INDEX_BUFFER: return GL_ELEMENT_ARRAY_BUFFER;
     default:
-      hb_error("Invalid buffer type.");
+      error("Invalid buffer type.");
       return -1;
   }
 }
 
-struct hb_VertexBuffer hb_createVertexBuffer(
-    enum hb_BufferType type, bool isStatic) {
-  struct hb_VertexBuffer buffer;
+struct VertexBuffer createVertexBuffer(
+    enum BufferType type, bool isStatic) {
+  struct VertexBuffer buffer;
 
   glGenBuffers(1, &buffer.glId);
 
@@ -26,17 +26,17 @@ struct hb_VertexBuffer hb_createVertexBuffer(
   return buffer;
 }
 
-void hb_destroyVertexBuffer(struct hb_VertexBuffer* buffer) {
+void destroyVertexBuffer(struct VertexBuffer* buffer) {
   glDeleteBuffers(1, &buffer->glId);
 }
 
-void hb_bindVertexBuffer(struct hb_VertexBuffer* buffer) {
+void bindVertexBuffer(struct VertexBuffer* buffer) {
   glBindBuffer(getGlBufferType(buffer->type), buffer->glId);
 }
 
-void hb_setVertexBufferData(
-    struct hb_VertexBuffer* buffer, size_t size, void* data) {
-  hb_bindVertexBuffer(buffer);
+void setVertexBufferData(
+    struct VertexBuffer* buffer, size_t size, void* data) {
+  bindVertexBuffer(buffer);
   glBufferData(
       getGlBufferType(buffer->type),
       size, data,

@@ -10,8 +10,8 @@ static void onFramebufferSizeChanged(hb_UNUSED GLFWwindow* window, s32 width, s3
   glViewport(0, 0, width, height);
 }
 
-struct hb_Window* hb_createWindow(const char* title, s32 width, s32 height) {
-  struct hb_Window* window = (struct hb_Window*)malloc(sizeof(struct hb_Window));
+struct Window* createWindow(const char* title, s32 width, s32 height) {
+  struct Window* window = malloc(sizeof(struct Window));
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -21,13 +21,13 @@ struct hb_Window* hb_createWindow(const char* title, s32 width, s32 height) {
     width, height, title, NULL, NULL);
   if (!glfwWindow) {
     glfwTerminate();
-    hb_fatal("Failed to create window.\n");
+    fatal("Failed to create window.\n");
   }
 
   glfwMakeContextCurrent(glfwWindow);
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    hb_fatal("Failed to initialize GLAD.\n");
+    fatal("Failed to initialize GLAD.\n");
   }
 
   glfwSetFramebufferSizeCallback(glfwWindow, onFramebufferSizeChanged);
@@ -41,13 +41,13 @@ struct hb_Window* hb_createWindow(const char* title, s32 width, s32 height) {
   return window;
 }
 
-void hb_destroyWindow(struct hb_Window* window) {
+void destroyWindow(struct Window* window) {
   glfwDestroyWindow(window->glfwWindow);
   free(window->title);
   free(window);
 }
 
-void hb_windowStep(struct hb_Window* window) {
+void windowStep(struct Window* window) {
   s32 width, height;
   glfwGetWindowSize(window->glfwWindow, &width, &height);
 
@@ -55,7 +55,7 @@ void hb_windowStep(struct hb_Window* window) {
   window->height = height;
 }
 
-void hb_windowSetTitle(struct hb_Window* window, const char* title) {
+void windowSetTitle(struct Window* window, const char* title) {
   free(window->title);
   window->title = (char*)malloc((strlen(title) + 1) * sizeof(char));
   strcpy(window->title, title);
@@ -63,6 +63,6 @@ void hb_windowSetTitle(struct hb_Window* window, const char* title) {
   glfwSetWindowTitle(window->glfwWindow, window->title);
 }
 
-void hb_windowSetSize(struct hb_Window* window, s32 width, s32 height) {
+void windowSetSize(struct Window* window, s32 width, s32 height) {
   glfwSetWindowSize(window->glfwWindow, width, height);
 }

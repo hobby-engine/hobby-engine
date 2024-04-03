@@ -10,21 +10,21 @@ static void logMessage(FILE* file, const char* prefix, const char* format, va_li
   fprintf(file, "\n");
 }
 
-void hb_log(const char* format, ...) {
+void hlog(const char* format, ...) {
   va_list args;
   va_start(args, format);
   logMessage(stdout, "[LOG] ", format, args);
   va_end(args);
 }
 
-void hb_warn(const char* format, ...) {
+void warn(const char* format, ...) {
   va_list args;
   va_start(args, format);
   logMessage(stderr, "[WARN] ", format, args);
   va_end(args);
 }
 
-void hb_fatal(const char* format, ...) {
+void fatal(const char* format, ...) {
   va_list args;
   va_start(args, format);
   logMessage(stderr, "[FATAL] ", format, args);
@@ -32,14 +32,14 @@ void hb_fatal(const char* format, ...) {
   exit(1);
 }
 
-void hb_error(const char* format, ...) {
+void error(const char* format, ...) {
   va_list args;
   va_start(args, format);
   logMessage(stderr, "[ERROR] ", format, args);
   va_end(args);
 }
 
-bool hb_assert(bool cond, const char* format, ...) {
+bool assert(bool cond, const char* format, ...) {
   if (cond) {
     return true;
   }
@@ -51,7 +51,7 @@ bool hb_assert(bool cond, const char* format, ...) {
   return false;
 }
 
-void hb_fatalAssert(bool cond, const char* format, ...) {
+void fatalAssert(bool cond, const char* format, ...) {
   if (cond) {
     return;
   }

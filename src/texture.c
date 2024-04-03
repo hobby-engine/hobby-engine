@@ -4,23 +4,23 @@
 #include "log.h"
 #include "stb/stb_image.h"
 
-static enum hb_TextureFilter defaultMin = hb_TEXTURE_FILTER_LINEAR;
-static enum hb_TextureFilter defaultMag = hb_TEXTURE_FILTER_LINEAR;
-static enum hb_TextureWrap defaultWrap = hb_TEXTURE_WRAP_NONE;
+static enum TextureFilter defaultMin = hb_TEXTURE_FILTER_LINEAR;
+static enum TextureFilter defaultMag = hb_TEXTURE_FILTER_LINEAR;
+static enum TextureWrap defaultWrap = hb_TEXTURE_WRAP_NONE;
 
-static u32 getGlFilter(enum hb_TextureFilter filter) {
+static u32 getGlFilter(enum TextureFilter filter) {
   switch (filter) {
     case hb_TEXTURE_FILTER_LINEAR:
       return GL_LINEAR;
     case hb_TEXTURE_FILTER_NEAREST:
       return GL_NEAREST;
     default:
-      hb_fatal("Invalid filter type. This should be unreachable.\n");
+      fatal("Invalid filter type. This should be unreachable.\n");
       return 0;
   }
 }
 
-static u32 getGlWrap(enum hb_TextureWrap wrap) {
+static u32 getGlWrap(enum TextureWrap wrap) {
   switch (wrap) {
     case hb_TEXTURE_WRAP_NONE:
       return GL_CLAMP_TO_BORDER;
@@ -31,16 +31,16 @@ static u32 getGlWrap(enum hb_TextureWrap wrap) {
     case hb_TEXTURE_WRAP_CLAMP:
       return GL_CLAMP_TO_EDGE;
     default:
-      hb_fatal("Invalid filter type. This should be unreachable.\n");
+      fatal("Invalid filter type. This should be unreachable.\n");
       return 0;
   }
 }
 
-struct hb_Texture* hb_loadTexture(const char* path) {
+struct Texture* loadTexture(const char* path) {
   s32 width, height, channelCount;
   u8* data = stbi_load(path, &width, &height, &channelCount, 0);
 
-  hb_fatalAssert(data != NULL, "Failed to load image '%s'", path);
+  fatalAssert(data != NULL, "Failed to load image '%s'", path);
 
   u32 channels;
   
@@ -66,7 +66,7 @@ struct hb_Texture* hb_loadTexture(const char* path) {
 
   stbi_image_free(data);
 
-  struct hb_Texture* texture = malloc(sizeof(struct hb_Texture));
+  struct Texture* texture = malloc(sizeof(struct Texture));
   texture->width = width;
   texture->height = height;
   texture->min = defaultMin;
@@ -77,9 +77,9 @@ struct hb_Texture* hb_loadTexture(const char* path) {
   return texture;
 }
 
-struct hb_Sprite* hb_loadSprite(const char* path) {
-  struct hb_Sprite* sprite = malloc(sizeof(struct hb_Sprite));
-  sprite->texture = hb_loadTexture(path);
+struct Sprite* loadSprite(const char* path) {
+  struct Sprite* sprite = malloc(sizeof(struct Sprite));
+  sprite->texture = loadTexture(path);
   sprite->x = sprite->y = 0;
   sprite->rot = 0;
   sprite->scalex = sprite->scaley = 1;
@@ -87,20 +87,20 @@ struct hb_Sprite* hb_loadSprite(const char* path) {
   return sprite;
 }
 
-void hb_destroyTexture(struct hb_Texture* texture) {
+void destroyTexture(struct Texture* texture) {
   free(texture);
 }
 
-void hb_destroySprite(struct hb_Sprite* sprite) {
-  hb_destroyTexture(sprite->texture);
+void destroySprite(struct Sprite* sprite) {
+  destroyTexture(sprite->texture);
   free(sprite);
 }
 
-void hb_setDefaultFilter(enum hb_TextureFilter min, enum hb_TextureFilter mag) {
+void setDefaultFilter(enum TextureFilter min, enum TextureFilter mag) {
   defaultMin = min;
   defaultMag = mag;
 }
 
-void hb_setDefaultWrap(enum hb_TextureWrap wrap) {
+void setDefaultWrap(enum TextureWrap wrap) {
   defaultWrap = wrap;
 }

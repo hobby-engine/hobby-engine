@@ -3,7 +3,7 @@
 
 #include "typedefs.h"
 
-struct hb_Time {
+struct Time {
   f32 deltaTime;
   f32 lastFrameTime;
 
@@ -12,8 +12,8 @@ struct hb_Time {
   u32 framesRendered;
 };
 
-struct hb_Time* hb_createTime();
-void hb_destroyTime(struct hb_Time* time);
-void hb_timeStep(struct hb_Time* time);
+struct Time* createTime();
+void destroyTime(struct Time* time);
+void timeStep(struct Time* time);
 
 #endif // _HOBBY_TIME_H

@@ -7,15 +7,15 @@
 
 static int errorHandler(lua_State* L) {
   const char* errorMessage = lua_tostring(L, -1);
-  hb_error("%s", errorMessage);
+  error("%s", errorMessage);
   lua_close(L);
   exit(1);
 }
 
-struct hb_LuaWrapper* hb_createLuaWrapper(struct hb_Engine* engine) {
+struct LuaWrapper* createLuaWrapper(struct Engine* engine) {
   lua_State* L = luaL_newstate();
 
-  struct hb_LuaWrapper* wrapper = malloc(sizeof(struct hb_LuaWrapper));
+  struct LuaWrapper* wrapper = malloc(sizeof(struct LuaWrapper));
   lua_pushlightuserdata(L, wrapper);
   lua_setfield(L, LUA_REGISTRYINDEX, "wrapper");
 
@@ -29,9 +29,9 @@ struct hb_LuaWrapper* hb_createLuaWrapper(struct hb_Engine* engine) {
   lua_newtable(L);
   lua_setglobal(L, LUA_LIB_NAME);
 
-  hb_luaWrapRenderer(L);
-  hb_luaWrapTime(L);
-  hb_luaWrapTexture(L);
+  luaWrapRenderer(L);
+  luaWrapTime(L);
+  luaWrapTexture(L);
 
   s32 res = luaL_dofile(L, "main.lua");
   if (res != LUA_OK) {
@@ -42,13 +42,13 @@ struct hb_LuaWrapper* hb_createLuaWrapper(struct hb_Engine* engine) {
   return wrapper;
 }
 
-void hb_destroyLuaWrapper(struct hb_LuaWrapper* wrapper) {
+void destroyLuaWrapper(struct LuaWrapper* wrapper) {
   lua_close(wrapper->L);
-  hb_destroyEngine(wrapper->engine);
+  destroyEngine(wrapper->engine);
   free(wrapper);
 }
 
-void hb_callLuaCallback(struct hb_LuaWrapper* wrapper, const char* fnName) {
+void callLuaCallback(struct LuaWrapper* wrapper, const char* fnName) {
   lua_State* L = wrapper->L;
   lua_getglobal(L, LUA_LIB_NAME);
 
@@ -59,52 +59,52 @@ void hb_callLuaCallback(struct hb_LuaWrapper* wrapper, const char* fnName) {
   lua_pop(L, 1);
 }
 
-void hb_registerFunctions(lua_State* L, const luaL_Reg* funcs) {
+void registerFunctions(lua_State* L, const luaL_Reg* funcs) {
   for (; funcs->name != NULL; funcs++) {
     lua_pushcfunction(L, funcs->func);
     lua_setfield(L, -2, funcs->name);
   }
 }
 
-void hb_registerModule(lua_State* L, const char* name, const luaL_Reg* functions) {
+void registerModule(lua_State* L, const char* name, const luaL_Reg* functions) {
   lua_getglobal(L, LUA_LIB_NAME);
 
   lua_newtable(L); // module
-  hb_registerFunctions(L, functions);
+  registerFunctions(L, functions);
   lua_setfield(L, -2, name);
 
   lua_pop(L, 1); // lua lib
 }
 
-const char* hb_getLuaTypeName(enum hb_LuaDataType type) {
+const char* getLuaTypeName(enum LuaDataType type) {
   switch (type) {
-    case hb_LUA_DATA_TYPE_TEXTURE: return "Texture";
-    case hb_LUA_DATA_TYPE_SPRITE: return "Sprite";
+    case LUA_DATA_TYPE_TEXTURE: return "Texture";
+    case LUA_DATA_TYPE_SPRITE: return "Sprite";
     default:
-      hb_error("Invalid Lua data type. This should be unreachable.\n");
+      error("Invalid Lua data type. This should be unreachable.\n");
       return NULL;
   }
 }
 
-void hb_ensureUserdataIsOfType(
-    lua_State* L, struct hb_LuaData* data, enum hb_LuaDataType type, s32 argn) {
+void ensureUserdataIsOfType(
+    lua_State* L, struct LuaData* data, enum LuaDataType type, s32 argn) {
   if (data->type != type) {
     luaL_error(L, "Function expected type %s for arg %d, got %s",
-      hb_getLuaTypeName(type), argn, hb_getLuaTypeName(data->type));
+      getLuaTypeName(type), argn, getLuaTypeName(data->type));
   }
 }
 
-struct hb_LuaWrapper* hb_getLuaWrapper(lua_State* L) {
+struct LuaWrapper* getLuaWrapper(lua_State* L) {
   lua_getfield(L, LUA_REGISTRYINDEX, "wrapper");
-  struct hb_LuaWrapper* wrapper = lua_touserdata(L, -1);
+  struct LuaWrapper* wrapper = lua_touserdata(L, -1);
   lua_pop(L, 1);
   return wrapper;
 }
 
-struct hb_LuaData* hb_pushLuaData(
-    lua_State* L, void* data, enum hb_LuaDataType type, const char* metatable) {
+struct LuaData* pushLuaData(
+    lua_State* L, void* data, enum LuaDataType type, const char* metatable) {
 
-  struct hb_LuaData* wrapper = lua_newuserdata(L, sizeof(struct hb_LuaData));
+  struct LuaData* wrapper = lua_newuserdata(L, sizeof(struct LuaData));
   wrapper->data = data;
   wrapper->type = type;
 

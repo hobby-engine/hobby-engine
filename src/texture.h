@@ -4,39 +4,39 @@
 #include "typedefs.h"
 #include "linmath.h"
 
-enum hb_TextureFilter {
+enum TextureFilter {
   hb_TEXTURE_FILTER_NEAREST,
   hb_TEXTURE_FILTER_LINEAR,
 };
 
-enum hb_TextureWrap {
+enum TextureWrap {
   hb_TEXTURE_WRAP_NONE,
   hb_TEXTURE_WRAP_REPEAT,
   hb_TEXTURE_WRAP_MIRRORED_REPEAT,
   hb_TEXTURE_WRAP_CLAMP,
 };
 
-struct hb_Texture {
+struct Texture {
   u32 glId;
   s32 width, height;
-  enum hb_TextureFilter min, mag;
-  enum hb_TextureWrap wrap;
+  enum TextureFilter min, mag;
+  enum TextureWrap wrap;
 };
 
-struct hb_Sprite {
-  struct hb_Texture* texture;
+struct Sprite {
+  struct Texture* texture;
   f32 x, y;
   f32 rot;
   f32 scalex, scaley;
   f32 offsetx, offsety;
 };
 
-struct hb_Texture* hb_loadTexture(const char* path);
-struct hb_Sprite* hb_loadSprite(const char* path);
-void hb_destroyTexture(struct hb_Texture* texture);
-void hb_destroySprite(struct hb_Sprite* sprite);
+struct Texture* loadTexture(const char* path);
+struct Sprite* loadSprite(const char* path);
+void destroyTexture(struct Texture* texture);
+void destroySprite(struct Sprite* sprite);
 
-void hb_setDefaultFilter(enum hb_TextureFilter min, enum hb_TextureFilter mag);
-void hb_setDefaultWrap(enum hb_TextureWrap wrap);
+void setDefaultFilter(enum TextureFilter min, enum TextureFilter mag);
+void setDefaultWrap(enum TextureWrap wrap);
 
 #endif // _HOBBY_TEXTURE_H
