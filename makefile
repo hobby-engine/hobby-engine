@@ -1,6 +1,6 @@
-CC = gcc
-CFLAGS = -std=c11 -Wall -Wextra -Werror
-CFLAGS += -Isrc -Ithird -Ithird/glad/include -Ithird/glfw/include -Ithird/luajit/src
+CXX = g++
+CXXFLAGS = -std=c++11 -Wall -Wextra
+CXXFLAGS += -Isrc -Ithird -Ithird/glad/include -Ithird/glfw/include -Ithird/luajit/src
 LDFLAGS = -lm third/glfw/src/libglfw3.a third/luajit/src/libluajit.a
 
 RM = rm
@@ -11,38 +11,41 @@ ifndef PROFILE
 endif
 
 ifeq ($(PROFILE), debug)
-	CFLAGS += -O0 -g -fsanitize=address
+	CXXFLAGS += -O3 -g -fsanitize=address
 endif
 
 ifeq ($(PROFILE), release)
-	CFLAGS += -O3
+	CXXFLAGS += -O3
 endif
 
 BUILD = bin
 
-SRC = src/engine.c src/log.c src/main.c src/renderer.c src/shader.c \
-			src/texture.c src/time.c src/vertex_array.c src/vertex_buffer.c \
-			src/window.c \
-			src/lua_wrap/lua_wrapper.c src/lua_wrap/lua_wrap_renderer.c \
-			src/lua_wrap/lua_wrap_time.c src/lua_wrap/lua_wrap_texture.c \
-			third/stb/stb_image.c third/glad/src/glad.c
+SRC = src/main.cc src/window.cc src/log.cc src/shader.cc src/mat4.cc \
+			src/engine.cc \
+			src/opengl/gl_window.cc src/opengl/gl_renderer.cc src/opengl/gl_shader.cc \
+			src/opengl/vertex.cc \
+			src/lua_wrapper/wrapper.cc src/lua_wrapper/wrap_renderer.cc \
+			src/lua_wrapper/wrap_engine.cc
 
-OBJ = $(SRC:%.c=$(BUILD)/%_$(PROFILE).o)
+OBJ = $(SRC:%.cc=$(BUILD)/%_$(PROFILE).o)
 
 DEPENDS = $(OBJ:.o=.d)
 EXE = $(BUILD)/hobby_$(PROFILE)
-GLAD_OBJ = src/glad_$(PROFILE)
+GLAD_OBJ = src/glad_$(PROFILE).o
+LIB_OBJ = $(GLAD_OBJ)
 
-.PHONY: all clean compile_flags libs lua glfw luajit
+.PHONY: all clean compile_flags libs lua glfw luajit exe
 
 all: libs $(EXE)
 
-$(EXE): lua $(OBJ) 
+exe: $(EXE)
+
+$(EXE): $(OBJ) 
 	@mkdir -p $(BUILD)
 	@echo "Compiling $(EXE)..."
-	@$(CC) -o $(EXE) $(OBJ) $(LIB_OBJ) $(CFLAGS) $(LDFLAGS)
+	@$(CXX) -o $(EXE) $(OBJ) $(LIB_OBJ) $(CXXFLAGS) $(LDFLAGS)
 
-libs: glfw luajit
+libs: glfw luajit $(LIB_OBJ)
 
 glfw:
 	@echo "Compiling GLFW..."
@@ -52,10 +55,15 @@ luajit:
 	@echo "Compiling LuaJIT..."
 	@cd third/luajit && $(MAKE) --no-print-directory
 
-$(BUILD)/%_$(PROFILE).o: %.c
+$(BUILD)/%_$(PROFILE).o: %.cc
 	@mkdir -p $(@D)
 	@echo "Compiling $< -> $@..."
-	@$(CC) -o $@ -c $< $(CFLAGS) -MMD -MP
+	@$(CXX) -o $@ -c $< $(CXXFLAGS) -MMD -MP
+
+$(GLAD_OBJ):
+	@mkdir -p $(@D)
+	@echo "Compiling glad..."
+	@$(CXX) -o $@ -c third/glad/src/glad.c $(CXXFLAGS) -MMD -MP
 
 clean:
 	$(RMDIR) $(BUILD)
@@ -63,7 +71,7 @@ clean:
 	@cd third/luajit && make clean
 
 compile_flags:
-	@echo "" > compile_flags.txt
-	@$(foreach flag,$(CFLAGS),echo $(flag) >> compile_flags.txt;)
+	@echo "clang++" > compile_flags.txt
+	@$(foreach flag,$(CXXFLAGS),echo $(flag) >> compile_flags.txt;)
 
 -include $(DEPENDS)
