@@ -18,22 +18,21 @@ Anyway, please, stare at the logo:
 
 ## Building
 #### Linux
-Download GLFW from your favorite package manager and run:
 ```
 $ make
 ```
 #### Windows
-Not supported
+Not supported (yet)
 
 ### Features
-- Rendering System
-- Shaders
+- Basic rendering
+- Lua scripting
 
 ### Planned Features
+- Shaders
 - Textures
 - Input
 - Events
-- Lua scripting
 - 2D audio
 - Render textures
 - Virtual filesystem, save system
@@ -42,9 +41,7 @@ Not supported
 - Pathfinding
 - Input System
 - UI system
+- Editor
 
 ### Low-Priority Planned Features (Probably not gonna happen)
-- Level Editor
-  - Keyframe animation
-- Custom language
 - 3D rendering
