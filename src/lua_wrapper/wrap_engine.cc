@@ -31,6 +31,14 @@ int wrap_isRunning(lua_State* L) {
 int wrap_update(lua_State* L) {
   Engine* engine = getUserdata<Engine>(L, 1, LuaDataType::Engine);
   engine->update();
+
+  lua_getglobal(L, LUA_LIB_NAME);
+  lua_pushnumber(L, engine->time->dt);
+  lua_setfield(L, -2, "dt");
+
+  lua_pushnumber(L, engine->time->fps);
+  lua_setfield(L, -2, "fps");
+
   return 0;
 }
 
