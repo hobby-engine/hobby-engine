@@ -8,8 +8,24 @@
 #include "log.hh"
 
 static int errorHandler(lua_State* L) {
-  const char* errorMessage = lua_tostring(L, -1);
-  error("%s", errorMessage);
+  lua_getglobal(L, "debug");
+  if (!lua_istable(L, -1)) {
+    fatal(
+      "%s\nDebug library has been removed. Cannot provide stack trace.",
+      lua_tostring(L, 1));
+  }
+  lua_getfield(L, -1, "traceback");
+  if (!lua_iscfunction(L, -1)) {
+    fatal(
+      "%s\n'debug.traceback' has been removed. Cannot provide stack trace.",
+      lua_tostring(L, 1));
+  }
+
+  lua_pushvalue(L, 1);
+  lua_pushinteger(L, 2);
+  lua_call(L, 2, 1);
+  fatal("%s\n", lua_tostring(L, -1));
+
   lua_close(L);
   std::exit(1);
 }
@@ -32,6 +48,7 @@ LuaWrapper::LuaWrapper(Engine& engine)
   wrapRenderer(L);
   wrapEngine(L);
   wrapInput(L);
+  wrapLog(L);
 
   int res = luaL_dofile(L, "src/lua/run.lua");
   if (res != LUA_OK) {

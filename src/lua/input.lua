@@ -1,4 +1,9 @@
 function hobby.getInputVector(left, right, up, down)
+  hobby.aux.matchType(left, "number")
+  hobby.aux.matchType(right, "number")
+  hobby.aux.matchType(up, "number")
+  hobby.aux.matchType(down, "number")
+
   local ix, iy = 0, 0
   if hobby.isKeyPressed(left) then ix = ix - 1 end
   if hobby.isKeyPressed(right) then ix = ix + 1 end

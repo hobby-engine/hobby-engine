@@ -11,13 +11,13 @@ function hobby.aux.matchType(v, t)
   if type(v) == "table" and type(t) == "table" then
     local vmt = getmetatable(v)
     if vmt.__id ~= t.__id then
-      error("Expected class type with id " .. t.__id .. ".")
+      error("Expected class type with id " .. t.__id .. ".", 2)
     end
     return
   end
 
   if type(v) ~= t then
-    error("Expected type of '" .. t .. "'.")
+    error("Expected type of '" .. t .. "'.", 2)
   end
 end
 
@@ -42,4 +42,9 @@ function hobby.aux.copyTable(t, deep)
   end
 
   return copy
+end
+
+function hobby.aux.swapRemove(t, i)
+  t[i] = t[#t]
+  t[#t] = nil
 end

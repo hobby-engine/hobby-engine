@@ -3,14 +3,14 @@
 
 int wrap_isKeyPressed(lua_State* L) {
   LuaWrapper* wrapper = getLuaWrapper(L);
-  bool pressed = wrapper->engine.input->isKeyPressed((Key)lua_tonumber(L, 1));
+  bool pressed = wrapper->engine.input->isKeyPressed((Key)luaL_checknumber(L, 1));
   lua_pushboolean(L, pressed);
   return 1;
 }
 
 int wrap_isMousePressed(lua_State* L) {
   LuaWrapper* wrapper = getLuaWrapper(L);
-  bool pressed = wrapper->engine.input->isMousePressed(lua_tonumber(L, 1) - 1);
+  bool pressed = wrapper->engine.input->isMousePressed(luaL_checknumber(L, 1) - 1);
   lua_pushboolean(L, pressed);
   return 1;
 }

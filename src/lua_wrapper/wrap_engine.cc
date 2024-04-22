@@ -44,7 +44,7 @@ int wrap_update(lua_State* L) {
 
 int engineIndexMetamethod(lua_State* L) {
   luaL_getmetatable(L, "enginemt");
-  lua_getfield(L, -1, lua_tostring(L, 2));
+  lua_getfield(L, -1, luaL_checkstring(L, 2));
   return 1;
 }
 

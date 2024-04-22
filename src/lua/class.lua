@@ -17,7 +17,7 @@ end
 local function super(self, fn, ...)
   local mt = getmetatable(self)
   if not mt.__base then -- no base class
-    error("Invalid call to 'base'. No base class.")
+    hobby.fatal("Invalid call to 'base'. No base class.")
   end
 
   local current = mt.__base
