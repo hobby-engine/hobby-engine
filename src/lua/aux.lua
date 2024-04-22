@@ -11,7 +11,7 @@ function hobby.aux.matchType(v, t)
   if type(v) == "table" and type(t) == "table" then
     local vmt = getmetatable(v)
     if vmt.__id ~= t.__id then
-      error("Expected type of '" .. t.__id .. "'.")
+      error("Expected class type with id " .. t.__id .. ".")
     end
     return
   end

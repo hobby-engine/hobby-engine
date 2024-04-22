@@ -1,6 +1,14 @@
 #ifndef _HOBBY_KEY_HH
 #define _HOBBY_KEY_HH
 
+enum class MouseButton {
+  Left   = 0,
+  Right  = 1,
+  Middle = 2,
+  XB1    = 3,
+  XB2    = 4,
+};
+
 enum class Key {
   Space        = 32,
   Apostrophe   = 39,

@@ -1,6 +1,7 @@
 #include "engine.hh"
 #include "opengl/gl_renderer.hh"
 #include "opengl/gl_window.hh"
+#include "opengl/gl_input.hh"
 #include "time.hh"
 #include "window.hh"
 
@@ -9,8 +10,11 @@ Engine::Engine(const WindowSettings& windowSettings) {
     case GraphicsBackend::OpenGL:
       OpenGlWindow* openGlWindow = new OpenGlWindow(windowSettings);
       OpenGlRenderer* openGlRenderer = new OpenGlRenderer(openGlWindow);
+      OpenGlInput* openGlInput = new OpenGlInput(openGlWindow);
+
       window = openGlWindow;
       renderer = openGlRenderer;
+      input = openGlInput;
       break;
   }
 
@@ -20,6 +24,7 @@ Engine::Engine(const WindowSettings& windowSettings) {
 Engine::~Engine() {
   delete window;
   delete renderer;
+  delete input;
   delete time;
 }
 

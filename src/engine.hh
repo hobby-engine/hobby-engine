@@ -1,6 +1,7 @@
 #ifndef _HOBBY_ENGINE_HH
 #define _HOBBY_ENGINE_HH
 
+#include "input.hh"
 #include "renderer.hh"
 #include "time.hh"
 #include "window.hh"
@@ -9,6 +10,7 @@ class Engine {
   public:
     Window* window;
     Renderer* renderer;
+    Input* input;
     Time* time;
 
     Engine(const WindowSettings& windowSettings);

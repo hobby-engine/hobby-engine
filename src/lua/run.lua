@@ -1,5 +1,7 @@
 require("src.lua.aux")
+require("src.lua.input")
 require("src.lua.class")
+require("src.lua.math")
 
 function hobby.run()
   local engine = hobby.getEngine()

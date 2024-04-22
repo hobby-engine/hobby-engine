@@ -30,6 +30,7 @@ LuaWrapper::LuaWrapper(Engine& engine)
 
   wrapRenderer(L);
   wrapEngine(L);
+  wrapInput(L);
 
   int res = luaL_dofile(L, "src/lua/run.lua");
   if (res != LUA_OK) {
