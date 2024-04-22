@@ -8,6 +8,14 @@ function hobby.aux.try(func, ...)
 end
 
 function hobby.aux.matchType(v, t)
+  if type(v) == "table" and type(t) == "table" then
+    local vmt = getmetatable(v)
+    if vmt.__id ~= t.__id then
+      error("Expected type of '" .. t.__id .. "'.")
+    end
+    return
+  end
+
   if type(v) ~= t then
     error("Expected type of '" .. t .. "'.")
   end
