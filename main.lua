@@ -1,5 +1,9 @@
 local Player = hobby.class()
 
+function hobby.onKeyPressed(key, isRepeat)
+  print(key, isRepeat)
+end
+
 function Player:new()
   self.x, self.y = 0, 0
   self.vx, self.vy = 0, 0

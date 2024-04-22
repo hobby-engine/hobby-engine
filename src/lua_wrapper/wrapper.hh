@@ -14,7 +14,7 @@ struct LuaWrapper {
   LuaWrapper(Engine& engine);
   ~LuaWrapper();
 
-  void callFunction(const char* name);
+  void callFunction(const char* name, int argCount, ...);
 };
 
 enum class LuaDataType {

@@ -4,6 +4,7 @@
 #include "opengl/gl_input.hh"
 #include "time.hh"
 #include "window.hh"
+#include "lua_wrapper/wrapper.hh"
 
 Engine::Engine(const WindowSettings& windowSettings) {
   switch (windowSettings.backend) {
@@ -12,6 +13,8 @@ Engine::Engine(const WindowSettings& windowSettings) {
       OpenGlRenderer* openGlRenderer = new OpenGlRenderer(openGlWindow);
       OpenGlInput* openGlInput = new OpenGlInput(openGlWindow);
 
+      glfwSetWindowUserPointer(openGlWindow->handle, this);
+
       window = openGlWindow;
       renderer = openGlRenderer;
       input = openGlInput;
@@ -19,6 +22,8 @@ Engine::Engine(const WindowSettings& windowSettings) {
   }
 
   time = new Time();
+
+  luaWrapper = new LuaWrapper(*this);
 }
 
 Engine::~Engine() {
@@ -26,6 +31,7 @@ Engine::~Engine() {
   delete renderer;
   delete input;
   delete time;
+  delete luaWrapper;
 }
 
 void Engine::update() {

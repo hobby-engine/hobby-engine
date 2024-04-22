@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 
+#include "lua.h"
 #include "lua.hpp"
 
 #include "log.hh"
@@ -47,13 +48,38 @@ LuaWrapper::~LuaWrapper() {
   lua_close(L);
 }
 
-void LuaWrapper::callFunction(const char* name) {
+void LuaWrapper::callFunction(const char* name, int argCount, ...) {
   lua_getglobal(L, LUA_LIB_NAME);
-
   lua_getfield(L, -1, name);
-  if (lua_isfunction(L, -1)) {
-    lua_pcall(L, 0, 0, errorHandlerPos);
+  if (!lua_isfunction(L, -1)) {
+    lua_pop(L, 2);
+    return;
   }
+
+  va_list args;
+  va_start(args, argCount);
+  for (int i = 0; i < argCount; i++) {
+    int type = va_arg(args, int);
+    switch (type) {
+      case LUA_TNIL: {
+        lua_pushnil(L);
+        break;
+      }
+      case LUA_TNUMBER: {
+        double d = va_arg(args, double);
+        lua_pushnumber(L, d);
+        break;
+      }
+      case LUA_TBOOLEAN: {
+        bool b = (bool)va_arg(args, int);
+        lua_pushboolean(L, b);
+        break;
+      }
+    }
+  }
+  va_end(args);
+
+  lua_pcall(L, argCount, 0, errorHandlerPos);
   lua_pop(L, 1);
 }
 

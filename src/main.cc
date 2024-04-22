@@ -9,7 +9,6 @@ int main() {
   windowSettings.canResize = false;
 
   Engine engine {windowSettings};
-  LuaWrapper wrapper {engine};
 
-  wrapper.callFunction("run");
+  engine.luaWrapper->callFunction("run", 0);
 }

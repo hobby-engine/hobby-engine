@@ -6,12 +6,15 @@
 #include "time.hh"
 #include "window.hh"
 
+struct LuaWrapper;
+
 class Engine {
   public:
     Window* window;
     Renderer* renderer;
     Input* input;
     Time* time;
+    LuaWrapper* luaWrapper;
 
     Engine(const WindowSettings& windowSettings);
     ~Engine();
