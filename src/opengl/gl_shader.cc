@@ -97,19 +97,25 @@ void OpenGlShader::apply() {
   glUseProgram(handle);
 }
 
+static int getShaderLocation(unsigned int handle, const char* name) {
+  int location = glGetUniformLocation(handle, name);
+  fatalAssert(location != -1, "Shader uniform '%s' doesn't exist.", name);
+  return location;
+}
+
 void OpenGlShader::sendFloat(const char* name, float value) {
-  glUniform1f(glGetUniformLocation(handle, name), value);
+  glUniform1f(getShaderLocation(handle, name), value);
 }
 
 void OpenGlShader::sendMat4(const char* name, const Mat4& value) {
   glUniformMatrix4fv(
-    glGetUniformLocation(handle, name), 
+    getShaderLocation(handle, name), 
     1, GL_FALSE,
     value.data());
 }
 
 void OpenGlShader::sendColor(const char* name, Color value) {
   glUniform4f(
-    glGetUniformLocation(handle, name),
+    getShaderLocation(handle, name),
     value.r, value.g, value.b, value.a);
 }

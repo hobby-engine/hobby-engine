@@ -1,13 +1,28 @@
-local x = 0
+local Player = hobby.class()
+
+function Player:new()
+  self.x, self.y = 0, 0
+  self.t = 0
+end
+
+function Player:update()
+  self.t = self.t + hobby.dt
+  self.x = math.cos(self.t) * 100 + 400
+  self.y = math.sin(self.t) * 100 + 200
+end
+
+function Player:draw()
+  hobby.renderer.setColor(1, 1, 1)
+  hobby.renderer.drawEllipse(self.x, self.y, 25)
+end
+
+local player = Player()
 
 function hobby.update()
-  local dt = hobby.dt
-  x = x + 100 * dt
+  player:update()
 end
 
 function hobby.draw()
-  hobby.renderer.setColor(1, 0, 0)
-  hobby.renderer.drawRect(400 - 150 / 2, 200 - 150 / 2, 150, 150)
-  hobby.renderer.drawEllipse(x, 50, 50)
+  player:draw()
 end
 
