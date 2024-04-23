@@ -16,6 +16,8 @@ class OpenGlRenderer final : public Renderer {
     void clear(Color color) override;
     void drawRect(float x, float y, float w, float h) override;
     void drawEllipse(float x, float y, float rx, float ry) override;
+    void drawVertices(int count, float* vertices) override;
+    void drawBoid(float x, float y, float b, float h, float r) override;
   private:
     OpenGlWindow* _window;
 

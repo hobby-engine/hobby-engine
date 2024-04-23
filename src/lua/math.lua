@@ -72,11 +72,7 @@ function hobby.vec.distanceTo(x, y, xx, yy)
 end
 
 function hobby.vec.angle(x, y)
-  local angle = math.atan2(y, x)
-  if angle < 0 then
-    angle = angle + math.pi * 2
-  end
-  return angle
+  return math.atan2(y, x)
 end
 
 function hobby.vec.angleTo(x, y, xx, yy)

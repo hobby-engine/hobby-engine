@@ -20,7 +20,7 @@ end
 
 function Player:draw()
   hobby.setDrawColor(1, 1, 1)
-  hobby.drawEllipse(self.x, self.y, 25)
+  hobby.drawBoid(self.x, self.y, 12, 25, hobby.vec.angle(self.vx, self.vy))
 end
 
 function Player:onKeyEvent(_, _, _)

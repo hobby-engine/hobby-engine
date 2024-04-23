@@ -28,6 +28,32 @@ Draws an ellipse. If the last argument is left out, it will draw a circle.
 hobby.drawEllipse(50, 50, 20)
 ```
 
+## `drawVertices(vertices)`
+Draws a table of arbitrary vertices. 
+
+### Parameters
+- `vertices` - `table` - The vertices. Must be formatted like `{x, y, x, y, ...}`.
+
+### Example
+```lua
+hobby.drawVertices({0, -15, 0, 15, 15, 0})
+```
+
+## `drawBoid(x, y, b, h, r)`
+Draws a rotated triangle.
+
+### Parameters
+- `x` - `number` - The x axis.
+- `y` - `number` - The y axis.
+- `b` - `number` - The base of the triangle.
+- `h` - `number` - The height of the triangle.
+- `r` - `number` - The rotation of the triangle.
+
+### Example
+```lua
+hobby.drawBoid(x, y, 12, 25, hobby.vec.angle(self.velx, self.vely))
+```
+
 ## `wipe()`
 Wipes the current render target.
 

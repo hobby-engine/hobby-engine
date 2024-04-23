@@ -34,8 +34,8 @@ void Mat4::setRotation(float r) {
   setIdentity();
   float c = cosf(r);
   float s = sinf(r);
-	e[0] =  c; e[4] = s;
-	e[1] = -s; e[5] = c;
+	e[0] = c; e[4] = -s;
+	e[1] = s; e[5] = c;
 }
 
 void Mat4::translate(float x, float y) {

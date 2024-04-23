@@ -14,6 +14,8 @@ class Renderer {
     virtual void clear(Color color) = 0;
     virtual void drawRect(float x, float y, float w, float h) = 0;
     virtual void drawEllipse(float x, float y, float rx, float ry) = 0;
+    virtual void drawVertices(int count, float* vertices) = 0;
+    virtual void drawBoid(float x, float y, float b, float h, float r) = 0;
   protected:
     Color _currentColor;
 };

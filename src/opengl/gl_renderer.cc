@@ -90,3 +90,45 @@ void OpenGlRenderer::drawEllipse(float x, float y, float rx, float ry) {
   _vertexArray.bind();
   glDrawArrays(GL_TRIANGLE_FAN, 0, circleResolution);
 }
+
+void OpenGlRenderer::drawVertices(int count, float* vertices) {
+  _vertexBuffer.setData(count * sizeof(float), vertices);
+
+  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 2, 0);
+
+  Mat4 transform;
+  transform.setIdentity();
+
+  _colorShader.apply();
+  _colorShader.sendMat4("proj", _projection);
+  _colorShader.sendMat4("trans", transform);
+  _colorShader.sendColor("color", _currentColor);
+
+  _vertexArray.bind();
+  glDrawArrays(GL_TRIANGLES, 0, count);
+}
+
+void OpenGlRenderer::drawBoid(float x, float y, float b, float h, float r) {
+  float vertices[] = {
+    0, -b/2,
+    0,  b/2,
+    h,  0,
+  };
+
+  _vertexBuffer.setData(2 * 3 * sizeof(float), vertices);
+
+  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 2, 0);
+
+  Mat4 transform;
+  transform.setRotation(r);
+  // transform.setIdentity();
+  transform.translate(x, y);
+
+  _colorShader.apply();
+  _colorShader.sendMat4("proj", _projection);
+  _colorShader.sendMat4("trans", transform);
+  _colorShader.sendColor("color", _currentColor);
+
+  _vertexArray.bind();
+  glDrawArrays(GL_TRIANGLES, 0, 3);
+}
