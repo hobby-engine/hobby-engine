@@ -6,10 +6,10 @@ function Event:new()
 end
 
 function Event:connect(fn, bound)
-  hobby.aux.matchType(fn, "function")
+  hobby.matchType(fn, "function")
   if self.indices[fn] then
     -- Don't connect an event twice.
-    hobby.error("Cannot disconnect callback that is not connected.")
+    error("Cannot disconnect callback that is not connected.")
   end
 
   table.insert(self.connections, {
@@ -23,10 +23,10 @@ end
 function Event:disconnect(fn)
   local index = self.indices[fn]
   if not index then
-    hobby.error("Cannot disconnect callback that is not connected.")
+    error("Cannot disconnect callback that is not connected.")
   end
 
-  hobby.aux.swapRemove(self.connections, self.indices[fn])
+  hobby.swapRemove(self.connections, self.indices[fn])
   self.indices[fn] = nil
 end
 

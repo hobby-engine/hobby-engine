@@ -20,16 +20,16 @@ end
 function hobby.run()
   local engine = hobby.getEngine()
 
-  hobby.aux.try(hobby.start)
+  hobby.try(hobby.start)
 
   while engine:isRunning() do
     hobby.pollEvents()
     engine:update()
 
-    hobby.aux.try(hobby.update)
+    hobby.try(hobby.update)
 
     hobby.wipe(0.2, 0.2, 0.2)
-    hobby.aux.try(hobby.draw)
+    hobby.try(hobby.draw)
     hobby.swapDrawBuffers()
   end
 end

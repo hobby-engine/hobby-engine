@@ -1,13 +1,12 @@
-hobby.aux = {}
 
-function hobby.aux.try(func, ...)
+function hobby.try(func, ...)
   if type(func) == "function" then
     return func(...)
   end
   return nil;
 end
 
-function hobby.aux.matchType(v, t)
+function hobby.matchType(v, t)
   if type(v) == "table" and type(t) == "table" then
     local vmt = getmetatable(v)
     if vmt.__id ~= t.__id then
@@ -21,7 +20,7 @@ function hobby.aux.matchType(v, t)
   end
 end
 
-function hobby.aux.copyTable(t, deep)
+function hobby.copyTable(t, deep)
   deep = deep or false
   hobby.matchType(t, "table")
   hobby.matchType(deep, "boolean")
@@ -44,7 +43,7 @@ function hobby.aux.copyTable(t, deep)
   return copy
 end
 
-function hobby.aux.swapRemove(t, i)
+function hobby.swapRemove(t, i)
   t[i] = t[#t]
   t[#t] = nil
 end
