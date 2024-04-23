@@ -11,9 +11,15 @@ static void onKeyPressed(
   Engine* engine = (Engine*)glfwGetWindowUserPointer(window);
   engine->input->setKeyPressed((Key)key, action != GLFW_RELEASE);
 
-  engine->luaWrapper->callFunction(
-    "onKeyPressed", 2,
-    LuaType::Int, key, LuaType::Boolean, (int)action == GLFW_REPEAT);
+  if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+    engine->luaWrapper->callFunction(
+      "onKeyPressed", 2,
+      LuaType::Int, key, LuaType::Boolean, (int)action == GLFW_REPEAT);
+  } else {
+    engine->luaWrapper->callFunction(
+      "onKeyReleased", 1,
+      LuaType::Int, key);
+  }
 }
 
 OpenGlInput::OpenGlInput(const OpenGlWindow* window)

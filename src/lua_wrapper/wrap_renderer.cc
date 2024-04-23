@@ -53,17 +53,15 @@ int wrap_presentScreen(lua_State* L) {
 }
 
 luaL_Reg renderer[] = {
-  {"setColor", wrap_setDrawColor},
+  {"setDrawColor", wrap_setDrawColor},
   {"drawRect", wrap_drawRect},
   {"drawEllipse", wrap_drawEllipse},
-  {"clear", wrap_clearScreen},
-  {"present", wrap_presentScreen},
+  {"wipe", wrap_clearScreen},
+  {"swapDrawBuffers", wrap_presentScreen},
   {nullptr, nullptr},
 };
 
 void wrapRenderer(lua_State* L) {
   lua_getglobal(L, LUA_LIB_NAME);
-  lua_newtable(L);
   registerFunctions(L, renderer);
-  lua_setfield(L, -2, "renderer");
 }

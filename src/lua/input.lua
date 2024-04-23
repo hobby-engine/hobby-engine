@@ -12,10 +12,18 @@ function hobby.getInputVector(left, right, up, down)
   return hobby.vec.normalize(ix, iy)
 end
 
+hobby.keyEvent = hobby.event()
 hobby.keyPressed = hobby.event()
+hobby.keyReleased = hobby.event()
 
 function hobby.onKeyPressed(key, isRepeat)
   hobby.keyPressed:call(key, isRepeat)
+  hobby.keyEvent:call(true, key, isRepeat)
+end
+
+function hobby.onKeyReleased(key)
+  hobby.keyReleased:call(key)
+  hobby.keyEvent:call(false, key, nil)
 end
 
 hobby.LMB = 1

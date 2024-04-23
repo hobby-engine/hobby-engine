@@ -28,8 +28,8 @@ function hobby.run()
 
     hobby.aux.try(hobby.update)
 
-    hobby.renderer.clear(0.2, 0.2, 0.2)
+    hobby.wipe(0.2, 0.2, 0.2)
     hobby.aux.try(hobby.draw)
-    hobby.renderer.present()
+    hobby.swapDrawBuffers()
   end
 end
