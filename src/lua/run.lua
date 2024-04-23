@@ -1,7 +1,21 @@
 require("src.lua.aux")
-require("src.lua.input")
 require("src.lua.class")
+require("src.lua.event")
+require("src.lua.input")
 require("src.lua.math")
+
+function print(...)
+  local msg = ""
+  local args = {...}
+  for i, v in ipairs(args) do
+    msg = msg .. tostring(v)
+    if i ~= #args then
+      msg = msg .. "\t"
+    end
+  end
+
+  hobby.log(msg)
+end
 
 function hobby.run()
   local engine = hobby.getEngine()

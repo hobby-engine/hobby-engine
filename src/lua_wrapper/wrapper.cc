@@ -50,14 +50,12 @@ LuaWrapper::LuaWrapper(Engine& engine)
   wrapInput(L);
   wrapLog(L);
 
-  int res = luaL_dofile(L, "src/lua/run.lua");
-  if (res != LUA_OK) {
-    errorHandler(L);
+  if (luaL_dofile(L, "src/lua/run.lua") != LUA_OK) {
+    fatal(lua_tostring(L, -1));
   }
 
-  res = luaL_dofile(L, "main.lua");
-  if (res != LUA_OK) {
-    errorHandler(L);
+  if (luaL_dofile(L, "main.lua") != LUA_OK) {
+    fatal(lua_tostring(L, -1));
   }
 }
 
@@ -69,29 +67,35 @@ void LuaWrapper::callFunction(const char* name, int argCount, ...) {
   lua_getglobal(L, LUA_LIB_NAME);
   lua_getfield(L, -1, name);
   if (!lua_isfunction(L, -1)) {
-    lua_pop(L, 2);
-    return;
+    fatal("Cannot call non-function value '%s'.", name);
   }
 
   va_list args;
   va_start(args, argCount);
   for (int i = 0; i < argCount; i++) {
-    int type = va_arg(args, int);
+    LuaType type = (LuaType)va_arg(args, int);
     switch (type) {
-      case LUA_TNIL: {
+      case LuaType::Nil: {
         lua_pushnil(L);
         break;
       }
-      case LUA_TNUMBER: {
+      case LuaType::Int: {
+        int i = va_arg(args, int);
+        lua_pushinteger(L, i);
+        break;
+      }
+      case LuaType::Number: {
         double d = va_arg(args, double);
         lua_pushnumber(L, d);
         break;
       }
-      case LUA_TBOOLEAN: {
-        bool b = (bool)va_arg(args, int);
-        lua_pushboolean(L, b);
+      case LuaType::Boolean: {
+        lua_pushboolean(L, va_arg(args, int));
         break;
       }
+      default:
+        fatal("Unsupported value '%d'.", type);
+        break;
     }
   }
   va_end(args);

@@ -6,6 +6,13 @@
 
 #define LUA_LIB_NAME "hobby"
 
+enum class LuaType {
+  Nil = 0,
+  Number,
+  Int,
+  Boolean,
+};
+
 struct LuaWrapper {
   Engine& engine;
   lua_State* L;

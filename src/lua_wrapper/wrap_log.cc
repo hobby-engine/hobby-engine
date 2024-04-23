@@ -55,9 +55,4 @@ luaL_Reg logfn[] = {
 void wrapLog(lua_State* L) {
   lua_getglobal(L, LUA_LIB_NAME);
   registerFunctions(L, logfn);
-
-  lua_pushcfunction(L, wrap_log);
-  lua_setglobal(L, "print");
-
-  // Error will already do what it's expected to do
 }

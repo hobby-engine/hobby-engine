@@ -1,14 +1,12 @@
 local Player = hobby.class()
 
-function hobby.onKeyPressed(key, isRepeat)
-  print(key, isRepeat)
-end
-
 function Player:new()
   self.x, self.y = 0, 0
   self.vx, self.vy = 0, 0
   self.speed = 300
   self.accel = 5
+
+  hobby.keyPressed:connect(self.onKeyPressed, self)
 end
 
 function Player:update()
@@ -29,6 +27,16 @@ function Player:draw()
   end
   hobby.renderer.drawEllipse(self.x, self.y, 25)
 end
+
+function Player:onKeyPressed(key, isRepeat)
+  print("player", key, isRepeat)
+end
+
+local function onKeyPressed(key, isRepeat)
+  print("standalone", key, isRepeat)
+end
+
+hobby.keyPressed:connect(onKeyPressed)
 
 local player = Player()
 

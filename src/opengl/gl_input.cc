@@ -13,7 +13,7 @@ static void onKeyPressed(
 
   engine->luaWrapper->callFunction(
     "onKeyPressed", 2,
-    LUA_TNUMBER, key, LUA_TBOOLEAN, action == GLFW_REPEAT);
+    LuaType::Int, key, LuaType::Boolean, (int)action == GLFW_REPEAT);
 }
 
 OpenGlInput::OpenGlInput(const OpenGlWindow* window)
