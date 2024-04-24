@@ -18,6 +18,12 @@ class OpenGlRenderer final : public Renderer {
     void drawEllipse(float x, float y, float rx, float ry) override;
     void drawVertices(int count, float* vertices) override;
     void drawBoid(float x, float y, float b, float h, float r) override;
+    void draw(
+        const Texture2D& texture,
+        float x, float y,
+        float r,
+        float sx, float sy,
+        float ox, float oy) override;
   private:
     OpenGlWindow* _window;
 
@@ -26,6 +32,7 @@ class OpenGlRenderer final : public Renderer {
     VertexArray _vertexArray;
 
     OpenGlShader _colorShader;
+    OpenGlShader _textureShader;
 
     Mat4 _projection;
 };

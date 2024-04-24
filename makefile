@@ -23,17 +23,18 @@ BUILD = bin
 SRC = src/main.cc src/window.cc src/log.cc src/shader.cc src/mat4.cc \
 			src/engine.cc src/time.cc \
 			src/opengl/gl_window.cc src/opengl/gl_renderer.cc src/opengl/gl_shader.cc \
-			src/opengl/vertex.cc src/opengl/gl_input.cc \
+			src/opengl/vertex.cc src/opengl/gl_input.cc src/opengl/gl_texture.cc \
 			src/lua_wrapper/wrapper.cc src/lua_wrapper/wrap_renderer.cc \
 			src/lua_wrapper/wrap_engine.cc src/lua_wrapper/wrap_input.cc \
-			src/lua_wrapper/wrap_log.cc
+			src/lua_wrapper/wrap_log.cc src/lua_wrapper/wrap_texture.cc
 
 OBJ = $(SRC:%.cc=$(BUILD)/%_$(PROFILE).o)
 
 DEPENDS = $(OBJ:.o=.d)
 EXE = $(BUILD)/hobby_$(PROFILE)
+STBI_OBJ = src/stbi_$(PROFILE).o
 GLAD_OBJ = src/glad_$(PROFILE).o
-LIB_OBJ = $(GLAD_OBJ)
+LIB_OBJ = $(GLAD_OBJ) $(STBI_OBJ)
 
 .PHONY: all clean compile_flags libs lua glfw luajit exe
 
@@ -65,6 +66,11 @@ $(GLAD_OBJ):
 	@mkdir -p $(@D)
 	@echo "Compiling glad..."
 	@$(CXX) -o $@ -c third/glad/src/glad.c $(CXXFLAGS) -MMD -MP
+
+$(STBI_OBJ):
+	@mkdir -p $(@D)
+	@echo "Compiling stbi..."
+	@$(CXX) -o $@ -c third/stb/stb_image.c $(CXXFLAGS) -MMD -MP
 
 clean:
 	$(RMDIR) $(BUILD)

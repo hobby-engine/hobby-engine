@@ -1,6 +1,8 @@
 #ifndef _HOBBY_RENDERER_HH
 #define _HOBBY_RENDERER_HH
 
+#include "texture.hh"
+
 struct Color {
   double r, g, b, a;
 };
@@ -16,6 +18,12 @@ class Renderer {
     virtual void drawEllipse(float x, float y, float rx, float ry) = 0;
     virtual void drawVertices(int count, float* vertices) = 0;
     virtual void drawBoid(float x, float y, float b, float h, float r) = 0;
+    virtual void draw(
+        const Texture2D& texture,
+        float x, float y,
+        float r,
+        float sx, float sy,
+        float ox, float oy) = 0;
   protected:
     Color _currentColor;
 };

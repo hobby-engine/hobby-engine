@@ -7,6 +7,8 @@ function Player:new()
   self.speed = 300
   self.accel = 5
 
+  self.texture = hobby.texture2d("res/test_img.png")
+
   hobby.keyEvent:connect(self.onKeyEvent, self)
 end
 
@@ -20,6 +22,7 @@ end
 
 function Player:draw()
   hobby.setDrawColor(1, 1, 1)
+  self.texture:draw(self.x, self.y, 0, 0.4)
   hobby.drawBoid(self.x, self.y, 12, 25, hobby.vec.angle(self.vx, self.vy))
 end
 

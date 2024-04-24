@@ -49,6 +49,7 @@ LuaWrapper::LuaWrapper(Engine& engine)
   wrapEngine(L);
   wrapInput(L);
   wrapLog(L);
+  wrapTexture(L);
 
   if (luaL_dofile(L, "src/lua/run.lua") != LUA_OK) {
     fatal(lua_tostring(L, -1));

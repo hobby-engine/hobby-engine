@@ -1,15 +1,19 @@
 #include "gl_renderer.hh"
 
-#include "glad/glad.h"
-#include "mat4.hh"
 #include <cmath>
+
+#include "glad/glad.h"
+
+#include "mat4.hh"
+#include "texture.hh"
 
 OpenGlRenderer::OpenGlRenderer(OpenGlWindow* window)
   : _window(window),
     _vertexBuffer(VertexBuffer(VertexBufferType::Array, false)),
     _indexBuffer(VertexBuffer(VertexBufferType::Index, false)),
     _vertexArray(VertexArray()),
-    _colorShader(OpenGlShader("res/color.vert", "res/color.frag")) {
+    _colorShader(OpenGlShader("res/color.vert", "res/color.frag")),
+    _textureShader(OpenGlShader("res/texture.vert", "res/texture.frag")) {
 }
 
 void OpenGlRenderer::update() {
@@ -131,4 +135,51 @@ void OpenGlRenderer::drawBoid(float x, float y, float b, float h, float r) {
 
   _vertexArray.bind();
   glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+void OpenGlRenderer::draw(
+    const Texture2D& texture,
+    float x, float y,
+    float r,
+    float sx, float sy,
+    float ox, float oy) {
+
+  float w = (float)texture.getWidth();
+  float h = (float)texture.getHeight();
+  float left = -ox * sx, right = (w - ox) * sx;
+  float top = -oy * sy, bottom = (h - oy) * sy;
+
+  float vertices[] = {
+    left,  top,    0, 0,
+    left,  bottom, 0, 1,
+    right, bottom, 1, 1,
+    right, top,    1, 0
+  };
+
+  _vertexBuffer.setData(4 * 4 * sizeof(float), vertices);
+
+  int indices[] = {
+    0, 1, 2, 0, 2, 3 
+  };
+
+  _indexBuffer.setData(6 * sizeof(unsigned int), indices);
+
+  _vertexArray.setAttribute(
+    _vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 4, 0);
+  _vertexArray.setAttribute(
+    _vertexBuffer, 1, 2, GL_FLOAT, sizeof(float) * 4, 2 * sizeof(float));
+
+  Mat4 transform;
+  transform.setRotation(r);
+  transform.scale(sx, sy);
+  transform.translate(x, y);
+
+  _textureShader.apply();
+  _textureShader.sendMat4("proj", _projection);
+  _textureShader.sendMat4("trans", transform);
+
+  texture.bind();
+  _indexBuffer.bind();
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
