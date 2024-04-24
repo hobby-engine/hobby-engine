@@ -2,13 +2,10 @@
 #include "wrapper.hh"
 
 int wrap_texture2d(lua_State* L) {
-  LuaWrapper* wrapper = getLuaWrapper(L);
   const char* path = luaL_checkstring(L, 1);
 
-  createLuaData(
-    L,
-    new OpenGlTexture2D(path), LuaDataType::Texture2D,
-    "texture2dmt");
+  auto texture2d = new OpenGlTexture2D(path);
+  createLuaData(L, texture2d, LuaDataType::Texture2D, "texture2dmt");
   return 1;
 }
 

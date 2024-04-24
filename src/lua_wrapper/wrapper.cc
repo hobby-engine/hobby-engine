@@ -24,9 +24,11 @@ static int errorHandler(lua_State* L) {
   lua_pushvalue(L, 1);
   lua_pushinteger(L, 2);
   lua_call(L, 2, 1);
-  fatal("%s\n", lua_tostring(L, -1));
 
+  const char* str = lua_tostring(L, -1);
   lua_close(L);
+  fatal("%s\n", str);
+
   std::exit(1);
 }
 

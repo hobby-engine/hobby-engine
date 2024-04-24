@@ -3,6 +3,7 @@ require("src.lua.class")
 require("src.lua.event")
 require("src.lua.input")
 require("src.lua.math")
+require("src.lua.set")
 
 function print(...)
   local msg = ""

@@ -49,3 +49,11 @@ function hobby.draw()
   player:draw()
 end
 
+local set = hobby.set()
+set:add({1, 2, 3})
+set:add("pasta sauce")
+set:add(2)
+set:add(true)
+set:add(4)
+set:remove(2)
+print(set, set:has(2), set:has(true))
