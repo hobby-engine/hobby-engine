@@ -6,6 +6,7 @@ function Player:new()
   self.ix, self.iy = 0, 0
   self.speed = 300
   self.accel = 5
+  self.t = 0
 
   self.texture = hobby.texture2d("res/test_img.png")
 
@@ -13,6 +14,8 @@ function Player:new()
 end
 
 function Player:update()
+  self.t = self.t + hobby.dt
+
   self.vx = hobby.dtLerp(self.vx, self.ix * self.speed, self.accel)
   self.vy = hobby.dtLerp(self.vy, self.iy * self.speed, self.accel)
 
@@ -22,8 +25,10 @@ end
 
 function Player:draw()
   hobby.setDrawColor(1, 1, 1)
-  self.texture:draw(self.x, self.y, 0, 0.4)
-  hobby.drawBoid(self.x, self.y, 12, 25, hobby.vec.angle(self.vx, self.vy))
+  local s = 0.4
+  local w, h = self.texture:getSize()
+  self.texture:draw(self.x, self.y, self.t, s, s, -w / 2, -h / 2)
+  hobby.drawEllipse(self.x, self.y, 12)
 end
 
 function Player:onKeyEvent(_, _, _)

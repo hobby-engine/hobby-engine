@@ -146,8 +146,8 @@ void OpenGlRenderer::draw(
 
   float w = (float)texture.getWidth();
   float h = (float)texture.getHeight();
-  float left = -ox * sx, right = (w - ox) * sx;
-  float top = -oy * sy, bottom = (h - oy) * sy;
+  float left = ox * sx, right = (w + ox) * sx;
+  float top = oy * sy, bottom = (h + oy) * sy;
 
   float vertices[] = {
     left,  top,    0, 0,
