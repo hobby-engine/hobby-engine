@@ -1,6 +1,6 @@
 local Player = hobby.thing {
   "Player",
-  hp = {0, 100},
+  hp = {min=0, max=100},
   speed = 300,
   accel = 10,
 }

@@ -11,12 +11,12 @@ local function getDefaultsTable(opts)
     end
 
     if type(v) == "table" then -- This is a range
-      if #v ~= 2 then
-        error("Range must have an upper and lower bound.", 3)
+      if not v.min or not v.max then
+        error("Range '" .. k .. "' must have an upper and lower bound.", 3)
       end
 
-      local lower = v[1]
-      local upper = v[2]
+      local lower = v.min
+      local upper = v.max
 
       hobby.matchType(lower, "number")
       hobby.matchType(upper, "number")
@@ -24,7 +24,7 @@ local function getDefaultsTable(opts)
       local default = v.default
       if default then
         if default < lower or default > upper then
-          error("Range default is out of bounds.", 3)
+          error("Default for range '" .. k .. "' is out of bounds.", 3)
         end
         defaults[k] = default
       else
