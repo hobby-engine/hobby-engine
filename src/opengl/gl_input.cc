@@ -9,7 +9,6 @@ static void onKeyPressed(
     GLFWwindow* window, 
     int key, UNUSED int scancode, int action, UNUSED int mode) {
   Engine* engine = (Engine*)glfwGetWindowUserPointer(window);
-  engine->input->setKeyPressed((Key)key, action != GLFW_RELEASE);
 
   if (action == GLFW_PRESS || action == GLFW_REPEAT) {
     engine->luaWrapper->callFunction(
@@ -29,17 +28,6 @@ OpenGlInput::OpenGlInput(const OpenGlWindow* window)
   }
 
   glfwSetKeyCallback(window->handle, onKeyPressed);
-}
-
-void OpenGlInput::setKeyPressed(Key key, bool isPressed) {
-  justPressed[(int)key] = isPressed && !state[(int)key];
-  state[(int)key] = isPressed;
-}
-
-void OpenGlInput::update() {
-  for (int i = 0; i < (int)Key::Max; i++) {
-    justPressed[i] = false;
-  }
 }
 
 bool OpenGlInput::isKeyPressed(Key key) {

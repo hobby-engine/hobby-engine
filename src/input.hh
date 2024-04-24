@@ -7,8 +7,6 @@ class Input {
   public:
     virtual ~Input() {}
   
-    virtual void setKeyPressed(Key key, bool isPressed) = 0;
-    virtual void update() = 0;
     virtual bool isKeyPressed(Key key) = 0;
     virtual bool isMousePressed(int button) = 0;
 };

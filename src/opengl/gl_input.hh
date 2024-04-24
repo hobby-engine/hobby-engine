@@ -8,8 +8,6 @@ class OpenGlInput final : public Input {
   public:
     OpenGlInput(const OpenGlWindow* window);
 
-    void setKeyPressed(Key key, bool isPressed) override;
-    void update() override;
     bool isKeyPressed(Key key) override;
     bool isMousePressed(int button) override;
   private:
