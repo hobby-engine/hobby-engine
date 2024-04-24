@@ -8,6 +8,8 @@
 #include "log.hh"
 
 static int errorHandler(lua_State* L) {
+  const char* msg = lua_tostring(L, -1);
+
   lua_getglobal(L, "debug");
   if (!lua_istable(L, -1)) {
     fatal(
@@ -21,15 +23,15 @@ static int errorHandler(lua_State* L) {
       lua_tostring(L, 1));
   }
 
-  lua_pushvalue(L, 1);
-  lua_pushinteger(L, 2);
-  lua_call(L, 2, 1);
+  lua_call(L, 0, 1);
 
-  const char* str = lua_tostring(L, -1);
-  lua_close(L);
-  fatal("%s\n", str);
-
-  std::exit(1);
+  if (lua_isstring(L, -1)) {
+    const char* trace = lua_tostring(L, -1);
+    fatal("%s\n%s", msg, trace);
+  } else {
+    fatal("%s", msg);
+  }
+  return 0;
 }
 
 LuaWrapper::LuaWrapper(Engine& engine)
@@ -54,11 +56,11 @@ LuaWrapper::LuaWrapper(Engine& engine)
   wrapTexture(L);
 
   if (luaL_dofile(L, "src/lua/run.lua") != LUA_OK) {
-    fatal(lua_tostring(L, -1));
+    errorHandler(L);
   }
 
   if (luaL_dofile(L, "main.lua") != LUA_OK) {
-    fatal(lua_tostring(L, -1));
+    errorHandler(L);
   }
 }
 

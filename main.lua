@@ -28,7 +28,7 @@ function Player:draw()
   hobby.drawBoid(self.x, self.y, 12, 24, hobby.vec.angle(self.vx, self.vy))
 end
 
-local player = Player:create({accel=0.2})
+local player = Player()
 
 function hobby.update()
   player:update()
@@ -37,12 +37,3 @@ end
 function hobby.draw()
   player:draw()
 end
-
-local set = hobby.set()
-set:add({1, 2, 3})
-set:add("pasta sauce")
-set:add(2)
-set:add(true)
-set:add(4)
-set:remove(2)
-print(set, set:has(2), set:has(true))
