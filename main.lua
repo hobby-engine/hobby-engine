@@ -11,8 +11,8 @@ function Player:new()
 end
 
 function Player:update()
-  self.vx = hobby.math.dtLerp(self.vx, self.ix * self.speed, self.accel)
-  self.vy = hobby.math.dtLerp(self.vy, self.iy * self.speed, self.accel)
+  self.vx = hobby.dtLerp(self.vx, self.ix * self.speed, self.accel)
+  self.vy = hobby.dtLerp(self.vy, self.iy * self.speed, self.accel)
 
   self.x = self.x + self.vx * hobby.dt
   self.y = self.y + self.vy * hobby.dt

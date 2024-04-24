@@ -1,31 +1,31 @@
 hobby.math = {}
 
-function hobby.math.frac(x)
+function hobby.frac(x)
   return x - math.floor(x)
 end
 
-function hobby.math.lerp(a, b, t)
+function hobby.lerp(a, b, t)
   return (b - a) * t + a
 end
 
-function hobby.math.dtLerp(a, b, t)
-  return hobby.math.lerp(b, a, 0.5^(hobby.dt * t))
+function hobby.dtLerp(a, b, t)
+  return hobby.lerp(b, a, 0.5^(hobby.dt * t))
 end
 
-function hobby.math.angleDiff(a, b)
+function hobby.angleDiff(a, b)
   local diff = (b - a) % (math.pi * 2)
   return (2 * diff) % (math.pi * 2) - diff
 end
 
-function hobby.math.lerpAngle(a, b, t)
-  return a + hobby.math.angleDiff(a, b) * (1 - 0.5^t)
+function hobby.lerpAngle(a, b, t)
+  return a + hobby.angleDiff(a, b) * (1 - 0.5^t)
 end
 
-function hobby.math.wrap(a, min, max)
+function hobby.wrap(a, min, max)
   return (a % (max - min)) + min
 end
 
-function hobby.math.clamp(a, min, max)
+function hobby.clamp(a, min, max)
   if a > max then
     return max
   elseif a < min then
@@ -34,11 +34,11 @@ function hobby.math.clamp(a, min, max)
   return a
 end
 
-function hobby.math.sign(a)
+function hobby.sign(a)
   return a < 0 and -1 or 1
 end
 
-function hobby.math.snapped(a, step)
+function hobby.snapped(a, step)
   if step ~= 0 then
     return math.floor(a / step + 0.5) * step
   end
