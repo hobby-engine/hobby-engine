@@ -5,12 +5,9 @@ local Player = hobby.thing {
   accel = 10,
 }
 
-function Player:new(p)
-  self.hp    = p.hp
-  self.speed = p.speed
-  self.accel = p.accel
-
+function Player:new()
   self.vx, self.vy = 0, 0
+  self.texture = hobby.texture2d("res/test_img.png")
 end
 
 function Player:update()
@@ -26,6 +23,7 @@ end
 function Player:draw()
   hobby.setDrawColor(1, 1, 1)
   hobby.drawBoid(self.x, self.y, 12, 24, hobby.vec.angle(self.vx, self.vy))
+  self.texture:draw(self.x, self.y, 0, 0.4)
 end
 
 local player = Player()

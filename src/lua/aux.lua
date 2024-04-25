@@ -20,6 +20,26 @@ function hobby.matchType(v, t)
   end
 end
 
+function hobby.requireKeys(keys, tbl)
+  for _, k in ipairs(keys) do
+    if tbl[k] == nil then
+      error("Table required key '" .. k .. "', but it had none.", 1)
+    end
+  end
+end
+
+function hobby.overrideKeys(dest, src)
+  for k, v in pairs(src) do
+    dest[k] = v
+  end
+end
+
+function hobby.injectKeys(dest, src)
+  for k, v in pairs(src) do
+    dest[k] = dest[k] or v
+  end
+end
+
 function hobby.copyTable(t, deep)
   deep = deep or false
   hobby.matchType(t, "table")

@@ -47,27 +47,14 @@ local function default(t, ...)
   instance.x = 0
   instance.y = 0
 
-  if instance.new then
-    if not internal[t] then
-      error("Thing does not have defaults.", 1)
-    end
-
-    instance:new(internal[t].defaults, ...)
+  if not internal[t] then
+    error("Thing does not have defaults.", 1)
   end
-  return instance
-end
 
-local function create(t, p, ...)
-  local instance = setmetatable({}, t)
-  instance.x = 0
-  instance.y = 0
+  hobby.injectKeys(instance, internal[t].defaults)
 
   if instance.new then
-    local defaults = internal[t].defaults
-    for k, v in pairs(defaults) do
-      p[k] = p[k] or v
-    end
-    instance:new(p, ...)
+    instance:new(...)
   end
   return instance
 end
@@ -89,6 +76,5 @@ function hobby.thing(opts)
   end
 
   getmetatable(thing).__call = default
-  thing.create = create
   return thing
 end
