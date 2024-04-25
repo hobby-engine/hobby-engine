@@ -41,11 +41,13 @@ OpenGlTexture2D::OpenGlTexture2D(const char* path) {
 
   fatalAssert(data != nullptr, "Failed to load image '%s'", path);
 
-  int channels;
+  int channels = -1;
   
   switch (_channelCount) {
     case 3: channels = GL_RGB; break;
     case 4: channels = GL_RGBA; break;
+    default:
+      fatal("Unsupported channel format.");
   }
 
   glGenTextures(1, &handle);
