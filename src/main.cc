@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "engine.hh"
 #include "lua_wrapper/wrapper.hh"
 
