@@ -54,6 +54,7 @@ LuaWrapper::LuaWrapper(Engine& engine)
   wrapInput(L);
   wrapLog(L);
   wrapTexture(L);
+  wrapWindow(L);
 
   if (luaL_dofile(L, "src/lua/run.lua") != LUA_OK) {
     errorHandler(L);

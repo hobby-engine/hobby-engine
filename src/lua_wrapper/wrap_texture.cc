@@ -1,7 +1,7 @@
 #include "opengl/gl_texture.hh"
 #include "wrapper.hh"
 
-int wrap_texture2d(lua_State* L) {
+static int wrap_texture2d(lua_State* L) {
   const char* path = luaL_checkstring(L, 1);
 
   auto texture2d = new OpenGlTexture2D(path);
@@ -14,19 +14,19 @@ luaL_Reg texture[] = {
   {nullptr, nullptr},
 };
 
-int texture2d__index(lua_State* L) {
+static int texture2d__index(lua_State* L) {
   luaL_getmetatable(L, "texture2dmt");
   lua_getfield(L, -1, luaL_checkstring(L, 2));
   return 1;
 }
 
-int texture2d__gc(lua_State* L) {
+static int texture2d__gc(lua_State* L) {
   Texture2D* texture2d = getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
   delete texture2d;
   return 0;
 }
 
-int wrap_draw(lua_State* L) {
+static int wrap_draw(lua_State* L) {
   Texture2D* texture2d = getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
   float x = luaL_checknumber(L, 2);
   float y = luaL_checknumber(L, 3);
@@ -43,19 +43,19 @@ int wrap_draw(lua_State* L) {
   return 0;
 }
 
-int wrap_getWidth(lua_State* L) {
+static int wrap_getWidth(lua_State* L) {
   Texture2D* texture2d = getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
   lua_pushnumber(L, texture2d->getWidth());
   return 1;
 }
 
-int wrap_getHeight(lua_State* L) {
+static int wrap_getHeight(lua_State* L) {
   Texture2D* texture2d = getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
   lua_pushnumber(L, texture2d->getHeight());
   return 1;
 }
 
-int wrap_getSize(lua_State* L) {
+static int wrap_getSize(lua_State* L) {
   Texture2D* texture2d = getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
   lua_pushnumber(L, texture2d->getWidth());
   lua_pushnumber(L, texture2d->getHeight());

@@ -44,6 +44,7 @@ void wrapRenderer(lua_State* L);
 void wrapInput(lua_State* L);
 void wrapLog(lua_State* L);
 void wrapTexture(lua_State* L);
+void wrapWindow(lua_State* L);
 
 template <typename T>
 void createLuaData(lua_State* L, T* data, LuaDataType type, const char* mt) {
