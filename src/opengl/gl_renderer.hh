@@ -4,12 +4,12 @@
 #include "mat4.hh"
 #include "renderer.hh"
 #include "gl_shader.hh"
-#include "gl_window.hh"
+#include "glfw/glfw_window.hh"
 #include "vertex.hh"
 
 class OpenGlRenderer final : public Renderer {
   public:
-    OpenGlRenderer(OpenGlWindow* window);
+    OpenGlRenderer(GlfwWindow* window);
 
     void update() override;
     void setColor(Color color) override;
@@ -25,7 +25,7 @@ class OpenGlRenderer final : public Renderer {
         float sx, float sy,
         float ox, float oy) override;
   private:
-    OpenGlWindow* _window;
+    GlfwWindow* _window;
 
     VertexBuffer _vertexBuffer;
     VertexBuffer _indexBuffer;

@@ -1,4 +1,4 @@
-#include "gl_input.hh"
+#include "glfw_input.hh"
 
 #include "GLFW/glfw3.h"
 #include "common.hh"
@@ -21,7 +21,7 @@ static void onKeyPressed(
   }
 }
 
-OpenGlInput::OpenGlInput(const OpenGlWindow* window)
+GlfwInput::GlfwInput(const GlfwWindow* window)
     : _window(window) {
   for (int i = 0; i < (int)Key::Max; i++) {
     state[i] = false;
@@ -30,12 +30,12 @@ OpenGlInput::OpenGlInput(const OpenGlWindow* window)
   glfwSetKeyCallback(window->handle, onKeyPressed);
 }
 
-bool OpenGlInput::isKeyPressed(Key key) {
+bool GlfwInput::isKeyPressed(Key key) {
   int state = glfwGetKey(_window->handle, (int)key);
   return state == GLFW_PRESS;
 }
 
-bool OpenGlInput::isMousePressed(int button) {
+bool GlfwInput::isMousePressed(int button) {
   int state = glfwGetMouseButton(_window->handle, button);
   return state == GLFW_PRESS;
 }

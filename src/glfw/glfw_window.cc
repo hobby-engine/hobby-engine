@@ -1,4 +1,4 @@
-#include "gl_window.hh"
+#include "glfw_window.hh"
 
 #include "GLFW/glfw3.h"
 #include "log.hh"
@@ -8,7 +8,7 @@ static void onFramebufferSizeChanged(GLFWwindow* window, int width, int height) 
   glViewport(0, 0, width, height);
 }
 
-OpenGlWindow::OpenGlWindow(const WindowSettings& settings) {
+GlfwWindow::GlfwWindow(const WindowSettings& settings) {
   glfwInit();
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -34,30 +34,30 @@ OpenGlWindow::OpenGlWindow(const WindowSettings& settings) {
   glfwSetFramebufferSizeCallback(handle, onFramebufferSizeChanged);
 }
 
-OpenGlWindow::~OpenGlWindow() {
+GlfwWindow::~GlfwWindow() {
   glfwDestroyWindow(handle);
 }
 
-const char* OpenGlWindow::getTitle() const {
+const char* GlfwWindow::getTitle() const {
   return glfwGetWindowTitle(handle);
 }
 
-void OpenGlWindow::setTitle(const char* title) {
+void GlfwWindow::setTitle(const char* title) {
   glfwSetWindowTitle(handle, title);
 }
 
-void OpenGlWindow::getSize(int& w, int& h) const {
+void GlfwWindow::getSize(int& w, int& h) const {
   glfwGetWindowSize(handle, &w, &h);
 }
 
-void OpenGlWindow::setSize(int w, int h) {
+void GlfwWindow::setSize(int w, int h) {
   glfwSetWindowSize(handle, w, h);
 }
 
-bool OpenGlWindow::isClosed() const {
+bool GlfwWindow::isClosed() const {
   return glfwWindowShouldClose(handle);
 }
 
-void OpenGlWindow::present() const {
+void GlfwWindow::present() const {
   glfwSwapBuffers(handle);
 }

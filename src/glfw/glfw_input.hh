@@ -2,16 +2,16 @@
 #define _HOBBY_OPENGL_INPUT_HH
 
 #include "input.hh"
-#include "gl_window.hh"
+#include "glfw_window.hh"
 
-class OpenGlInput final : public Input {
+class GlfwInput final : public Input {
   public:
-    OpenGlInput(const OpenGlWindow* window);
+    GlfwInput(const GlfwWindow* window);
 
     bool isKeyPressed(Key key) override;
     bool isMousePressed(int button) override;
   private:
-    const OpenGlWindow* _window;
+    const GlfwWindow* _window;
     bool state[(int)Key::Max];
     bool justPressed[(int)Key::Max];
 };

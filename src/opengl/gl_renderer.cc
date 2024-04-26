@@ -7,7 +7,7 @@
 #include "mat4.hh"
 #include "texture.hh"
 
-OpenGlRenderer::OpenGlRenderer(OpenGlWindow* window)
+OpenGlRenderer::OpenGlRenderer(GlfwWindow* window)
   : _window(window),
     _vertexBuffer(VertexBuffer(VertexBufferType::Array, false)),
     _indexBuffer(VertexBuffer(VertexBufferType::Index, false)),

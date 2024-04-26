@@ -1,7 +1,7 @@
 #include "engine.hh"
 #include "opengl/gl_renderer.hh"
-#include "opengl/gl_window.hh"
-#include "opengl/gl_input.hh"
+#include "glfw/glfw_window.hh"
+#include "glfw/glfw_input.hh"
 #include "time.hh"
 #include "window.hh"
 #include "lua_wrapper/wrapper.hh"
@@ -9,15 +9,15 @@
 Engine::Engine(const WindowSettings& windowSettings) {
   switch (windowSettings.backend) {
     case GraphicsBackend::OpenGL:
-      OpenGlWindow* openGlWindow = new OpenGlWindow(windowSettings);
-      OpenGlRenderer* openGlRenderer = new OpenGlRenderer(openGlWindow);
-      OpenGlInput* openGlInput = new OpenGlInput(openGlWindow);
+      GlfwWindow* glfwWindow = new GlfwWindow(windowSettings);
+      OpenGlRenderer* openGlRenderer = new OpenGlRenderer(glfwWindow);
+      GlfwInput* glfwInput = new GlfwInput(glfwWindow);
 
-      glfwSetWindowUserPointer(openGlWindow->handle, this);
+      glfwSetWindowUserPointer(glfwWindow->handle, this);
 
-      window = openGlWindow;
+      window = glfwWindow;
       renderer = openGlRenderer;
-      input = openGlInput;
+      input = glfwInput;
       break;
   }
 

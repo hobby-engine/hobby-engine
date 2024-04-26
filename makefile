@@ -20,10 +20,11 @@ endif
 
 BUILD = bin
 
-SRC = src/main.cc src/window.cc src/log.cc src/shader.cc src/mat4.cc \
+SRC = src/main.cc src/log.cc src/shader.cc src/mat4.cc \
 			src/engine.cc src/time.cc \
-			src/opengl/gl_window.cc src/opengl/gl_renderer.cc src/opengl/gl_shader.cc \
-			src/opengl/vertex.cc src/opengl/gl_input.cc src/opengl/gl_texture.cc \
+			src/glfw/glfw_window.cc src/glfw/glfw_input.cc \
+			src/opengl/gl_renderer.cc src/opengl/gl_shader.cc \
+			src/opengl/vertex.cc src/opengl/gl_texture.cc \
 			src/lua_wrapper/wrapper.cc src/lua_wrapper/wrap_renderer.cc \
 			src/lua_wrapper/wrap_engine.cc src/lua_wrapper/wrap_input.cc \
 			src/lua_wrapper/wrap_log.cc src/lua_wrapper/wrap_texture.cc \

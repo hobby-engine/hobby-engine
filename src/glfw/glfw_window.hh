@@ -5,10 +5,10 @@
 #include "GLFW/glfw3.h"
 #include "window.hh"
 
-class OpenGlWindow final : public Window {
+class GlfwWindow final : public Window {
   public:
-    OpenGlWindow(const WindowSettings& settings);
-    ~OpenGlWindow();
+    GlfwWindow(const WindowSettings& settings);
+    ~GlfwWindow();
 
     GLFWwindow* handle;
 
