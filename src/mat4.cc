@@ -30,6 +30,12 @@ void Mat4::setScale(float x, float y) {
   e[5] = y;
 }
 
+void Mat4::setSkew(float x, float y) {
+  setIdentity();
+  e[1] = x;
+  e[4] = y;
+}
+
 void Mat4::setRotation(float r) {
   setIdentity();
   float c = cosf(r);
@@ -54,6 +60,12 @@ void Mat4::rotate(float r) {
   Mat4 rotation;
   rotation.setRotation(r);
   multiply(rotation, e);
+}
+
+void Mat4::skew(float x, float y) {
+  Mat4 skew;
+  skew.setSkew(x, y);
+  multiply(skew, e);
 }
 
 void Mat4::multiply(const Mat4& o, float t[16]) const {

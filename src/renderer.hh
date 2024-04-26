@@ -23,7 +23,8 @@ class Renderer {
         float x, float y,
         float r,
         float sx, float sy,
-        float ox, float oy) = 0;
+        float ox, float oy,
+        float skx, float sky) = 0;
   protected:
     Color _currentColor;
 };

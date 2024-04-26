@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra
+CXXFLAGS = -std=c++11 -Wall -Wextra -fno-exceptions
 CXXFLAGS += -Isrc -Ithird -Ithird/glad/include -Ithird/glfw/include -Ithird/luajit/src
 LDFLAGS = -lm third/glfw/src/libglfw3.a third/luajit/src/libluajit.a
 

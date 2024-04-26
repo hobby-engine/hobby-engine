@@ -142,7 +142,8 @@ void OpenGlRenderer::draw(
     float x, float y,
     float r,
     float sx, float sy,
-    float ox, float oy) {
+    float ox, float oy,
+    float skx, float sky) {
 
   float w = (float)texture.getWidth();
   float h = (float)texture.getHeight();
@@ -171,6 +172,7 @@ void OpenGlRenderer::draw(
 
   Mat4 transform;
   transform.setRotation(r);
+  transform.skew(skx, sky);
   transform.scale(sx, sy);
   transform.translate(x, y);
 

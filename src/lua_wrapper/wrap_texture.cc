@@ -35,11 +35,13 @@ static int wrap_draw(lua_State* L) {
   float sy = luaL_optnumber(L, 6, sx);
   float ox = luaL_optnumber(L, 7, 0);
   float oy = luaL_optnumber(L, 8, 0);
+  float skx = luaL_optnumber(L, 9, 0);
+  float sky = luaL_optnumber(L, 10, 0);
   LuaWrapper* wrapper = getLuaWrapper(L);
 
   wrapper->engine.renderer->draw(
     *texture2d,
-    x, y, r, sx, sy, ox, oy);
+    x, y, r, sx, sy, ox, oy, skx, sky);
   return 0;
 }
 

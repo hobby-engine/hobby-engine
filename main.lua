@@ -22,8 +22,10 @@ end
 
 function Player:draw()
   hobby.setDrawColor(1, 1, 1)
+  local w, h = self.texture:getWidth(), self.texture:getHeight()
+  local s = 0.3
+  self.texture:draw(self.x, self.y, 0, s, s, -w/2, -h, 0, self.vx / self.speed * 0.1)
   hobby.drawBoid(self.x, self.y, 12, 24, hobby.vec.angle(self.vx, self.vy))
-  self.texture:draw(self.x, self.y, 0, 0.4)
 end
 
 local player = Player()

@@ -23,7 +23,8 @@ class OpenGlRenderer final : public Renderer {
         float x, float y,
         float r,
         float sx, float sy,
-        float ox, float oy) override;
+        float ox, float oy,
+        float skx, float sky) override;
   private:
     GlfwWindow* _window;
 
