@@ -27,19 +27,19 @@ Not supported (yet)
 ### Features
 - Basic rendering
 - Lua scripting
-
-### Planned Features
-- Shaders
 - Textures
 - Input
 - Events
+
+### Planned Features
+- Shaders
+- Text and font loading
 - 2D audio
 - Render textures
 - Virtual filesystem, save system
 - Physics engine
 - Tilemaps
 - Pathfinding
-- Input System
 - UI system
 - Editor
 
