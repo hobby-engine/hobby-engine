@@ -5,6 +5,7 @@ struct Time {
   public:
     double dt = 0;
     double fps = 0;
+    double totalTime = 0;
 
     void update();
   private:

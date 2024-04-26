@@ -9,6 +9,8 @@ void Time::update() {
   dt = currentTime - _lastFrameTime;
   _lastFrameTime = currentTime;
 
+  totalTime = currentTime;
+
   _framesRendered++;
   double timeSinceLastUpdate = currentTime - _lastFpsUpdate;
   if (timeSinceLastUpdate > FPS_UPDATE_FREQ) {

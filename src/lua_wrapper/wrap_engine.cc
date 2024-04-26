@@ -4,14 +4,14 @@
 
 #include "common.hh"
 
-int wrap_getEngine(lua_State* L) {
+static int wrap_getEngine(lua_State* L) {
   LuaWrapper* wrapper = getLuaWrapper(L);
   
   createLuaData(L, &wrapper->engine, LuaDataType::Engine, "enginemt");
   return 1;
 }
 
-int wrap_pollEvents(UNUSED lua_State* L) {
+static int wrap_pollEvents(UNUSED lua_State* L) {
   glfwPollEvents();
   return 0;
 }
@@ -22,13 +22,13 @@ luaL_Reg engine[] = {
   {nullptr, nullptr},
 };
 
-int wrap_isRunning(lua_State* L) {
+static int wrap_isRunning(lua_State* L) {
   Engine* engine = getUserdata<Engine>(L, 1, LuaDataType::Engine);
   lua_pushboolean(L, !engine->window->isClosed());
   return 1;
 }
 
-int wrap_update(lua_State* L) {
+static int wrap_update(lua_State* L) {
   Engine* engine = getUserdata<Engine>(L, 1, LuaDataType::Engine);
   engine->update();
 
@@ -39,17 +39,20 @@ int wrap_update(lua_State* L) {
   lua_pushnumber(L, engine->time->fps);
   lua_setfield(L, -2, "fps");
 
+  lua_pushnumber(L, engine->time->totalTime);
+  lua_setfield(L, -2, "time");
+
   return 0;
 }
 
-int engineIndexMetamethod(lua_State* L) {
+static int engine__index(lua_State* L) {
   luaL_getmetatable(L, "enginemt");
   lua_getfield(L, -1, luaL_checkstring(L, 2));
   return 1;
 }
 
 luaL_Reg engineMethods[] = {
-  {"__index", engineIndexMetamethod},
+  {"__index", engine__index},
   {"update", wrap_update},
   {"isRunning", wrap_isRunning},
   {nullptr, nullptr},

@@ -1,14 +1,14 @@
 #include "key.hh"
 #include "wrapper.hh"
 
-int wrap_isKeyPressed(lua_State* L) {
+static int wrap_isKeyPressed(lua_State* L) {
   LuaWrapper* wrapper = getLuaWrapper(L);
   bool pressed = wrapper->engine.input->isKeyPressed((Key)luaL_checknumber(L, 1));
   lua_pushboolean(L, pressed);
   return 1;
 }
 
-int wrap_isMousePressed(lua_State* L) {
+static int wrap_isMousePressed(lua_State* L) {
   LuaWrapper* wrapper = getLuaWrapper(L);
   bool pressed = wrapper->engine.input->isMousePressed(luaL_checknumber(L, 1) - 1);
   lua_pushboolean(L, pressed);
