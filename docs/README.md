@@ -10,3 +10,5 @@ If it's not specified, then every function is under the `hobby` table.
 - [Time](time.md)
 - [Math](math.md)
 - [Things](things.md)
+- [Window](window.md)
+- [Auxiliary](auxiliary.md)
