@@ -17,7 +17,7 @@ Anyway, please, stare at the logo:
 </picture>
 
 ## Docs
-If you want to learn Hobby for whatever reason, then check out wonderfully made [the docs](docs/).
+If you want to learn Hobby for whatever reason, then check out the wonderfully made [the docs](docs/).
 
 ## Building
 #### Linux (And maybe MacOS)
