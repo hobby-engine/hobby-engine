@@ -4,7 +4,8 @@ See [events](events.md) first.
 
 - `isKeyPressed(key)`
 - `isMousePressed(button)`
-- `getInputVector(left, right, up, down)` - Returns a normalized vector using the passed keys as directions.
+- `getInputVector(left, right, up, down)` - Returns a normalized vector using the
+passed keys as directions.
 - `keyToString(key)` - Converts the given key to a string.
 
 ### Examples
@@ -33,7 +34,8 @@ end
 ```
 
 ### Events
-You also have some events. You can use these to make it so an action only triggers once when you press a key.
+You also have some events. You can use these to make it so an action only
+triggers once when you press a key.
 - `keyEvent(isPressed, key, isRepeat)` - Called when a key is pressed or released.
 - `keyPressed(key, isRepeat)` - Called when a key is pressed.
 - `keyReleased(key)` - Called when a key is released.

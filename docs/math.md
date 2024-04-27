@@ -11,7 +11,8 @@
 - `snapped(a, step)` - Snaps `a` to a multiple of `step`.
 
 ### Functions under the `hobby.vec` namespace
-Learn what all these functions do somewhere else (or make a PR to do that (pretty please))
+Learn what all these functions do somewhere else
+(or make a PR to do that (pretty please))
 - `dot(x1, y1, x2, y2)`
 - `length(x, y)`
 - `normalize(x, y)`

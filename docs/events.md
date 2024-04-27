@@ -1,6 +1,7 @@
 # Events
 
-Events are objects used to tell other, possibly unrelated parts of your game that something happened, without you needing to know they even exist.
+Events are objects used to tell other, possibly unrelated parts of your game
+that something happened, without you needing to know they even exist.
 
 ### Usage
 You can create an event really easily:
@@ -29,11 +30,13 @@ function MyClass:new()
   playerTookDamage:connect(self.playerDamageCallback, self)  
 end
 ```
-The second argument (`self`) tells the event what object this event should use to call `self.myFunction`.
+The second argument (`self`) tells the event what object this event should use to
+call `self.myFunction`.
 
 ### API
 List of functions for easy reference.
 
 - `hobby.event()` - Make an event
-- `event:connect(callback, bound=nil)` - Connect a function. `bound` is used as the first argument.
+- `event:connect(callback, bound=nil)` - Connect a function. `bound` is used as the
+first argument.
 - `event:call(...)` - Call the event with whatever arguments:.

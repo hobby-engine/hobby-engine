@@ -2,11 +2,15 @@
 
 ## !! WARNING !! Very early in development
 
-A game engine made to be simple. Primarily a 2D engine, though 3D is not off the table as a feature.
+A game engine made to be simple. Primarily a 2D engine, though 3D is not off
+the table as a feature.
 <br>
-This engine should do all the hard/annoying stuff for you. Things like rendering, audio, input, object processing, physics. All the easy stuff should be left to the user.
+This engine should do all the hard/annoying stuff for you. Things like
+rendering, audio, input, object processing, physics. All the easy stuff should
+be left to the user.
 <br>
-The name comes from the species of bird known as Hobbies, and the fact that this is, in fact, a hobby project.
+The name comes from the species of bird known as Hobbies, and the fact that 
+this is, in fact, a hobby project.
 <br>
 Anyway, please, stare at the logo:
 
@@ -17,7 +21,8 @@ Anyway, please, stare at the logo:
 </picture>
 
 ## Docs
-If you want to learn Hobby for whatever reason, then check out the wonderfully made [the docs](docs/).
+If you want to learn Hobby for whatever reason, then check out the wonderfully
+made [the docs](docs/).
 
 ## Building
 #### Linux (And maybe MacOS)
