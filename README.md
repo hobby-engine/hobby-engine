@@ -16,6 +16,9 @@ Anyway, please, stare at the logo:
   <img alt="Hobby Engine logo" width="256px" height="256px">
 </picture>
 
+## Docs
+If you want to learn Hobby for whatever reason, then check out wonderfully made [the docs](docs/).
+
 ## Building
 #### Linux (And maybe MacOS)
 ```
