@@ -1,4 +1,4 @@
-require("src.lua.aux")
+require("src.lua.auxiliary")
 require("src.lua.class")
 require("src.lua.event")
 require("src.lua.input")
