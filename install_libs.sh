@@ -24,7 +24,7 @@ fi
 
 # Clone luaJIT
 if [ ! -d "$BIN/luajit" ]; then
-  git clone https://luajit.org/git/luajit.git $BIN/luajit
+  git clone https://github.com/LuaJIT/LuaJIT.git $BIN/luajit
 else
   echo "LuaJIT already cloned."
 fi
