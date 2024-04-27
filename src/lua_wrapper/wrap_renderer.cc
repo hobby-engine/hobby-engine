@@ -1,7 +1,5 @@
 #include "wrapper.hh"
 
-#include "lua.hpp"
-
 static int wrap_setDrawColor(lua_State* L) {
   float r = (float)luaL_checknumber(L, 1);
   float g = (float)luaL_checknumber(L, 2);

@@ -17,7 +17,7 @@ Anyway, please, stare at the logo:
 </picture>
 
 ## Building
-#### Linux
+#### Linux (And maybe MacOS)
 ```
 $ make
 ```

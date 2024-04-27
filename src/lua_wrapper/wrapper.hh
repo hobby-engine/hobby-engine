@@ -2,7 +2,7 @@
 #define _HOBBY_WRAPPER_HH
 
 #include "engine.hh"
-#include "lua.hpp"
+#include "luajit/lua.hpp"
 
 #define LUA_LIB_NAME "hobby"
 

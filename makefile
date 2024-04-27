@@ -1,10 +1,12 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Wextra -fno-exceptions
-CXXFLAGS += -Isrc -Ithird -Ithird/glad/include -Ithird/glfw/include -Ithird/luajit/src
-LDFLAGS = -lm third/glfw/src/libglfw3.a third/luajit/src/libluajit.a
+CXXFLAGS += -Isrc -Ithird -Ithird/glad/include -Ithird/luajit
+LDFLAGS = -lm bin/libglfw3.a bin/libluajit.a
 
 RM = rm
-RMDIR = rm -r
+RMDIR = rm -rf
+MKDIR = mkdir -p
+INSTALL_LIBS = sh install_libs.sh
 
 ifndef PROFILE
 	PROFILE = debug
@@ -22,9 +24,12 @@ BUILD = bin
 
 SRC = src/main.cc src/log.cc src/shader.cc src/mat4.cc \
 			src/engine.cc src/time.cc \
+			\
 			src/glfw/glfw_window.cc src/glfw/glfw_input.cc \
+			\
 			src/opengl/gl_renderer.cc src/opengl/gl_shader.cc \
 			src/opengl/vertex.cc src/opengl/gl_texture.cc \
+			\
 			src/lua_wrapper/wrapper.cc src/lua_wrapper/wrap_renderer.cc \
 			src/lua_wrapper/wrap_engine.cc src/lua_wrapper/wrap_input.cc \
 			src/lua_wrapper/wrap_log.cc src/lua_wrapper/wrap_texture.cc \
@@ -38,46 +43,35 @@ STBI_OBJ = src/stbi_$(PROFILE).o
 GLAD_OBJ = src/glad_$(PROFILE).o
 LIB_OBJ = $(GLAD_OBJ) $(STBI_OBJ)
 
-.PHONY: all clean compile_flags libs lua glfw luajit exe
+.PHONY: clean compile_flags exe libs
 
-all: libs $(EXE)
+exe: libs $(EXE)
 
-exe: $(EXE)
-
-$(EXE): $(OBJ) 
-	@mkdir -p $(BUILD)
+$(EXE): $(LIB_OBJ) $(OBJ) 
+	@$(MKDIR) $(BUILD)
 	@echo "Compiling $(EXE)..."
 	@$(CXX) -o $(EXE) $(OBJ) $(LIB_OBJ) $(CXXFLAGS) $(LDFLAGS)
 
-libs: glfw luajit $(LIB_OBJ)
-
-glfw:
-	@echo "Compiling GLFW..."
-	@cd third/glfw && cmake . && $(MAKE) --no-print-directory
-
-luajit:
-	@echo "Compiling LuaJIT..."
-	@cd third/luajit && $(MAKE) --no-print-directory
+libs:
+	$(INSTALL_LIBS)
 
 $(BUILD)/%_$(PROFILE).o: %.cc
-	@mkdir -p $(@D)
+	@$(MKDIR) $(@D)
 	@echo "Compiling $< -> $@..."
 	@$(CXX) -o $@ -c $< $(CXXFLAGS) -MMD -MP
 
 $(GLAD_OBJ):
-	@mkdir -p $(@D)
+	@$(MKDIR) $(@D)
 	@echo "Compiling glad..."
 	@$(CXX) -o $@ -c third/glad/src/glad.c $(CXXFLAGS) -MMD -MP
 
 $(STBI_OBJ):
-	@mkdir -p $(@D)
+	@$(MKDIR) $(@D)
 	@echo "Compiling stbi..."
 	@$(CXX) -o $@ -c third/stb/stb_image.c $(CXXFLAGS) -MMD -MP
 
 clean:
 	$(RMDIR) $(BUILD)
-	@cd third/glfw && cmake . && make clean
-	@cd third/luajit && make clean
 
 compile_flags:
 	@echo "clang++" > compile_flags.txt
