@@ -16,7 +16,9 @@ end
 
 playerTookDamage:connect(playerDamageCallback)
 ```
-Now that it's connected, the event has registered it and whenever it's called, it will also be called. You can connect as many functions as you want to any event.
+Now that the function is connected, the event has registered the function and 
+whenever it's called, the function will also be called.
+You can connect as many functions as you want to any event.
 ```lua
 -- Call event with 75 hp and 25 damage
 playerTookDamage:call(75, 25)
