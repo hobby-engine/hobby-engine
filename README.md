@@ -27,6 +27,9 @@ made [the docs](docs/).
 ## Building
 #### Linux (And maybe MacOS)
 ```
+$ sh compile_libs.sh
+$ cmake -S . -B bin
+$ cd bin
 $ make
 ```
 #### Windows
