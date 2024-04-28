@@ -10,27 +10,43 @@ elseif(WIN32)
 endif()
 
 set(SRC
-  src/main.cc src/log.cc src/shader.cc src/mat4.cc
-  src/engine.cc src/time.cc
+  # Main
+  src/main.cc
+  src/log.cc
+  src/mat4.cc
+  src/engine.cc
+  src/time.cc
   
-  src/glfw/glfw_window.cc src/glfw/glfw_input.cc
+  # GLFW implementation
+  src/glfw/glfw_window.cc
+  src/glfw/glfw_input.cc
   
-  src/opengl/gl_renderer.cc src/opengl/gl_shader.cc 
-  src/opengl/vertex.cc src/opengl/gl_texture.cc
+  # OpenGL implementation
+  src/opengl/gl_renderer.cc
+  src/opengl/gl_shader.cc 
+  src/opengl/vertex.cc
+  src/opengl/gl_texture.cc
   
-  src/lua_wrapper/wrapper.cc src/lua_wrapper/wrap_renderer.cc
-  src/lua_wrapper/wrap_engine.cc src/lua_wrapper/wrap_input.cc
-  src/lua_wrapper/wrap_log.cc src/lua_wrapper/wrap_texture.cc
+  # Lua
+  src/lua_wrapper/wrapper.cc
+  src/lua_wrapper/wrap_renderer.cc
+  src/lua_wrapper/wrap_engine.cc
+  src/lua_wrapper/wrap_input.cc
+  src/lua_wrapper/wrap_log.cc
+  src/lua_wrapper/wrap_texture.cc
   src/lua_wrapper/wrap_window.cc
 
+  # Thirdparty
   third/glad/src/glad.c
   third/stb/stb_image.c
 )
 
+set(CXXFLAGS "-fno-exceptions -Wall -Wextra")
+
 if(CONFIG STREQUAL "release")
-  set(CXXFLAGS "-O3")
+  set(CXXFLAGS "${CXXFLAGS} -O3")
 else()
-  set(CXXFLAGS "-O3 -g")
+  set(CXXFLAGS "${CXXFLAGS} -O3 -g")
   # I don't know if asan is on Mac too, but I don't really wanna find out
   if(LINUX)
     set(CXXFLAGS "${CXXFLAGS} -fsanitize=address")
