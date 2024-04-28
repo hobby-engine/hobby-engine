@@ -7,7 +7,7 @@ local Player = hobby.thing {
 
 function Player:new()
   self.vx, self.vy = 0, 0
-  self.texture = hobby.texture2d("res/test_img.png")
+  self.texture = hobby.texture2d("assets/hobby-light.png")
 end
 
 function Player:update()
@@ -23,7 +23,7 @@ end
 function Player:draw()
   hobby.setDrawColor(1, 1, 1)
   local w, h = self.texture:getWidth(), self.texture:getHeight()
-  local s = 0.3
+  local s = 0.4
   self.texture:draw(self.x, self.y, 0, s, s, -w/2, -h, 0, self.vx / self.speed * 0.1)
   hobby.drawBoid(self.x, self.y, 12, 24, hobby.vec.angle(self.vx, self.vy))
 end

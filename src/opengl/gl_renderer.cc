@@ -14,10 +14,10 @@ OpenGlRenderer::OpenGlRenderer(GlfwWindow* window)
     _vertexArray(VertexArray()),
     _colorShader(OpenGlShader("res/color.vert", "res/color.frag")),
     _textureShader(OpenGlShader("res/texture.vert", "res/texture.frag")) {
+  glEnable(GL_BLEND);
 }
 
 void OpenGlRenderer::update() {
-
   int w, h;
   _window->getSize(w, h);
 
@@ -182,6 +182,7 @@ void OpenGlRenderer::draw(
 
   texture.bind();
   _indexBuffer.bind();
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
