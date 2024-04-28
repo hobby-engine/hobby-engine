@@ -7,13 +7,72 @@
 #include "mat4.hh"
 #include "texture.hh"
 
+// COLOR SHADER
+
+const char* colorVert = R"glsl(
+#version 330
+
+layout (location = 0) in vec2 ipos;
+
+uniform mat4 proj, trans;
+
+void main() {
+  gl_Position = proj * trans * vec4(ipos, 0., 1.);
+}
+)glsl";
+
+const char* colorFrag = R"glsl(
+#version 330
+
+uniform vec4 color;
+
+out vec4 fragColor;
+
+void main() {
+  fragColor = color;
+}
+)glsl";
+
+// TEXTURE SHADER
+
+const char* textureVert = R"glsl(
+#version 330
+
+layout (location = 0) in vec2 ipos;
+layout (location = 1) in vec2 iuv;
+
+uniform mat4 proj, trans;
+
+out vec2 uv;
+
+void main() {
+  gl_Position = proj * trans * vec4(ipos, 0., 1.);
+
+  uv = iuv;
+}
+)glsl";
+
+const char* textureFrag = R"glsl(
+#version 330
+
+out vec4 fragColor;
+
+in vec2 uv;
+
+uniform sampler2D tex;
+
+void main() {
+  fragColor = texture(tex, uv);
+}
+)glsl";
+
 OpenGlRenderer::OpenGlRenderer(GlfwWindow* window)
   : _window(window),
     _vertexBuffer(VertexBuffer(VertexBufferType::Array, false)),
     _indexBuffer(VertexBuffer(VertexBufferType::Index, false)),
     _vertexArray(VertexArray()),
-    _colorShader(OpenGlShader("res/color.vert", "res/color.frag")),
-    _textureShader(OpenGlShader("res/texture.vert", "res/texture.frag")) {
+    _colorShader(OpenGlShader::embedded(colorVert, colorFrag)),
+    _textureShader(OpenGlShader::embedded(textureVert, textureFrag)) {
   glEnable(GL_BLEND);
 }
 

@@ -14,8 +14,7 @@ fi
 # Compile glfw
 if [ ! -f "$BIN/libglfw3.a" ]; then
   cd $BIN/glfw
-  cmake -B . -S .
-  make
+  cmake -B . -S . && make
   cd ..
   cp $BIN/glfw/src/libglfw3.a $BIN
 else

@@ -6,9 +6,12 @@
 class OpenGlShader final : public Shader {
   public:
     OpenGlShader(const char* vertPath, const char* fragPath);
+    OpenGlShader(unsigned int handle);
     ~OpenGlShader();
 
     unsigned int handle;
+
+    static OpenGlShader embedded(const char* vertSource, const char* fragSource);
     
     void apply() override;
     

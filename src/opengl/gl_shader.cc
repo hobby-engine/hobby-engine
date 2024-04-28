@@ -53,22 +53,23 @@ static unsigned int createShader(const char* source, const char* path, ShaderTyp
   if (!success) {
     char error[512];
     glGetShaderInfoLog(shader, 512, nullptr, error);
-    fatal("Error compiling '%s': %s", path, error);
+    if (path != nullptr) {
+      fatal("Error compiling '%s': %s", path, error);
+    } else {
+      fatal("Error compiling embedded shader: %s", path, error);
+    }
   }
 
   return shader;
 }
 
-
-OpenGlShader::OpenGlShader(const char* vertPath, const char* fragPath)
-    : Shader(vertPath, fragPath) {
-  char* vertSource = loadFile(vertPath);
-  char* fragSource = loadFile(fragPath);
-
+unsigned int createProgram(
+    const char* vertSource, const char* fragSource,
+    const char* vertPath, const char* fragPath) {
   unsigned int vert = createShader(vertSource, vertPath, ShaderType::Vertex);
   unsigned int frag = createShader(fragSource, fragPath, ShaderType::Fragment);
 
-  handle = glCreateProgram();
+  unsigned int handle = glCreateProgram();
   glAttachShader(handle, vert);
   glAttachShader(handle, frag);
 
@@ -84,9 +85,28 @@ OpenGlShader::OpenGlShader(const char* vertPath, const char* fragPath)
 
   glDeleteShader(vert);
   glDeleteShader(frag);
+  
+  return handle;
+}
+
+OpenGlShader::OpenGlShader(const char* vertPath, const char* fragPath) {
+  char* vertSource = loadFile(vertPath);
+  char* fragSource = loadFile(fragPath);
+
+  handle = createProgram(vertSource, fragSource, vertPath, fragPath);
 
   delete[] vertSource;
   delete[] fragSource;
+}
+
+OpenGlShader::OpenGlShader(unsigned int handle) 
+  : handle(handle) {
+}
+
+OpenGlShader OpenGlShader::embedded(
+    const char* vertSource, const char* fragSource) {
+  unsigned int handle = createProgram(vertSource, fragSource, nullptr, nullptr);
+  return OpenGlShader(handle);
 }
 
 OpenGlShader::~OpenGlShader() {

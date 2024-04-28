@@ -3,7 +3,6 @@
 
 #include "mat4.hh"
 #include "renderer.hh"
-#include "common.hh"
 
 enum class ShaderType {
   Vertex,
@@ -12,7 +11,6 @@ enum class ShaderType {
 
 class Shader {
   public:
-    Shader(UNUSED const char* vertPath, UNUSED const char* fragPath) {}
     virtual ~Shader() {}
     
     virtual void apply() = 0;
