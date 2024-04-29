@@ -74,6 +74,7 @@ OpenGlRenderer::OpenGlRenderer(GlfwWindow* window)
     _colorShader(OpenGlShader::embedded(colorVert, colorFrag)),
     _textureShader(OpenGlShader::embedded(textureVert, textureFrag)) {
   glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void OpenGlRenderer::update() {
@@ -196,7 +197,7 @@ void OpenGlRenderer::drawBoid(float x, float y, float b, float h, float r) {
   glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
-void OpenGlRenderer::draw(
+void OpenGlRenderer::drawTexture(
     const Texture2D& texture,
     float x, float y,
     float r,
@@ -241,7 +242,6 @@ void OpenGlRenderer::draw(
 
   texture.bind();
   _indexBuffer.bind();
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }

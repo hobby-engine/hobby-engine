@@ -18,7 +18,7 @@ class OpenGlRenderer final : public Renderer {
     void drawEllipse(float x, float y, float rx, float ry) override;
     void drawVertices(int count, float* vertices) override;
     void drawBoid(float x, float y, float b, float h, float r) override;
-    void draw(
+    void drawTexture(
         const Texture2D& texture,
         float x, float y,
         float r,

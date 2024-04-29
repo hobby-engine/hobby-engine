@@ -18,7 +18,7 @@ class Renderer {
     virtual void drawEllipse(float x, float y, float rx, float ry) = 0;
     virtual void drawVertices(int count, float* vertices) = 0;
     virtual void drawBoid(float x, float y, float b, float h, float r) = 0;
-    virtual void draw(
+    virtual void drawTexture(
         const Texture2D& texture,
         float x, float y,
         float r,

@@ -4,6 +4,7 @@
 static int wrap_texture2d(lua_State* L) {
   const char* path = luaL_checkstring(L, 1);
 
+  // TODO: Make more generic
   auto texture2d = new OpenGlTexture2D(path);
   createLuaData(L, texture2d, LuaDataType::Texture2D, "texture2dmt");
   return 1;
@@ -39,7 +40,7 @@ static int wrap_draw(lua_State* L) {
   float sky = luaL_optnumber(L, 10, 0);
   LuaWrapper* wrapper = getLuaWrapper(L);
 
-  wrapper->engine.renderer->draw(
+  wrapper->engine.renderer->drawTexture(
     *texture2d,
     x, y, r, sx, sy, ox, oy, skx, sky);
   return 0;

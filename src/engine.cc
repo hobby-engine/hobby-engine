@@ -13,6 +13,7 @@ Engine::Engine(const WindowSettings& windowSettings) {
       OpenGlRenderer* openGlRenderer = new OpenGlRenderer(glfwWindow);
       GlfwInput* glfwInput = new GlfwInput(glfwWindow);
 
+      // TODO: Move this to the GLFW section
       glfwSetWindowUserPointer(glfwWindow->handle, this);
 
       window = glfwWindow;
