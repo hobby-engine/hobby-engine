@@ -9,6 +9,18 @@ elseif(WIN32)
   set(STATIC_EXT lib)
 endif()
 
+if(LINUX)
+  add_compile_definitions(HB_LINUX)
+  add_compile_definitions(HB_POSIX)
+elseif(APPLE)
+  add_compile_definitions(HB_APPLE)
+  add_compile_definitions(HB_POSIX)
+elseif(WIN32)
+  add_compile_definitions(HB_WINDOWS)
+else()
+  message(FATAL_ERROR "Platform not supported, and there are no plans to support.")
+endif()
+
 set(SRC
   # Main
   src/main.cc
@@ -45,12 +57,15 @@ set(CXXFLAGS "-fno-exceptions -Wall -Wextra")
 
 if(CONFIG STREQUAL "release")
   set(CXXFLAGS "${CXXFLAGS} -O3")
+  add_compile_definitions(HB_RELEASE)
 else()
   set(CXXFLAGS "${CXXFLAGS} -O3 -g")
   # I don't know if asan is on Mac too, but I don't really wanna find out
   if(LINUX)
     set(CXXFLAGS "${CXXFLAGS} -fsanitize=address")
   endif()
+
+  add_compile_definitions(HB_DEBUG)
 endif()
 
 add_executable(hobby ${SRC})

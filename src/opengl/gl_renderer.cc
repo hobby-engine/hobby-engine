@@ -4,8 +4,10 @@
 
 #include "glad/glad.h"
 
+#include "log.hh"
 #include "mat4.hh"
 #include "texture.hh"
+#include "common.hh"
 
 // COLOR SHADER
 
@@ -66,6 +68,30 @@ void main() {
 }
 )glsl";
 
+void openGlMessage(
+    UNUSED unsigned source,
+    UNUSED unsigned type,
+    UNUSED unsigned id,
+    unsigned severity,
+    UNUSED int length,
+    const char* message,
+    UNUSED const void* userParam) {
+  switch (severity) {
+    case GL_DEBUG_SEVERITY_HIGH:
+    case GL_DEBUG_SEVERITY_MEDIUM:
+      error("OpenGL: %s", message);
+      return;
+    case GL_DEBUG_SEVERITY_LOW:
+      warn("OpenGL: %s", message);
+      return;
+    case GL_DEBUG_SEVERITY_NOTIFICATION:
+      hlog("OpenGL: %s", message);
+      return;
+  }
+
+  error("Unknown severity level!");
+}
+
 OpenGlRenderer::OpenGlRenderer(GlfwWindow* window)
   : _window(window),
     _vertexBuffer(VertexBuffer(VertexBufferType::Array, false)),
@@ -75,6 +101,12 @@ OpenGlRenderer::OpenGlRenderer(GlfwWindow* window)
     _textureShader(OpenGlShader::embedded(textureVert, textureFrag)) {
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+#ifdef HB_DEBUG
+  hlog("OpenGL debug enabled.");
+  glEnable(GL_DEBUG_OUTPUT);
+  glDebugMessageCallback(openGlMessage, nullptr);
+#endif
 }
 
 void OpenGlRenderer::update() {
@@ -219,12 +251,6 @@ void OpenGlRenderer::drawTexture(
 
   _vertexBuffer.setData(4 * 4 * sizeof(float), vertices);
 
-  int indices[] = {
-    0, 1, 2, 0, 2, 3 
-  };
-
-  _indexBuffer.setData(6 * sizeof(unsigned int), indices);
-
   _vertexArray.setAttribute(
     _vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 4, 0);
   _vertexArray.setAttribute(
@@ -241,7 +267,6 @@ void OpenGlRenderer::drawTexture(
   _textureShader.sendMat4("trans", transform);
 
   texture.bind();
-  _indexBuffer.bind();
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+  glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
