@@ -33,7 +33,7 @@ $ cd bin
 $ make
 ```
 #### Windows
-Not supported (yet)
+I've done it and know it's possible, but figure it out yourself 
 
 ### Features
 - Basic rendering
