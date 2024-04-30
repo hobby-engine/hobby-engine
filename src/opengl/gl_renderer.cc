@@ -12,7 +12,7 @@
 // COLOR SHADER
 
 const char* colorVert = R"glsl(
-#version 330
+#version 330 core
 
 layout (location = 0) in vec2 ipos;
 
@@ -24,7 +24,7 @@ void main() {
 )glsl";
 
 const char* colorFrag = R"glsl(
-#version 330
+#version 330 core
 
 uniform vec4 color;
 
@@ -38,7 +38,7 @@ void main() {
 // TEXTURE SHADER
 
 const char* textureVert = R"glsl(
-#version 330
+#version 330 core
 
 layout (location = 0) in vec2 ipos;
 layout (location = 1) in vec2 iuv;
@@ -55,7 +55,7 @@ void main() {
 )glsl";
 
 const char* textureFrag = R"glsl(
-#version 330
+#version 330 core
 
 out vec4 fragColor;
 
