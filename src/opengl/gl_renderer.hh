@@ -12,6 +12,7 @@ class OpenGlRenderer final : public Renderer {
     OpenGlRenderer(GlfwWindow* window);
 
     void update() override;
+    int getDrawCalls() const override;
     void setColor(Color color) override;
     void clear(Color color) override;
     void drawRect(float x, float y, float w, float h) override;
@@ -26,7 +27,8 @@ class OpenGlRenderer final : public Renderer {
         float ox, float oy,
         float skx, float sky) override;
   private:
-    GlfwWindow* _window;
+    GlfwWindow* _window = nullptr;
+    int _drawCalls = 0, _currentDrawCallCount = 0;
 
     VertexBuffer _vertexBuffer;
     VertexBuffer _indexBuffer;

@@ -12,6 +12,7 @@ class Renderer {
     virtual ~Renderer() {}
 
     virtual void update() = 0;
+    virtual int getDrawCalls() const = 0;
     virtual void setColor(Color color) = 0;
     virtual void clear(Color color) = 0;
     virtual void drawRect(float x, float y, float w, float h) = 0;

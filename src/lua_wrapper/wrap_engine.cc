@@ -42,6 +42,9 @@ static int wrap_update(lua_State* L) {
   lua_pushnumber(L, engine->time->totalTime);
   lua_setfield(L, -2, "time");
 
+  lua_pushnumber(L, engine->renderer->getDrawCalls());
+  lua_setfield(L, -2, "drawCalls");
+
   return 0;
 }
 

@@ -115,6 +115,13 @@ void OpenGlRenderer::update() {
 
   _projection.setIdentity();
   _projection.ortho(0, w, h, 0, -1, 1);
+
+  _drawCalls = _currentDrawCallCount;
+  _currentDrawCallCount = 0;
+}
+
+int OpenGlRenderer::getDrawCalls() const {
+  return _drawCalls;
 }
 
 void OpenGlRenderer::setColor(Color color) {
@@ -158,6 +165,8 @@ void OpenGlRenderer::drawRect(float x, float y, float w, float h) {
 
   _indexBuffer.bind();
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+  _currentDrawCallCount++;
 }
 
 void OpenGlRenderer::drawEllipse(float x, float y, float rx, float ry) {
@@ -185,6 +194,8 @@ void OpenGlRenderer::drawEllipse(float x, float y, float rx, float ry) {
 
   _vertexArray.bind();
   glDrawArrays(GL_TRIANGLE_FAN, 0, circleResolution);
+
+  _currentDrawCallCount++;
 }
 
 void OpenGlRenderer::drawVertices(int count, float* vertices) {
@@ -202,6 +213,8 @@ void OpenGlRenderer::drawVertices(int count, float* vertices) {
 
   _vertexArray.bind();
   glDrawArrays(GL_TRIANGLES, 0, count);
+
+  _currentDrawCallCount++;
 }
 
 void OpenGlRenderer::drawBoid(float x, float y, float b, float h, float r) {
@@ -227,6 +240,8 @@ void OpenGlRenderer::drawBoid(float x, float y, float b, float h, float r) {
 
   _vertexArray.bind();
   glDrawArrays(GL_TRIANGLES, 0, 3);
+
+  _currentDrawCallCount++;
 }
 
 void OpenGlRenderer::drawTexture(
@@ -269,4 +284,6 @@ void OpenGlRenderer::drawTexture(
   texture.bind();
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+
+  _currentDrawCallCount++;
 }
