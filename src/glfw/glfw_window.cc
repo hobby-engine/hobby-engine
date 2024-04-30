@@ -5,6 +5,7 @@
 
 static void onFramebufferSizeChanged(GLFWwindow* window, int width, int height) {
   glfwMakeContextCurrent(window);
+  // TODO: Get rid of this
   glViewport(0, 0, width, height);
 }
 
