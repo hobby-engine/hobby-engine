@@ -54,17 +54,18 @@ set(SRC
 )
 
 set(CXXFLAGS "-fno-exceptions -Wall -Wextra")
+add_compile_options(-Wall -Wextra -fno-exceptions)
 
 if(CONFIG STREQUAL "release")
-  set(CXXFLAGS "${CXXFLAGS} -O3")
+  add_compile_options(-O3)
   add_compile_definitions(HB_RELEASE)
 else()
-  set(CXXFLAGS "${CXXFLAGS} -O3 -g")
+  add_compile_options(-O2 -g)
   # I don't know if asan is on Mac too, but I don't really wanna find out
   if(LINUX)
-    set(CXXFLAGS "${CXXFLAGS} -fsanitize=address")
+    add_compile_options(-fsanitize=address)
+    add_link_options(-fsanitize=address)
   endif()
-
   add_compile_definitions(HB_DEBUG)
 endif()
 
