@@ -1,16 +1,17 @@
 #include "engine.hh"
-#include "opengl/gl_renderer.hh"
-#include "glfw/glfw_window.hh"
 #include "glfw/glfw_input.hh"
+#include "glfw/glfw_window.hh"
+#include "lua_wrapper/wrapper.hh"
+#include "opengl/gl_renderer.hh"
 #include "time.hh"
 #include "window.hh"
-#include "lua_wrapper/wrapper.hh"
 
 #ifdef HB_LINUX
 #include <unistd.h>
 #endif
 
-Engine::Engine(const WindowSettings& windowSettings) {
+Engine::Engine(const WindowSettings& windowSettings)
+{
   switch (windowSettings.backend) {
     case GraphicsBackend::OpenGL:
       GlfwWindow* glfwWindow = new GlfwWindow(windowSettings);
@@ -31,7 +32,8 @@ Engine::Engine(const WindowSettings& windowSettings) {
   luaWrapper = new LuaWrapper(*this);
 }
 
-Engine::~Engine() {
+Engine::~Engine()
+{
   delete window;
   delete renderer;
   delete input;
@@ -39,7 +41,8 @@ Engine::~Engine() {
   delete luaWrapper;
 }
 
-void Engine::update() {
+void Engine::update()
+{
 #ifdef HB_LINUX
   usleep(1000);
 #endif

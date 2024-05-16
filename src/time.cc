@@ -3,7 +3,8 @@
 
 #define FPS_UPDATE_FREQ 1
 
-void Time::update() {
+void Time::update()
+{
   // TODO: Get rid of this GLFW call somehow.
   double currentTime = glfwGetTime();
   dt = currentTime - _lastFrameTime;

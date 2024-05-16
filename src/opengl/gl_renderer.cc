@@ -5,10 +5,10 @@
 #include "GLFW/glfw3.h"
 #include "glad/glad.h"
 
+#include "common.hh"
 #include "log.hh"
 #include "mat4.hh"
 #include "texture.hh"
-#include "common.hh"
 
 // COLOR SHADER
 
@@ -69,14 +69,10 @@ void main() {
 }
 )glsl";
 
-void openGlMessage(
-    UNUSED unsigned source,
-    UNUSED unsigned type,
-    UNUSED unsigned id,
-    unsigned severity,
-    UNUSED int length,
-    const char* message,
-    UNUSED const void* userParam) {
+void openGlMessage(UNUSED unsigned source, UNUSED unsigned type,
+                   UNUSED unsigned id, unsigned severity, UNUSED int length,
+                   const char* message, UNUSED const void* userParam)
+{
   switch (severity) {
     case GL_DEBUG_SEVERITY_HIGH:
     case GL_DEBUG_SEVERITY_MEDIUM:
@@ -94,12 +90,13 @@ void openGlMessage(
 }
 
 OpenGlRenderer::OpenGlRenderer(GlfwWindow* window)
-  : _window(window),
-    _vertexBuffer(VertexBuffer(VertexBufferType::Array, false)),
-    _indexBuffer(VertexBuffer(VertexBufferType::Index, false)),
-    _vertexArray(VertexArray()),
-    _colorShader(OpenGlShader::embedded(colorVert, colorFrag)),
-    _textureShader(OpenGlShader::embedded(textureVert, textureFrag)) {
+    : _window(window),
+      _vertexBuffer(VertexBuffer(VertexBufferType::Array, false)),
+      _indexBuffer(VertexBuffer(VertexBufferType::Index, false)),
+      _vertexArray(VertexArray()),
+      _colorShader(OpenGlShader::embedded(colorVert, colorFrag)),
+      _textureShader(OpenGlShader::embedded(textureVert, textureFrag))
+{
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -110,7 +107,8 @@ OpenGlRenderer::OpenGlRenderer(GlfwWindow* window)
 #endif
 }
 
-void OpenGlRenderer::update() {
+void OpenGlRenderer::update()
+{
   int w, h;
   _window->getSize(w, h);
 
@@ -121,40 +119,36 @@ void OpenGlRenderer::update() {
   _currentDrawCallCount = 0;
 }
 
-int OpenGlRenderer::getDrawCalls() const {
+int OpenGlRenderer::getDrawCalls() const
+{
   return _drawCalls;
 }
 
-void OpenGlRenderer::setColor(Color color) {
+void OpenGlRenderer::setColor(Color color)
+{
   _currentColor = color;
 }
 
-void OpenGlRenderer::clear(Color color) {
-  glClearColor(
-    color.r,
-    color.g,
-    color.b,
-    color.a);
+void OpenGlRenderer::clear(Color color)
+{
+  glClearColor(color.r, color.g, color.b, color.a);
   glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void OpenGlRenderer::drawRect(float x, float y, float w, float h) {
+void OpenGlRenderer::drawRect(float x, float y, float w, float h)
+{
   float vertices[] = {
-    0, 0,
-    0, h,
-    w, h,
-    w, 0,
+    0, 0, 0, h, w, h, w, 0,
   };
 
   _vertexBuffer.setData(2 * 4 * sizeof(float), vertices);
 
-  int indices[] = {
-    0, 1, 2, 0, 2, 3 
-  };
+  int indices[] = {0, 1, 2, 0, 2, 3};
 
   _indexBuffer.setData(6 * sizeof(unsigned int), indices);
 
-  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 2, 0);
+  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 2,
+                            0);
 
   Mat4 transform;
   transform.setTranslation(x, y);
@@ -170,7 +164,8 @@ void OpenGlRenderer::drawRect(float x, float y, float w, float h) {
   _currentDrawCallCount++;
 }
 
-void OpenGlRenderer::drawEllipse(float x, float y, float rx, float ry) {
+void OpenGlRenderer::drawEllipse(float x, float y, float rx, float ry)
+{
   int circleResolution = fmax(2 * M_PI * sqrt((rx + ry) / 2), 8);
 
   float points[circleResolution * 2];
@@ -178,12 +173,13 @@ void OpenGlRenderer::drawEllipse(float x, float y, float rx, float ry) {
   for (int i = 0; i < circleResolution; i++) {
     int index = i * 2;
     float angle = ((float)i / circleResolution) * M_PI * 2;
-    points[index]   = cosf(angle) * rx;
-    points[index+1] = sinf(angle) * ry;
+    points[index] = cosf(angle) * rx;
+    points[index + 1] = sinf(angle) * ry;
   }
 
   _vertexBuffer.setData(2 * circleResolution * sizeof(float), points);
-  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 2, 0);
+  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 2,
+                            0);
 
   Mat4 transform;
   transform.setTranslation(x, y);
@@ -199,10 +195,12 @@ void OpenGlRenderer::drawEllipse(float x, float y, float rx, float ry) {
   _currentDrawCallCount++;
 }
 
-void OpenGlRenderer::drawVertices(int count, float* vertices) {
+void OpenGlRenderer::drawVertices(int count, float* vertices)
+{
   _vertexBuffer.setData(count * sizeof(float), vertices);
 
-  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 2, 0);
+  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 2,
+                            0);
 
   Mat4 transform;
   transform.setIdentity();
@@ -218,16 +216,16 @@ void OpenGlRenderer::drawVertices(int count, float* vertices) {
   _currentDrawCallCount++;
 }
 
-void OpenGlRenderer::drawBoid(float x, float y, float b, float h, float r) {
+void OpenGlRenderer::drawBoid(float x, float y, float b, float h, float r)
+{
   float vertices[] = {
-    0, -b/2,
-    0,  b/2,
-    h,  0,
+    0, -b / 2, 0, b / 2, h, 0,
   };
 
   _vertexBuffer.setData(2 * 3 * sizeof(float), vertices);
 
-  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 2, 0);
+  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 2,
+                            0);
 
   Mat4 transform;
   transform.setRotation(r);
@@ -245,32 +243,25 @@ void OpenGlRenderer::drawBoid(float x, float y, float b, float h, float r) {
   _currentDrawCallCount++;
 }
 
-void OpenGlRenderer::drawTexture(
-    const Texture2D& texture,
-    float x, float y,
-    float r,
-    float sx, float sy,
-    float ox, float oy,
-    float skx, float sky) {
+void OpenGlRenderer::drawTexture(const Texture2D& texture, float x, float y,
+                                 float r, float sx, float sy, float ox,
+                                 float oy, float skx, float sky)
+{
 
   float w = (float)texture.getWidth();
   float h = (float)texture.getHeight();
   float left = ox * sx, right = (w + ox) * sx;
   float top = oy * sy, bottom = (h + oy) * sy;
 
-  float vertices[] = {
-    left,  top,    0, 0,
-    left,  bottom, 0, 1,
-    right, bottom, 1, 1,
-    right, top,    1, 0
-  };
+  float vertices[] = {left,  top,    0, 0, left,  bottom, 0, 1,
+                      right, bottom, 1, 1, right, top,    1, 0};
 
   _vertexBuffer.setData(4 * 4 * sizeof(float), vertices);
 
-  _vertexArray.setAttribute(
-    _vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 4, 0);
-  _vertexArray.setAttribute(
-    _vertexBuffer, 1, 2, GL_FLOAT, sizeof(float) * 4, 2 * sizeof(float));
+  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 4,
+                            0);
+  _vertexArray.setAttribute(_vertexBuffer, 1, 2, GL_FLOAT, sizeof(float) * 4,
+                            2 * sizeof(float));
 
   Mat4 transform;
   transform.setRotation(r);

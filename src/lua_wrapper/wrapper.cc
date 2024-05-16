@@ -7,20 +7,19 @@
 
 #include "log.hh"
 
-static int errorHandler(lua_State* L) {
+static int errorHandler(lua_State* L)
+{
   const char* msg = lua_tostring(L, -1);
 
   lua_getglobal(L, "debug");
   if (!lua_istable(L, -1)) {
-    fatal(
-      "%s\nDebug library has been removed. Cannot provide stack trace.",
-      lua_tostring(L, 1));
+    fatal("%s\nDebug library has been removed. Cannot provide stack trace.",
+          lua_tostring(L, 1));
   }
   lua_getfield(L, -1, "traceback");
   if (!lua_iscfunction(L, -1)) {
-    fatal(
-      "%s\n'debug.traceback' has been removed. Cannot provide stack trace.",
-      lua_tostring(L, 1));
+    fatal("%s\n'debug.traceback' has been removed. Cannot provide stack trace.",
+          lua_tostring(L, 1));
   }
 
   lua_call(L, 0, 1);
@@ -34,8 +33,8 @@ static int errorHandler(lua_State* L) {
   return 0;
 }
 
-LuaWrapper::LuaWrapper(Engine& engine)
-    : engine(engine) {
+LuaWrapper::LuaWrapper(Engine& engine) : engine(engine)
+{
 
   L = luaL_newstate();
   luaL_openlibs(L);
@@ -65,11 +64,13 @@ LuaWrapper::LuaWrapper(Engine& engine)
   }
 }
 
-LuaWrapper::~LuaWrapper() {
+LuaWrapper::~LuaWrapper()
+{
   lua_close(L);
 }
 
-void LuaWrapper::callFunction(const char* name, int argCount, ...) {
+void LuaWrapper::callFunction(const char* name, int argCount, ...)
+{
   lua_getglobal(L, LUA_LIB_NAME);
   lua_getfield(L, -1, name);
   if (!lua_isfunction(L, -1)) {
@@ -110,14 +111,16 @@ void LuaWrapper::callFunction(const char* name, int argCount, ...) {
   lua_pop(L, 1);
 }
 
-void registerFunctions(lua_State* L, const luaL_Reg* funcs) {
+void registerFunctions(lua_State* L, const luaL_Reg* funcs)
+{
   for (; funcs->name != NULL; funcs++) {
     lua_pushcfunction(L, funcs->func);
     lua_setfield(L, -2, funcs->name);
   }
 }
 
-LuaWrapper* getLuaWrapper(lua_State* L) {
+LuaWrapper* getLuaWrapper(lua_State* L)
+{
   lua_getfield(L, LUA_REGISTRYINDEX, "wrapper");
   LuaWrapper* wrapper = (LuaWrapper*)lua_touserdata(L, -1);
   lua_pop(L, 1);

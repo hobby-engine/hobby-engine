@@ -8,7 +8,8 @@
 
 #include "log.hh"
 
-static char* loadFile(const char* path) {
+static char* loadFile(const char* path)
+{
   FILE* file = fopen(path, "rb");
   if (!file) {
     printf("%s\n", path);
@@ -32,7 +33,8 @@ static char* loadFile(const char* path) {
   return buf;
 }
 
-static inline int getGlShaderType(ShaderType type) {
+static inline int getGlShaderType(ShaderType type)
+{
   switch (type) {
     case ShaderType::Fragment:
       return GL_FRAGMENT_SHADER;
@@ -42,7 +44,9 @@ static inline int getGlShaderType(ShaderType type) {
   return -1;
 }
 
-static unsigned int createShader(const char* source, const char* path, ShaderType type) {
+static unsigned int createShader(const char* source, const char* path,
+                                 ShaderType type)
+{
   unsigned int shader = glCreateShader(getGlShaderType(type));
   glShaderSource(shader, 1, &source, nullptr);
 
@@ -63,9 +67,9 @@ static unsigned int createShader(const char* source, const char* path, ShaderTyp
   return shader;
 }
 
-unsigned int createProgram(
-    const char* vertSource, const char* fragSource,
-    const char* vertPath, const char* fragPath) {
+unsigned int createProgram(const char* vertSource, const char* fragSource,
+                           const char* vertPath, const char* fragPath)
+{
   unsigned int vert = createShader(vertSource, vertPath, ShaderType::Vertex);
   unsigned int frag = createShader(fragSource, fragPath, ShaderType::Fragment);
 
@@ -85,11 +89,12 @@ unsigned int createProgram(
 
   glDeleteShader(vert);
   glDeleteShader(frag);
-  
+
   return handle;
 }
 
-OpenGlShader::OpenGlShader(const char* vertPath, const char* fragPath) {
+OpenGlShader::OpenGlShader(const char* vertPath, const char* fragPath)
+{
   char* vertSource = loadFile(vertPath);
   char* fragSource = loadFile(fragPath);
 
@@ -99,43 +104,47 @@ OpenGlShader::OpenGlShader(const char* vertPath, const char* fragPath) {
   delete[] fragSource;
 }
 
-OpenGlShader::OpenGlShader(unsigned int handle) 
-  : handle(handle) {
+OpenGlShader::OpenGlShader(unsigned int handle) : handle(handle)
+{
 }
 
-OpenGlShader OpenGlShader::embedded(
-    const char* vertSource, const char* fragSource) {
+OpenGlShader OpenGlShader::embedded(const char* vertSource,
+                                    const char* fragSource)
+{
   unsigned int handle = createProgram(vertSource, fragSource, nullptr, nullptr);
   return OpenGlShader(handle);
 }
 
-OpenGlShader::~OpenGlShader() {
+OpenGlShader::~OpenGlShader()
+{
   glDeleteProgram(handle);
 }
 
-void OpenGlShader::apply() {
+void OpenGlShader::apply()
+{
   glUseProgram(handle);
 }
 
-static int getShaderLocation(unsigned int handle, const char* name) {
+static int getShaderLocation(unsigned int handle, const char* name)
+{
   int location = glGetUniformLocation(handle, name);
   fatalAssert(location != -1, "Shader uniform '%s' doesn't exist.", name);
   return location;
 }
 
-void OpenGlShader::sendFloat(const char* name, float value) {
+void OpenGlShader::sendFloat(const char* name, float value)
+{
   glUniform1f(getShaderLocation(handle, name), value);
 }
 
-void OpenGlShader::sendMat4(const char* name, const Mat4& value) {
-  glUniformMatrix4fv(
-    getShaderLocation(handle, name), 
-    1, GL_FALSE,
-    value.data());
+void OpenGlShader::sendMat4(const char* name, const Mat4& value)
+{
+  glUniformMatrix4fv(getShaderLocation(handle, name), 1, GL_FALSE,
+                     value.data());
 }
 
-void OpenGlShader::sendColor(const char* name, Color value) {
-  glUniform4f(
-    getShaderLocation(handle, name),
-    value.r, value.g, value.b, value.a);
+void OpenGlShader::sendColor(const char* name, Color value)
+{
+  glUniform4f(getShaderLocation(handle, name), value.r, value.g, value.b,
+              value.a);
 }

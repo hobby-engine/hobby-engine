@@ -5,12 +5,14 @@
 
 #include "glad/glad.h"
 
-enum class VertexBufferType {
+enum class VertexBufferType
+{
   Array,
   Index,
 };
 
-struct VertexBuffer {
+struct VertexBuffer
+{
   unsigned int handle;
   VertexBufferType type;
   bool isStatic;
@@ -22,18 +24,16 @@ struct VertexBuffer {
   void setData(size_t size, void* data);
 };
 
-struct VertexArray {
+struct VertexArray
+{
   unsigned int handle;
 
   VertexArray();
   ~VertexArray();
 
   void bind() const;
-  void setAttribute(
-    const VertexBuffer& buffer,
-    unsigned int index, int count,
-    GLenum type,
-    size_t stride, size_t offset);
+  void setAttribute(const VertexBuffer& buffer, unsigned int index, int count,
+                    GLenum type, size_t stride, size_t offset);
 };
 
 #endif // _HOBBY_OPENGL_VERTEX_BUFFER_HH

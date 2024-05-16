@@ -6,14 +6,16 @@
 
 #define LUA_LIB_NAME "hobby"
 
-enum class LuaType {
+enum class LuaType
+{
   Nil = 0,
   Number,
   Int,
   Boolean,
 };
 
-struct LuaWrapper {
+struct LuaWrapper
+{
   Engine& engine;
   lua_State* L;
   int errorHandlerPos;
@@ -24,12 +26,14 @@ struct LuaWrapper {
   void callFunction(const char* name, int argCount, ...);
 };
 
-enum class LuaDataType {
+enum class LuaDataType
+{
   Engine,
   Texture2D,
 };
 
-struct LuaData {
+struct LuaData
+{
   LuaDataType type;
   // Can't use generics because I need to be able to check the type somehow
   // (stupid C++ not having reflection)
@@ -47,7 +51,8 @@ void wrapTexture(lua_State* L);
 void wrapWindow(lua_State* L);
 
 template <typename T>
-void createLuaData(lua_State* L, T* data, LuaDataType type, const char* mt) {
+void createLuaData(lua_State* L, T* data, LuaDataType type, const char* mt)
+{
   LuaData* luaData = (LuaData*)lua_newuserdata(L, sizeof(LuaData));
   luaData->type = type;
   luaData->data = data;
@@ -56,8 +61,8 @@ void createLuaData(lua_State* L, T* data, LuaDataType type, const char* mt) {
   lua_setmetatable(L, -2);
 }
 
-template <typename T>
-T* getUserdata(lua_State* L, int index, LuaDataType type) {
+template <typename T> T* getUserdata(lua_State* L, int index, LuaDataType type)
+{
   LuaData* v = (LuaData*)lua_touserdata(L, index);
   if (v->type != type) {
     luaL_error(L, "Incorrect userdata type.");

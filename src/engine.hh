@@ -8,19 +8,21 @@
 
 struct LuaWrapper;
 
-class Engine {
-  public:
-    Window* window;
-    Renderer* renderer;
-    Input* input;
-    Time* time;
-    LuaWrapper* luaWrapper;
+class Engine
+{
+public:
+  Window* window;
+  Renderer* renderer;
+  Input* input;
+  Time* time;
+  LuaWrapper* luaWrapper;
 
-    Engine(const WindowSettings& windowSettings);
-    ~Engine();
+  Engine(const WindowSettings& windowSettings);
+  ~Engine();
 
-    void update();
-  private:
+  void update();
+
+private:
 };
 
 #endif // _HOBBY_ENGINE_HH

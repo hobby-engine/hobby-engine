@@ -1,7 +1,8 @@
 #include "opengl/gl_texture.hh"
 #include "wrapper.hh"
 
-static int wrap_texture2d(lua_State* L) {
+static int wrap_texture2d(lua_State* L)
+{
   const char* path = luaL_checkstring(L, 1);
 
   // TODO: Make more generic
@@ -12,22 +13,25 @@ static int wrap_texture2d(lua_State* L) {
 
 luaL_Reg texture[] = {
   {"texture2d", wrap_texture2d},
-  {nullptr, nullptr},
+  {nullptr,     nullptr       },
 };
 
-static int texture2d__index(lua_State* L) {
+static int texture2d__index(lua_State* L)
+{
   luaL_getmetatable(L, "texture2dmt");
   lua_getfield(L, -1, luaL_checkstring(L, 2));
   return 1;
 }
 
-static int texture2d__gc(lua_State* L) {
+static int texture2d__gc(lua_State* L)
+{
   Texture2D* texture2d = getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
   delete texture2d;
   return 0;
 }
 
-static int wrap_draw(lua_State* L) {
+static int wrap_draw(lua_State* L)
+{
   Texture2D* texture2d = getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
   float x = luaL_checknumber(L, 2);
   float y = luaL_checknumber(L, 3);
@@ -40,25 +44,27 @@ static int wrap_draw(lua_State* L) {
   float sky = luaL_optnumber(L, 10, 0);
   LuaWrapper* wrapper = getLuaWrapper(L);
 
-  wrapper->engine.renderer->drawTexture(
-    *texture2d,
-    x, y, r, sx, sy, ox, oy, skx, sky);
+  wrapper->engine.renderer->drawTexture(*texture2d, x, y, r, sx, sy, ox, oy,
+                                        skx, sky);
   return 0;
 }
 
-static int wrap_getWidth(lua_State* L) {
+static int wrap_getWidth(lua_State* L)
+{
   Texture2D* texture2d = getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
   lua_pushnumber(L, texture2d->getWidth());
   return 1;
 }
 
-static int wrap_getHeight(lua_State* L) {
+static int wrap_getHeight(lua_State* L)
+{
   Texture2D* texture2d = getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
   lua_pushnumber(L, texture2d->getHeight());
   return 1;
 }
 
-static int wrap_getSize(lua_State* L) {
+static int wrap_getSize(lua_State* L)
+{
   Texture2D* texture2d = getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
   lua_pushnumber(L, texture2d->getWidth());
   lua_pushnumber(L, texture2d->getHeight());
@@ -66,16 +72,17 @@ static int wrap_getSize(lua_State* L) {
 }
 
 luaL_Reg texture2dmt[] = {
-  {"__index", texture2d__index},
-  {"__gc", texture2d__gc},
-  {"draw", wrap_draw},
-  {"getWidth", wrap_getWidth},
-  {"getHeight", wrap_getHeight},
-  {"getSize", wrap_getSize},
-  {nullptr, nullptr},
+  {"__index",   texture2d__index},
+  {"__gc",      texture2d__gc   },
+  {"draw",      wrap_draw       },
+  {"getWidth",  wrap_getWidth   },
+  {"getHeight", wrap_getHeight  },
+  {"getSize",   wrap_getSize    },
+  {nullptr,     nullptr         },
 };
 
-void wrapTexture(lua_State *L) {
+void wrapTexture(lua_State* L)
+{
   lua_getglobal(L, LUA_LIB_NAME);
   registerFunctions(L, texture);
 

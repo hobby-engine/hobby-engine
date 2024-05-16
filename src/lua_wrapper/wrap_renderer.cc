@@ -1,30 +1,33 @@
 #include "wrapper.hh"
 
-static int wrap_setDrawColor(lua_State* L) {
+static int wrap_setDrawColor(lua_State* L)
+{
   float r = (float)luaL_checknumber(L, 1);
   float g = (float)luaL_checknumber(L, 2);
   float b = (float)luaL_checknumber(L, 3);
   float a = (float)luaL_optnumber(L, 4, 1);
-  
+
   LuaWrapper* wrapper = getLuaWrapper(L);
   wrapper->engine.renderer->setColor({r, g, b, a});
   return 0;
 }
 
-static int wrap_drawRect(lua_State* L) {
+static int wrap_drawRect(lua_State* L)
+{
   float x = (float)luaL_checknumber(L, 1);
   float y = (float)luaL_checknumber(L, 2);
   float w = (float)luaL_checknumber(L, 3);
   float h = (float)luaL_checknumber(L, 4);
-  
+
   LuaWrapper* wrapper = getLuaWrapper(L);
   wrapper->engine.renderer->drawRect(x, y, w, h);
   return 0;
 }
 
-static int wrap_drawEllipse(lua_State* L) {
-  float x  = (float)luaL_checknumber(L, 1);
-  float y  = (float)luaL_checknumber(L, 2);
+static int wrap_drawEllipse(lua_State* L)
+{
+  float x = (float)luaL_checknumber(L, 1);
+  float y = (float)luaL_checknumber(L, 2);
   float rx = (float)luaL_checknumber(L, 3);
   float ry = (float)luaL_optnumber(L, 4, rx);
 
@@ -33,7 +36,8 @@ static int wrap_drawEllipse(lua_State* L) {
   return 0;
 }
 
-static int wrap_drawVertices(lua_State* L) {
+static int wrap_drawVertices(lua_State* L)
+{
   if (!lua_istable(L, 1)) {
     return luaL_error(L, "Expected a table.");
   }
@@ -69,7 +73,8 @@ static int wrap_drawVertices(lua_State* L) {
   return 0;
 }
 
-static int wrap_drawBoid(lua_State* L) {
+static int wrap_drawBoid(lua_State* L)
+{
   float x = (float)luaL_checknumber(L, 1);
   float y = (float)luaL_checknumber(L, 2);
   float b = (float)luaL_checknumber(L, 3);
@@ -81,35 +86,38 @@ static int wrap_drawBoid(lua_State* L) {
   return 0;
 }
 
-static int wrap_clearScreen(lua_State* L) {
+static int wrap_clearScreen(lua_State* L)
+{
   float r = (float)luaL_checknumber(L, 1);
   float g = (float)luaL_checknumber(L, 2);
   float b = (float)luaL_checknumber(L, 3);
   float a = (float)luaL_optnumber(L, 4, 1);
-  
+
   LuaWrapper* wrapper = getLuaWrapper(L);
   wrapper->engine.renderer->clear({r, g, b, a});
   return 0;
 }
 
-static int wrap_presentScreen(lua_State* L) {
+static int wrap_presentScreen(lua_State* L)
+{
   LuaWrapper* wrapper = getLuaWrapper(L);
   wrapper->engine.window->present();
   return 0;
 }
 
 luaL_Reg renderer[] = {
-  {"setDrawColor", wrap_setDrawColor},
-  {"drawRect", wrap_drawRect},
-  {"drawEllipse", wrap_drawEllipse},
-  {"drawVertices", wrap_drawVertices},
-  {"drawBoid", wrap_drawBoid},
-  {"wipe", wrap_clearScreen},
+  {"setDrawColor",    wrap_setDrawColor },
+  {"drawRect",        wrap_drawRect     },
+  {"drawEllipse",     wrap_drawEllipse  },
+  {"drawVertices",    wrap_drawVertices },
+  {"drawBoid",        wrap_drawBoid     },
+  {"wipe",            wrap_clearScreen  },
   {"swapDrawBuffers", wrap_presentScreen},
-  {nullptr, nullptr},
+  {nullptr,           nullptr           },
 };
 
-void wrapRenderer(lua_State* L) {
+void wrapRenderer(lua_State* L)
+{
   lua_getglobal(L, LUA_LIB_NAME);
   registerFunctions(L, renderer);
 }
