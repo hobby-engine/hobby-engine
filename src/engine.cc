@@ -6,6 +6,8 @@
 #include "window.hh"
 #include "lua_wrapper/wrapper.hh"
 
+#include <unistd.h>
+
 Engine::Engine(const WindowSettings& windowSettings) {
   switch (windowSettings.backend) {
     case GraphicsBackend::OpenGL:
@@ -36,6 +38,7 @@ Engine::~Engine() {
 }
 
 void Engine::update() {
+  usleep(1000);
   renderer->update();
   time->update();
 }
