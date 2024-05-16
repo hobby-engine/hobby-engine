@@ -6,7 +6,9 @@
 #include "window.hh"
 #include "lua_wrapper/wrapper.hh"
 
+#ifdef HB_LINUX
 #include <unistd.h>
+#endif
 
 Engine::Engine(const WindowSettings& windowSettings) {
   switch (windowSettings.backend) {
@@ -38,7 +40,9 @@ Engine::~Engine() {
 }
 
 void Engine::update() {
+#ifdef HB_LINUX
   usleep(1000);
+#endif
   renderer->update();
   time->update();
 }
