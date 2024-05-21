@@ -90,8 +90,8 @@ void Renderer::drawEllipse(float x, float y, float rx, float ry)
   int start = mesh.topIndex();
   int circleResolution = fmax(2 * M_PI * sqrt((rx + ry) / 2), 8);
 
-  for (int i = 0; i < circleResolution; i++) {
-    float angle = ((float)i / circleResolution) * M_PI * 2;
+  for (float i = 0; i < circleResolution; i++) {
+    float angle = (i / circleResolution) * M_PI * 2;
     float px = x + cosf(angle) * rx;
     float py = y + sinf(angle) * ry;
 
