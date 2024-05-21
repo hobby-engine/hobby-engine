@@ -33,6 +33,8 @@ GlfwWindow::GlfwWindow(const WindowSettings& settings)
   }
 
   glfwSetFramebufferSizeCallback(handle, onFramebufferSizeChanged);
+
+  glfwSwapInterval(0);
 }
 
 GlfwWindow::~GlfwWindow()

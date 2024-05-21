@@ -30,7 +30,7 @@ public:
     _resize(0);
   }
 
-  void reserve(size_t size)
+  inline void reserve(size_t size)
   {
     if (_capacity >= size) {
       return;
@@ -38,12 +38,11 @@ public:
     _resize(size);
   }
 
-  void pushBack(const T& e)
+  inline void pushBack(const T& e)
   {
     if (_count + 1 > _capacity) {
       _resize(_capacity * DYN_ARR_GROW);
     }
-
     _d[_count++] = e;
   }
 
@@ -66,7 +65,7 @@ public:
     _count++;
   }
 
-  void clear()
+  inline void clear()
   {
     free(_d);
     _d = nullptr;
@@ -99,7 +98,7 @@ public:
     return _d[_count--];
   }
 
-  T& operator[](size_t index) const;
+  inline T& operator[](size_t index) const;
 
   inline int capacity() const
   {

@@ -30,11 +30,51 @@ public:
   ~Mesh();
 
   void clear();
-  void addVertexXY(float x, float y);
-  void addVertexXYUV(float x, float y, float uvx, float uvy);
-  void addVertexXYC(float x, float y, Color color);
-  void addVertexXYUVC(float x, float y, float uvx, float uvy, Color color);
-  void addIndex(int start, int index);
+
+  inline void addVertexXY(float x, float y)
+  {
+    _vertices.pushBack(x);
+    _vertices.pushBack(y);
+  }
+
+  inline void addVertexXYUV(float x, float y, float uvx, float uvy)
+  {
+    _vertices.pushBack(x);
+    _vertices.pushBack(y);
+    _vertices.pushBack(uvx);
+    _vertices.pushBack(uvy);
+  }
+
+  inline void
+  addVertexXYUVC(float x, float y, float uvx, float uvy, Color color)
+  {
+    _vertices.pushBack(x);
+    _vertices.pushBack(y);
+    _vertices.pushBack(uvx);
+    _vertices.pushBack(uvy);
+    _vertices.pushBack(color.r);
+    _vertices.pushBack(color.g);
+    _vertices.pushBack(color.b);
+    _vertices.pushBack(color.a);
+  }
+
+  inline void addVertexXYC(float x, float y, Color color)
+  {
+    _vertices.pushBack(x);
+    _vertices.pushBack(y);
+    _vertices.pushBack(color.r);
+    _vertices.pushBack(color.g);
+    _vertices.pushBack(color.b);
+    _vertices.pushBack(color.a);
+  }
+
+  inline void addIndex(int start, int index)
+  {
+    if (start + index > _topIndex) {
+      _topIndex = start + index + 1;
+    }
+    _indices->pushBack(start + index);
+  }
 
   inline int isIndexed()
   {
