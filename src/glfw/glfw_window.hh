@@ -18,6 +18,7 @@ public:
   void getSize(int& w, int& h) const override;
   void setSize(int w, int h) override;
   bool isClosed() const override;
+  bool isFocused() const override;
   void present() const override;
 
 private:

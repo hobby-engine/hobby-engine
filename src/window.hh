@@ -27,6 +27,7 @@ public:
   virtual void getSize(int& w, int& h) const = 0;
   virtual void setSize(int w, int h) = 0;
   virtual bool isClosed() const = 0;
+  virtual bool isFocused() const = 0;
   virtual void present() const = 0;
 
 private:

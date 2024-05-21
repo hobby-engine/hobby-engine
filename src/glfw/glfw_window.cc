@@ -67,6 +67,11 @@ bool GlfwWindow::isClosed() const
   return glfwWindowShouldClose(handle);
 }
 
+bool GlfwWindow::isFocused() const
+{
+  return glfwGetWindowAttrib(handle, GLFW_FOCUSED) == 1;
+}
+
 void GlfwWindow::present() const
 {
   glfwSwapBuffers(handle);

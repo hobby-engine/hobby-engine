@@ -6,8 +6,10 @@
 #include "time.hh"
 #include "window.hh"
 
-#ifdef HB_LINUX
+#if defined(HB_POSIX)
 #include <unistd.h>
+#elif defined(HB_WINDOWS)
+#include <windows.h>
 #endif
 
 Engine::Engine(const WindowSettings& windowSettings)
@@ -43,9 +45,15 @@ Engine::~Engine()
 
 void Engine::update()
 {
-#ifdef HB_LINUX
-  usleep(1000);
+  // Don't eat up all the system resources for literally no reason.
+  if (!window->isFocused()) {
+#if defined(HB_POSIX)
+    usleep(1000);
+#elif defined(HB_WINDOWS)
+    Sleep(1);
 #endif
+  }
+
   renderer->update();
   time->update();
 }
