@@ -33,7 +33,7 @@ $ cd bin
 $ make
 ```
 #### Windows
-I've done it and know it's possible, but figure it out yourself 
+I've done it and know it's possible, but figure it out yourself (Hint: MinGW)
 
 ### Features
 - Basic rendering
