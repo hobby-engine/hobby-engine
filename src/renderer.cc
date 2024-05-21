@@ -2,6 +2,7 @@
 
 #include "mat4.hh"
 #include "mesh.hh"
+#include <cmath>
 
 Renderer::Renderer(Window* window) : _window(window)
 {
@@ -78,6 +79,29 @@ BatchState& Renderer::_requestBatchState(const BatchRequest& req)
 
   _currentBatchedCallsCount++;
   return *_state;
+}
+
+void Renderer::drawEllipse(float x, float y, float rx, float ry)
+{
+  BatchRequest req{VertexFormat::XYC, IndexMode::Triangles, nullptr};
+  BatchState& state = _requestBatchState(req);
+  Mesh& mesh = state.mesh;
+
+  int start = mesh.topIndex();
+  int circleResolution = fmax(2 * M_PI * sqrt((rx + ry) / 2), 8);
+
+  for (int i = 0; i < circleResolution; i++) {
+    float angle = ((float)i / circleResolution) * M_PI * 2;
+    float px = x + cosf(angle) * rx;
+    float py = y + sinf(angle) * ry;
+
+    if (i > 2) {
+      mesh.addIndex(start, 0);
+      mesh.addIndex(start, i - 1);
+      mesh.addIndex(start, i);
+    }
+    mesh.addVertexXYC(px, py, _currentColor);
+  }
 }
 
 void Renderer::drawRect(float x, float y, float w, float h)

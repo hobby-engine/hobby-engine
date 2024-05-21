@@ -32,7 +32,7 @@ static int wrap_drawEllipse(lua_State* L)
   float ry = (float)luaL_optnumber(L, 4, rx);
 
   LuaWrapper* wrapper = getLuaWrapper(L);
-  // wrapper->engine.renderer->drawEllipse(x, y, rx, ry);
+  wrapper->engine.renderer->drawEllipse(x, y, rx, ry);
   return 0;
 }
 
