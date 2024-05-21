@@ -83,7 +83,6 @@ void Renderer::drawRect(float x, float y, float w, float h)
   Mesh& mesh = state.mesh;
 
   int start = mesh.topIndex();
-  hlog("Start: %d", start);
   // 03
   // 12
   mesh.addIndex(start, 1);

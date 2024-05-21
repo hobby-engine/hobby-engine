@@ -203,15 +203,6 @@ void OpenGlRenderer::drawIndexed()
 
   _ibo.bind();
 
-  hlog("=== INDICES ===");
-  int l = getVertexFormatVertexLength(_state->mesh.getFormat());
-  for (int i = 0; i < indexCount; i++) {
-    int index = indices[i];
-    float x = vertices[index * l];
-    float y = vertices[index * l + 1];
-    hlog("%d = %g, %g", index, x, y);
-  }
-
   GLenum indexMode = _getGlIndexMode(_state->indexMode);
   glDrawElements(indexMode, indexCount, GL_UNSIGNED_INT, nullptr);
 }

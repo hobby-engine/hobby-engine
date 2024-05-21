@@ -68,8 +68,8 @@ Mesh::~Mesh()
 
 void Mesh::addIndex(int start, int index)
 {
-  if (index > _topIndex) {
-    _topIndex = index + 1;
+  if (start + index > _topIndex) {
+    _topIndex = start + index + 1;
   }
   _indices->pushBack(start + index);
 }
