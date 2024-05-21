@@ -49,6 +49,7 @@ void Renderer::_flushDrawQueue()
 BatchState& Renderer::_requestBatchState(const BatchRequest& req)
 {
   bool newState = false;
+  bool flush = false;
 
   // If there is no command before this one, make one.
   if (_state == nullptr) {
@@ -61,12 +62,15 @@ BatchState& Renderer::_requestBatchState(const BatchRequest& req)
     if (!canBatch) {
       // We can't batch anything more past this point, so we draw everything
       // we've collected so far.
-      newState = true;
-      _flushDrawQueue();
+      flush = true;
     }
   }
 
-  if (newState) {
+  if (flush) {
+    _flushDrawQueue();
+  }
+
+  if (newState || flush) {
     BatchState* state = new BatchState(req);
     _state = state;
     return *state;
