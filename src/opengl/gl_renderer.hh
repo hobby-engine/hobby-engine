@@ -2,40 +2,27 @@
 #define _HOBBY_GL_RENDERER_HH
 
 #include "gl_shader.hh"
-#include "glfw/glfw_window.hh"
-#include "mat4.hh"
+#include "opengl/vertex.hh"
 #include "renderer.hh"
-#include "vertex.hh"
 
 class OpenGlRenderer final : public Renderer
 {
 public:
-  OpenGlRenderer(GlfwWindow* window);
+  OpenGlRenderer(Window* window);
 
-  void update() override;
-  int getDrawCalls() const override;
-  void setColor(Color color) override;
   void clear(Color color) override;
-  void drawRect(float x, float y, float w, float h) override;
-  void drawEllipse(float x, float y, float rx, float ry) override;
-  void drawVertices(int count, float* vertices) override;
-  void drawBoid(float x, float y, float b, float h, float r) override;
-  void drawTexture(const Texture2D& texture, float x, float y, float r,
-                   float sx, float sy, float ox, float oy, float skx,
-                   float sky) override;
+  void draw() override;
+  void drawIndexed() override;
 
 private:
-  GlfwWindow* _window = nullptr;
-  int _drawCalls = 0, _currentDrawCallCount = 0;
+  void _setAttributes();
+  GLenum _getGlIndexMode(IndexMode mode);
 
-  VertexBuffer _vertexBuffer;
-  VertexBuffer _indexBuffer;
-  VertexArray _vertexArray;
-
+  VertexBuffer _vbo;
+  VertexBuffer _ibo;
+  VertexArray _vao;
   OpenGlShader _colorShader;
   OpenGlShader _textureShader;
-
-  Mat4 _projection;
 };
 
 #endif // _HOBBY_GL_RENDERER_HH

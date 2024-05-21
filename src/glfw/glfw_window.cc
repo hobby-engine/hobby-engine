@@ -18,8 +18,8 @@ GlfwWindow::GlfwWindow(const WindowSettings& settings)
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_RESIZABLE, settings.canResize);
 
-  handle = glfwCreateWindow(settings.width, settings.height, settings.title,
-                            nullptr, nullptr);
+  handle = glfwCreateWindow(
+    settings.width, settings.height, settings.title, nullptr, nullptr);
   if (!handle) {
     glfwTerminate();
     fatal("Failed to initialize glfw window.");

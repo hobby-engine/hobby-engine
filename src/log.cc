@@ -4,8 +4,8 @@
 #include <cstdio>
 #include <cstdlib>
 
-static void logMessage(FILE* file, const char* prefix, const char* format,
-                       va_list args)
+static void
+logMessage(FILE* file, const char* prefix, const char* format, va_list args)
 {
   std::fprintf(file, "%s", prefix);
   std::vfprintf(file, format, args);

@@ -13,13 +13,15 @@ static int errorHandler(lua_State* L)
 
   lua_getglobal(L, "debug");
   if (!lua_istable(L, -1)) {
-    fatal("%s\nDebug library has been removed. Cannot provide stack trace.",
-          lua_tostring(L, 1));
+    fatal(
+      "%s\nDebug library has been removed. Cannot provide stack trace.",
+      lua_tostring(L, 1));
   }
   lua_getfield(L, -1, "traceback");
   if (!lua_iscfunction(L, -1)) {
-    fatal("%s\n'debug.traceback' has been removed. Cannot provide stack trace.",
-          lua_tostring(L, 1));
+    fatal(
+      "%s\n'debug.traceback' has been removed. Cannot provide stack trace.",
+      lua_tostring(L, 1));
   }
 
   lua_call(L, 0, 1);

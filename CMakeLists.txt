@@ -28,6 +28,8 @@ set(SRC
   src/mat4.cc
   src/engine.cc
   src/time.cc
+  src/renderer.cc
+  src/mesh.cc
   
   # GLFW implementation
   src/glfw/glfw_window.cc

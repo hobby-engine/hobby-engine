@@ -44,8 +44,8 @@ static inline int getGlShaderType(ShaderType type)
   return -1;
 }
 
-static unsigned int createShader(const char* source, const char* path,
-                                 ShaderType type)
+static unsigned int
+createShader(const char* source, const char* path, ShaderType type)
 {
   unsigned int shader = glCreateShader(getGlShaderType(type));
   glShaderSource(shader, 1, &source, nullptr);
@@ -67,8 +67,9 @@ static unsigned int createShader(const char* source, const char* path,
   return shader;
 }
 
-unsigned int createProgram(const char* vertSource, const char* fragSource,
-                           const char* vertPath, const char* fragPath)
+unsigned int createProgram(
+  const char* vertSource, const char* fragSource, const char* vertPath,
+  const char* fragPath)
 {
   unsigned int vert = createShader(vertSource, vertPath, ShaderType::Vertex);
   unsigned int frag = createShader(fragSource, fragPath, ShaderType::Fragment);
@@ -108,8 +109,8 @@ OpenGlShader::OpenGlShader(unsigned int handle) : handle(handle)
 {
 }
 
-OpenGlShader OpenGlShader::embedded(const char* vertSource,
-                                    const char* fragSource)
+OpenGlShader
+OpenGlShader::embedded(const char* vertSource, const char* fragSource)
 {
   unsigned int handle = createProgram(vertSource, fragSource, nullptr, nullptr);
   return OpenGlShader(handle);
@@ -139,12 +140,12 @@ void OpenGlShader::sendFloat(const char* name, float value)
 
 void OpenGlShader::sendMat4(const char* name, const Mat4& value)
 {
-  glUniformMatrix4fv(getShaderLocation(handle, name), 1, GL_FALSE,
-                     value.data());
+  glUniformMatrix4fv(
+    getShaderLocation(handle, name), 1, GL_FALSE, value.data());
 }
 
 void OpenGlShader::sendColor(const char* name, Color value)
 {
-  glUniform4f(getShaderLocation(handle, name), value.r, value.g, value.b,
-              value.a);
+  glUniform4f(
+    getShaderLocation(handle, name), value.r, value.g, value.b, value.a);
 }

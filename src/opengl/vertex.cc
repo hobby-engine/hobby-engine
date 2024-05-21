@@ -34,8 +34,9 @@ void VertexBuffer::bind() const
 void VertexBuffer::setData(size_t size, void* data)
 {
   bind();
-  glBufferData(getGlBufferType(type), size, data,
-               isStatic ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+  glBufferData(
+    getGlBufferType(type), size, data,
+    isStatic ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
 }
 
 VertexArray::VertexArray()
@@ -53,9 +54,9 @@ void VertexArray::bind() const
   glBindVertexArray(handle);
 }
 
-void VertexArray::setAttribute(const VertexBuffer& buffer, unsigned int index,
-                               int count, GLenum type, size_t stride,
-                               size_t offset)
+void VertexArray::setAttribute(
+  const VertexBuffer& buffer, unsigned int index, int count, GLenum type,
+  size_t stride, size_t offset)
 {
   bind();
   buffer.bind();

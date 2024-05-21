@@ -5,15 +5,15 @@
 #include "engine.hh"
 #include "lua_wrapper/wrapper.hh"
 
-static void onKeyPressed(GLFWwindow* window, int key, UNUSED int scancode,
-                         int action, UNUSED int mode)
+static void onKeyPressed(
+  GLFWwindow* window, int key, UNUSED int scancode, int action, UNUSED int mode)
 {
   Engine* engine = (Engine*)glfwGetWindowUserPointer(window);
 
   if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-    engine->luaWrapper->callFunction("onKeyPressed", 2, LuaType::Int, key,
-                                     LuaType::Boolean,
-                                     (int)action == GLFW_REPEAT);
+    engine->luaWrapper->callFunction(
+      "onKeyPressed", 2, LuaType::Int, key, LuaType::Boolean,
+      (int)action == GLFW_REPEAT);
   } else {
     engine->luaWrapper->callFunction("onKeyReleased", 1, LuaType::Int, key);
   }

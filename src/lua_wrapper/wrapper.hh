@@ -61,7 +61,8 @@ void createLuaData(lua_State* L, T* data, LuaDataType type, const char* mt)
   lua_setmetatable(L, -2);
 }
 
-template <typename T> T* getUserdata(lua_State* L, int index, LuaDataType type)
+template <typename T>
+T* getUserdata(lua_State* L, int index, LuaDataType type)
 {
   LuaData* v = (LuaData*)lua_touserdata(L, index);
   if (v->type != type) {

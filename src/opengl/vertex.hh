@@ -32,8 +32,9 @@ struct VertexArray
   ~VertexArray();
 
   void bind() const;
-  void setAttribute(const VertexBuffer& buffer, unsigned int index, int count,
-                    GLenum type, size_t stride, size_t offset);
+  void setAttribute(
+    const VertexBuffer& buffer, unsigned int index, int count, GLenum type,
+    size_t stride, size_t offset);
 };
 
 #endif // _HOBBY_OPENGL_VERTEX_BUFFER_HH

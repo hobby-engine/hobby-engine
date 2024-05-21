@@ -1,8 +1,8 @@
 #ifndef _HOBBY_OPENGL_WINDOW_HH
 #define _HOBBY_OPENGL_WINDOW_HH
 
-#include "GLFW/glfw3.h"
 #include "glad/glad.h"
+#include "GLFW/glfw3.h"
 #include "window.hh"
 
 class GlfwWindow final : public Window

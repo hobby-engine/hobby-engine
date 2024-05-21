@@ -1,14 +1,13 @@
 #include "gl_renderer.hh"
 
-#include <cmath>
+#include "mesh.hh"
+#include "opengl/vertex.hh"
+#include "renderer.hh"
 
-#include "GLFW/glfw3.h"
 #include "glad/glad.h"
 
 #include "common.hh"
 #include "log.hh"
-#include "mat4.hh"
-#include "texture.hh"
 
 // COLOR SHADER
 
@@ -16,18 +15,22 @@ const char* colorVert = R"glsl(
 #version 330 core
 
 layout (location = 0) in vec2 ipos;
+layout (location = 1) in vec4 icolor;
 
 uniform mat4 proj, trans;
 
+out vec4 color;
+
 void main() {
   gl_Position = proj * trans * vec4(ipos, 0., 1.);
+  color = icolor;
 }
 )glsl";
 
 const char* colorFrag = R"glsl(
 #version 330 core
 
-uniform vec4 color;
+in vec4 color;
 
 out vec4 fragColor;
 
@@ -69,9 +72,10 @@ void main() {
 }
 )glsl";
 
-void openGlMessage(UNUSED unsigned source, UNUSED unsigned type,
-                   UNUSED unsigned id, unsigned severity, UNUSED int length,
-                   const char* message, UNUSED const void* userParam)
+void openGlMessage(
+  UNUSED unsigned source, UNUSED unsigned type, UNUSED unsigned id,
+  unsigned severity, UNUSED int length, const char* message,
+  UNUSED const void* userParam)
 {
   switch (severity) {
     case GL_DEBUG_SEVERITY_HIGH:
@@ -89,11 +93,9 @@ void openGlMessage(UNUSED unsigned source, UNUSED unsigned type,
   error("Unknown severity level!");
 }
 
-OpenGlRenderer::OpenGlRenderer(GlfwWindow* window)
-    : _window(window),
-      _vertexBuffer(VertexBuffer(VertexBufferType::Array, false)),
-      _indexBuffer(VertexBuffer(VertexBufferType::Index, false)),
-      _vertexArray(VertexArray()),
+OpenGlRenderer::OpenGlRenderer(Window* window)
+    : Renderer(window), _vbo(VertexBuffer(VertexBufferType::Array, false)),
+      _ibo(VertexBuffer(VertexBufferType::Index, false)), _vao(VertexArray()),
       _colorShader(OpenGlShader::embedded(colorVert, colorFrag)),
       _textureShader(OpenGlShader::embedded(textureVert, textureFrag))
 {
@@ -107,175 +109,109 @@ OpenGlRenderer::OpenGlRenderer(GlfwWindow* window)
 #endif
 }
 
-void OpenGlRenderer::update()
-{
-  int w, h;
-  _window->getSize(w, h);
-
-  _projection.setIdentity();
-  _projection.ortho(0, w, h, 0, -1, 1);
-
-  _drawCalls = _currentDrawCallCount;
-  _currentDrawCallCount = 0;
-}
-
-int OpenGlRenderer::getDrawCalls() const
-{
-  return _drawCalls;
-}
-
-void OpenGlRenderer::setColor(Color color)
-{
-  _currentColor = color;
-}
-
 void OpenGlRenderer::clear(Color color)
 {
   glClearColor(color.r, color.g, color.b, color.a);
   glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void OpenGlRenderer::drawRect(float x, float y, float w, float h)
+void OpenGlRenderer::_setAttributes()
 {
-  float vertices[] = {
-    0, 0, 0, h, w, h, w, 0,
-  };
-
-  _vertexBuffer.setData(2 * 4 * sizeof(float), vertices);
-
-  int indices[] = {0, 1, 2, 0, 2, 3};
-
-  _indexBuffer.setData(6 * sizeof(unsigned int), indices);
-
-  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 2,
-                            0);
-
-  Mat4 transform;
-  transform.setTranslation(x, y);
-
-  _colorShader.apply();
-  _colorShader.sendMat4("proj", _projection);
-  _colorShader.sendMat4("trans", transform);
-  _colorShader.sendColor("color", _currentColor);
-
-  _indexBuffer.bind();
-  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
-  _currentDrawCallCount++;
+  VertexFormat format = _state->mesh.getFormat();
+  switch (format) {
+    case VertexFormat::XY:
+      _vao.setAttribute(_vbo, 0, 2, GL_FLOAT, getVertexFormatStride(format), 0);
+      break;
+    case VertexFormat::XYU:
+      _vao.setAttribute(_vbo, 0, 2, GL_FLOAT, getVertexFormatStride(format), 0);
+      _vao.setAttribute(
+        _vbo, 1, 2, GL_FLOAT, getVertexFormatStride(format), 2 * sizeof(float));
+      break;
+    case VertexFormat::XYC:
+      _vao.setAttribute(_vbo, 0, 2, GL_FLOAT, getVertexFormatStride(format), 0);
+      _vao.setAttribute(
+        _vbo, 1, 4, GL_FLOAT, getVertexFormatStride(format), 2 * sizeof(float));
+      break;
+    case VertexFormat::XYUC:
+      _vao.setAttribute(_vbo, 0, 2, GL_FLOAT, getVertexFormatStride(format), 0);
+      _vao.setAttribute(
+        _vbo, 1, 2, GL_FLOAT, getVertexFormatStride(format), 2 * sizeof(float));
+      _vao.setAttribute(
+        _vbo, 2, 4, GL_FLOAT, getVertexFormatStride(format), 4 * sizeof(float));
+      break;
+    default:
+      return;
+  }
 }
 
-void OpenGlRenderer::drawEllipse(float x, float y, float rx, float ry)
+GLenum OpenGlRenderer::_getGlIndexMode(IndexMode mode)
 {
-  int circleResolution = fmax(2 * M_PI * sqrt((rx + ry) / 2), 8);
-
-  float points[circleResolution * 2];
-
-  for (int i = 0; i < circleResolution; i++) {
-    int index = i * 2;
-    float angle = ((float)i / circleResolution) * M_PI * 2;
-    points[index] = cosf(angle) * rx;
-    points[index + 1] = sinf(angle) * ry;
+  switch (mode) {
+    case IndexMode::Triangles:
+      return GL_TRIANGLES;
+    case IndexMode::TriangleFan:
+      return GL_TRIANGLE_FAN;
+    case IndexMode::TriangleStripe:
+      return GL_TRIANGLE_STRIP;
   }
 
-  _vertexBuffer.setData(2 * circleResolution * sizeof(float), points);
-  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 2,
-                            0);
-
-  Mat4 transform;
-  transform.setTranslation(x, y);
-
-  _colorShader.apply();
-  _colorShader.sendMat4("proj", _projection);
-  _colorShader.sendMat4("trans", transform);
-  _colorShader.sendColor("color", _currentColor);
-
-  _vertexArray.bind();
-  glDrawArrays(GL_TRIANGLE_FAN, 0, circleResolution);
-
-  _currentDrawCallCount++;
+  // Unreachable.
+  return GL_TRIANGLES;
 }
 
-void OpenGlRenderer::drawVertices(int count, float* vertices)
+void OpenGlRenderer::draw()
 {
-  _vertexBuffer.setData(count * sizeof(float), vertices);
+  float* vertices = _state->mesh.data();
 
-  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 2,
-                            0);
+  int vertexLength = getVertexFormatVertexLength(_state->mesh.getFormat());
+  int meshSize = _state->mesh.vertexCount();
+
+  _vbo.setData(meshSize * sizeof(float), vertices);
+  _setAttributes();
 
   Mat4 transform;
   transform.setIdentity();
 
   _colorShader.apply();
   _colorShader.sendMat4("proj", _projection);
-  _colorShader.sendMat4("trans", transform);
-  _colorShader.sendColor("color", _currentColor);
+  _colorShader.sendMat4("trans", transform); // TODO: Get rid of this.
 
-  _vertexArray.bind();
-  glDrawArrays(GL_TRIANGLES, 0, count);
+  _vao.bind();
 
-  _currentDrawCallCount++;
+  int elementCount = meshSize / vertexLength;
+  glDrawArrays(_getGlIndexMode(_state->indexMode), 0, elementCount);
 }
 
-void OpenGlRenderer::drawBoid(float x, float y, float b, float h, float r)
+void OpenGlRenderer::drawIndexed()
 {
-  float vertices[] = {
-    0, -b / 2, 0, b / 2, h, 0,
-  };
+  float* vertices = _state->mesh.data();
+  unsigned int* indices = _state->mesh.indices();
 
-  _vertexBuffer.setData(2 * 3 * sizeof(float), vertices);
+  int vertexCount = _state->mesh.vertexCount();
+  int indexCount = _state->mesh.indexCount();
 
-  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 2,
-                            0);
+  _vbo.setData(vertexCount * sizeof(float), vertices);
+  _ibo.setData(indexCount * sizeof(uint32_t), indices);
+  _setAttributes();
 
   Mat4 transform;
-  transform.setRotation(r);
-  // transform.setIdentity();
-  transform.translate(x, y);
+  transform.setIdentity();
 
   _colorShader.apply();
   _colorShader.sendMat4("proj", _projection);
-  _colorShader.sendMat4("trans", transform);
-  _colorShader.sendColor("color", _currentColor);
+  _colorShader.sendMat4("trans", transform); // TODO: Get rid of this.
 
-  _vertexArray.bind();
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+  _ibo.bind();
 
-  _currentDrawCallCount++;
-}
+  hlog("=== INDICES ===");
+  int l = getVertexFormatVertexLength(_state->mesh.getFormat());
+  for (int i = 0; i < indexCount; i++) {
+    int index = indices[i];
+    float x = vertices[index * l];
+    float y = vertices[index * l + 1];
+    hlog("%d = %g, %g", index, x, y);
+  }
 
-void OpenGlRenderer::drawTexture(const Texture2D& texture, float x, float y,
-                                 float r, float sx, float sy, float ox,
-                                 float oy, float skx, float sky)
-{
-
-  float w = (float)texture.getWidth();
-  float h = (float)texture.getHeight();
-  float left = ox * sx, right = (w + ox) * sx;
-  float top = oy * sy, bottom = (h + oy) * sy;
-
-  float vertices[] = {left,  top,    0, 0, left,  bottom, 0, 1,
-                      right, bottom, 1, 1, right, top,    1, 0};
-
-  _vertexBuffer.setData(4 * 4 * sizeof(float), vertices);
-
-  _vertexArray.setAttribute(_vertexBuffer, 0, 2, GL_FLOAT, sizeof(float) * 4,
-                            0);
-  _vertexArray.setAttribute(_vertexBuffer, 1, 2, GL_FLOAT, sizeof(float) * 4,
-                            2 * sizeof(float));
-
-  Mat4 transform;
-  transform.setRotation(r);
-  transform.skew(skx, sky);
-  transform.scale(sx, sy);
-  transform.translate(x, y);
-
-  _textureShader.apply();
-  _textureShader.sendMat4("proj", _projection);
-  _textureShader.sendMat4("trans", transform);
-
-  texture.bind();
-  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-  glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-
-  _currentDrawCallCount++;
+  GLenum indexMode = _getGlIndexMode(_state->indexMode);
+  glDrawElements(indexMode, indexCount, GL_UNSIGNED_INT, nullptr);
 }

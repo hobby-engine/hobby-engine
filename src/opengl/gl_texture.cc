@@ -62,13 +62,14 @@ OpenGlTexture2D::OpenGlTexture2D(const char* path)
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, hobbyWrapToOpenGl(_wrap));
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, hobbyWrapToOpenGl(_wrap));
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                  hobbyFilterToOpenGl(_min));
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
-                  hobbyFilterToOpenGl(_mag));
+  glTexParameteri(
+    GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, hobbyFilterToOpenGl(_min));
+  glTexParameteri(
+    GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, hobbyFilterToOpenGl(_mag));
 
-  glTexImage2D(GL_TEXTURE_2D, 0, channels, _width, _height, 0, channels,
-               GL_UNSIGNED_BYTE, data);
+  glTexImage2D(
+    GL_TEXTURE_2D, 0, channels, _width, _height, 0, channels, GL_UNSIGNED_BYTE,
+    data);
   glGenerateMipmap(GL_TEXTURE_2D);
 
   stbi_image_free(data);

@@ -32,7 +32,7 @@ static int wrap_drawEllipse(lua_State* L)
   float ry = (float)luaL_optnumber(L, 4, rx);
 
   LuaWrapper* wrapper = getLuaWrapper(L);
-  wrapper->engine.renderer->drawEllipse(x, y, rx, ry);
+  // wrapper->engine.renderer->drawEllipse(x, y, rx, ry);
   return 0;
 }
 
@@ -69,7 +69,7 @@ static int wrap_drawVertices(lua_State* L)
   vertices[count - 1] = vertices[1];
 
   LuaWrapper* wrapper = getLuaWrapper(L);
-  wrapper->engine.renderer->drawVertices(count, vertices);
+  // wrapper->engine.renderer->drawVertices(count, vertices);
   return 0;
 }
 
@@ -82,7 +82,7 @@ static int wrap_drawBoid(lua_State* L)
   float r = (float)luaL_checknumber(L, 5);
 
   LuaWrapper* wrapper = getLuaWrapper(L);
-  wrapper->engine.renderer->drawBoid(x, y, b, h, r);
+  // wrapper->engine.renderer->drawBoid(x, y, b, h, r);
   return 0;
 }
 
@@ -101,7 +101,7 @@ static int wrap_clearScreen(lua_State* L)
 static int wrap_presentScreen(lua_State* L)
 {
   LuaWrapper* wrapper = getLuaWrapper(L);
-  wrapper->engine.window->present();
+  wrapper->engine.renderer->present();
   return 0;
 }
 
