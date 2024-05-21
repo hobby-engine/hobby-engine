@@ -9,6 +9,7 @@
 #if defined(HB_POSIX)
 #include <unistd.h>
 #elif defined(HB_WINDOWS)
+// I HATE WINDOWS SO MUCH
 #include <windows.h>
 #endif
 
@@ -46,11 +47,17 @@ Engine::~Engine()
 void Engine::update()
 {
   // Don't eat up all the system resources for literally no reason.
-  if (!window->isFocused()) {
+  if (window->isFocused()) {
 #if defined(HB_POSIX)
     usleep(1000);
 #elif defined(HB_WINDOWS)
     Sleep(1);
+#endif
+  } else {
+#if defined(HB_POSIX)
+    usleep(2000);
+#elif defined(HB_WINDOWS)
+    Sleep(2);
 #endif
   }
 
