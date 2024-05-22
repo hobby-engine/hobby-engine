@@ -14,28 +14,28 @@
 const char* colorVert = R"glsl(
 #version 330 core
 
-layout (location = 0) in vec2 ipos;
-layout (location = 1) in vec4 icolor;
+in vec2 ipos;
+in vec4 icolor;
 
 uniform mat4 proj, trans;
 
-out vec4 color;
+out vec4 v_color;
 
 void main() {
   gl_Position = proj * trans * vec4(ipos, 0., 1.);
-  color = icolor;
+  v_color = icolor;
 }
 )glsl";
 
 const char* colorFrag = R"glsl(
 #version 330 core
 
-in vec4 color;
+in vec4 v_color;
 
 out vec4 fragColor;
 
 void main() {
-  fragColor = color;
+  fragColor = v_color;
 }
 )glsl";
 
@@ -44,17 +44,20 @@ void main() {
 const char* textureVert = R"glsl(
 #version 330 core
 
-layout (location = 0) in vec2 ipos;
-layout (location = 1) in vec2 iuv;
+in vec2 ipos;
+in vec2 iuv;
+in vec4 icolor;
 
 uniform mat4 proj, trans;
 
-out vec2 uv;
+out vec2 v_uv;
+out vec4 v_color;
 
 void main() {
   gl_Position = proj * trans * vec4(ipos, 0., 1.);
 
-  uv = iuv;
+  v_uv = iuv;
+  v_color = icolor;
 }
 )glsl";
 
@@ -63,12 +66,13 @@ const char* textureFrag = R"glsl(
 
 out vec4 fragColor;
 
-in vec2 uv;
+in vec2 v_uv;
+in vec4 v_color;
 
 uniform sampler2D tex;
 
 void main() {
-  fragColor = texture(tex, uv);
+  fragColor = texture(tex, v_uv) * v_color;
 }
 )glsl";
 
@@ -107,6 +111,8 @@ OpenGlRenderer::OpenGlRenderer(Window* window)
   glEnable(GL_DEBUG_OUTPUT);
   glDebugMessageCallback(openGlMessage, nullptr);
 #endif
+
+  _colorShader.apply();
 }
 
 void OpenGlRenderer::clear(Color color)
@@ -197,9 +203,8 @@ void OpenGlRenderer::drawIndexed()
   Mat4 transform;
   transform.setIdentity();
 
-  _colorShader.apply();
   _colorShader.sendMat4("proj", _projection);
-  _colorShader.sendMat4("trans", transform); // TODO: Get rid of this.
+  _colorShader.sendMat4("trans", transform);
 
   _ibo.bind();
 

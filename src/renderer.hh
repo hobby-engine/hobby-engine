@@ -18,6 +18,7 @@ enum class IndexMode
 // similar, consecutive draw calls.
 struct BatchRequest
 {
+  bool isIndexed = true;
   VertexFormat vertexFormat;
   IndexMode indexMode;
   Texture2D* texture = nullptr;
@@ -37,7 +38,7 @@ struct BatchState
   Texture2D* texture = nullptr;
 
   BatchState(const BatchRequest& req)
-      : mesh(Mesh(req.vertexFormat, true)), indexMode(req.indexMode),
+      : mesh(Mesh(req.vertexFormat, req.isIndexed)), indexMode(req.indexMode),
         texture(req.texture)
   {
   }

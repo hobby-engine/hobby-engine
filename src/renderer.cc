@@ -84,6 +84,7 @@ BatchState& Renderer::_requestBatchState(const BatchRequest& req)
 void Renderer::drawEllipse(float x, float y, float rx, float ry)
 {
   BatchRequest req{VertexFormat::XYC, IndexMode::Triangles, nullptr};
+  req.isIndexed = true;
   BatchState& state = _requestBatchState(req);
   Mesh& mesh = state.mesh;
 
@@ -106,7 +107,8 @@ void Renderer::drawEllipse(float x, float y, float rx, float ry)
 
 void Renderer::drawRect(float x, float y, float w, float h)
 {
-  BatchRequest req{VertexFormat::XYC, IndexMode::Triangles, nullptr};
+  BatchRequest req{VertexFormat::XYC, IndexMode::TriangleFan, nullptr};
+  req.isIndexed = true;
   BatchState& state = _requestBatchState(req);
   Mesh& mesh = state.mesh;
 
