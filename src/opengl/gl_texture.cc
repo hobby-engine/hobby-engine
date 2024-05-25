@@ -16,7 +16,7 @@ static int hobbyFilterToOpenGl(FilterMode filter)
     case FilterMode::Nearest:
       return GL_NEAREST;
     default:
-      fatal("Invalid filter type. This should be unreachable.\n");
+      error("Invalid filter type. This should be unreachable.\n");
       return 0;
   }
 }
@@ -33,7 +33,7 @@ static int hobbyWrapToOpenGl(WrapMode mode)
     case WrapMode::Clamp:
       return GL_CLAMP_TO_EDGE;
     default:
-      fatal("Invalid filter type. This should be unreachable.\n");
+      error("Invalid filter type. This should be unreachable.\n");
       return 0;
   }
 }
@@ -73,6 +73,33 @@ OpenGlTexture2D::OpenGlTexture2D(const char* path)
   glGenerateMipmap(GL_TEXTURE_2D);
 
   stbi_image_free(data);
+}
+
+OpenGlTexture2D::OpenGlTexture2D(Color color)
+{
+  glGenTextures(1, &handle);
+  glBindTexture(GL_TEXTURE_2D, handle);
+
+  _wrap = WrapMode::Repeat;
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, hobbyWrapToOpenGl(_wrap));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, hobbyWrapToOpenGl(_wrap));
+  glTexParameteri(
+    GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, hobbyFilterToOpenGl(_min));
+  glTexParameteri(
+    GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, hobbyFilterToOpenGl(_mag));
+
+  uint8_t bColor[4] = {
+    (uint8_t)(color.r * UINT8_MAX), (uint8_t)(color.g * UINT8_MAX),
+    (uint8_t)(color.b * UINT8_MAX), (uint8_t)(color.a * UINT8_MAX)};
+
+  _width = 1;
+  _height = 1;
+  _channelCount = 4;
+
+  glTexImage2D(
+    GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+    bColor);
 }
 
 OpenGlTexture2D::~OpenGlTexture2D()

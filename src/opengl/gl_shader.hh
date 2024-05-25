@@ -17,6 +17,7 @@ public:
   void apply() override;
 
   void sendFloat(const char* name, float value) override;
+  void sendInt(const char* name, int value) override;
   void sendMat4(const char* name, const Mat4& value) override;
   void sendColor(const char* name, Color value) override;
 

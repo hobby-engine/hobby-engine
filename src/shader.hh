@@ -20,6 +20,7 @@ public:
   virtual void apply() = 0;
 
   virtual void sendFloat(const char* name, float value) = 0;
+  virtual void sendInt(const char* name, int value) = 0;
   virtual void sendMat4(const char* name, const Mat4& value) = 0;
   virtual void sendColor(const char* name, Color value) = 0;
 

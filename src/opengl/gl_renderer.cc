@@ -9,36 +9,6 @@
 #include "common.hh"
 #include "log.hh"
 
-// COLOR SHADER
-
-const char* colorVert = R"glsl(
-#version 330 core
-
-in vec2 ipos;
-in vec4 icolor;
-
-uniform mat4 proj, trans;
-
-out vec4 v_color;
-
-void main() {
-  gl_Position = proj * trans * vec4(ipos, 0., 1.);
-  v_color = icolor;
-}
-)glsl";
-
-const char* colorFrag = R"glsl(
-#version 330 core
-
-in vec4 v_color;
-
-out vec4 fragColor;
-
-void main() {
-  fragColor = v_color;
-}
-)glsl";
-
 // TEXTURE SHADER
 
 const char* textureVert = R"glsl(
@@ -98,10 +68,10 @@ void openGlMessage(
 }
 
 OpenGlRenderer::OpenGlRenderer(Window* window)
-    : Renderer(window), _vbo(VertexBuffer(VertexBufferType::Array, false)),
+    : Renderer(window), _currentFormat(VertexFormat::XY),
+      _vbo(VertexBuffer(VertexBufferType::Array, false)),
       _ibo(VertexBuffer(VertexBufferType::Index, false)), _vao(VertexArray()),
-      _colorShader(OpenGlShader::embedded(colorVert, colorFrag)),
-      _textureShader(OpenGlShader::embedded(textureVert, textureFrag))
+      _defaultShader(OpenGlShader::embedded(textureVert, textureFrag))
 {
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -112,7 +82,14 @@ OpenGlRenderer::OpenGlRenderer(Window* window)
   glDebugMessageCallback(openGlMessage, nullptr);
 #endif
 
-  _colorShader.apply();
+  _defaultShader.apply();
+
+  _colorTexture = new OpenGlTexture2D({1.0, 1.0, 1.0, 1.0});
+}
+
+OpenGlRenderer::~OpenGlRenderer()
+{
+  delete _colorTexture;
 }
 
 void OpenGlRenderer::clear(Color color)
@@ -123,27 +100,33 @@ void OpenGlRenderer::clear(Color color)
 
 void OpenGlRenderer::_setAttributes()
 {
-  VertexFormat format = _state->mesh.getFormat();
+  VertexFormat format = _currentFormat;
+  if (_state) {
+    format = _state->mesh.getFormat();
+    // Nothing changed, this is a waste of our time
+    if (format == _currentFormat) {
+      return;
+    }
+  }
+
+  size_t stride = getVertexFormatStride(format);
+
   switch (format) {
     case VertexFormat::XY:
-      _vao.setAttribute(_vbo, 0, 2, GL_FLOAT, getVertexFormatStride(format), 0);
+      _vao.setAttribute(_vbo, 0, 2, GL_FLOAT, stride, 0);
       break;
     case VertexFormat::XYU:
-      _vao.setAttribute(_vbo, 0, 2, GL_FLOAT, getVertexFormatStride(format), 0);
-      _vao.setAttribute(
-        _vbo, 1, 2, GL_FLOAT, getVertexFormatStride(format), 2 * sizeof(float));
+      _vao.setAttribute(_vbo, 0, 2, GL_FLOAT, stride, 0);
+      _vao.setAttribute(_vbo, 1, 2, GL_FLOAT, stride, 2 * sizeof(float));
       break;
     case VertexFormat::XYC:
-      _vao.setAttribute(_vbo, 0, 2, GL_FLOAT, getVertexFormatStride(format), 0);
-      _vao.setAttribute(
-        _vbo, 1, 4, GL_FLOAT, getVertexFormatStride(format), 2 * sizeof(float));
+      _vao.setAttribute(_vbo, 0, 2, GL_FLOAT, stride, 0);
+      _vao.setAttribute(_vbo, 1, 4, GL_FLOAT, stride, 2 * sizeof(float));
       break;
     case VertexFormat::XYUC:
-      _vao.setAttribute(_vbo, 0, 2, GL_FLOAT, getVertexFormatStride(format), 0);
-      _vao.setAttribute(
-        _vbo, 1, 2, GL_FLOAT, getVertexFormatStride(format), 2 * sizeof(float));
-      _vao.setAttribute(
-        _vbo, 2, 4, GL_FLOAT, getVertexFormatStride(format), 4 * sizeof(float));
+      _vao.setAttribute(_vbo, 0, 2, GL_FLOAT, stride, 0);
+      _vao.setAttribute(_vbo, 1, 2, GL_FLOAT, stride, 2 * sizeof(float));
+      _vao.setAttribute(_vbo, 2, 4, GL_FLOAT, stride, 4 * sizeof(float));
       break;
     default:
       return;
@@ -165,6 +148,17 @@ GLenum OpenGlRenderer::_getGlIndexMode(IndexMode mode)
   return GL_TRIANGLES;
 }
 
+void OpenGlRenderer::_setupShaderForDraw(const Mat4& transform)
+{
+  glActiveTexture(GL_TEXTURE0);
+  _colorTexture->bind();
+
+  _defaultShader.apply();
+  _defaultShader.sendInt("tex", 0);
+  _defaultShader.sendMat4("proj", _projection);
+  _defaultShader.sendMat4("trans", transform);
+}
+
 void OpenGlRenderer::draw()
 {
   float* vertices = _state->mesh.data();
@@ -178,9 +172,7 @@ void OpenGlRenderer::draw()
   Mat4 transform;
   transform.setIdentity();
 
-  _colorShader.apply();
-  _colorShader.sendMat4("proj", _projection);
-  _colorShader.sendMat4("trans", transform); // TODO: Get rid of this.
+  _setupShaderForDraw(transform);
 
   _vao.bind();
 
@@ -203,8 +195,7 @@ void OpenGlRenderer::drawIndexed()
   Mat4 transform;
   transform.setIdentity();
 
-  _colorShader.sendMat4("proj", _projection);
-  _colorShader.sendMat4("trans", transform);
+  _setupShaderForDraw(transform);
 
   _ibo.bind();
 

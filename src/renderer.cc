@@ -83,7 +83,7 @@ BatchState& Renderer::_requestBatchState(const BatchRequest& req)
 
 void Renderer::drawEllipse(float x, float y, float rx, float ry)
 {
-  BatchRequest req{VertexFormat::XYC, IndexMode::Triangles, nullptr};
+  BatchRequest req{VertexFormat::XYUC, IndexMode::Triangles, nullptr};
   req.isIndexed = true;
   BatchState& state = _requestBatchState(req);
   Mesh& mesh = state.mesh;
@@ -93,21 +93,22 @@ void Renderer::drawEllipse(float x, float y, float rx, float ry)
 
   for (float i = 0; i < circleResolution; i++) {
     float angle = (i / circleResolution) * M_PI * 2;
-    float px = x + cosf(angle) * rx;
-    float py = y + sinf(angle) * ry;
+    float c = cosf(angle), s = sinf(angle);
+    float px = x + c * rx;
+    float py = y + s * ry;
 
     if (i > 2) {
       mesh.addIndex(start, 0);
       mesh.addIndex(start, i - 1);
       mesh.addIndex(start, i);
     }
-    mesh.addVertexXYC(px, py, _currentColor);
+    mesh.addVertexXYUVC(px, py, c * 0.5 + 0.5, s * 0.5 + 0.5, _currentColor);
   }
 }
 
 void Renderer::drawRect(float x, float y, float w, float h)
 {
-  BatchRequest req{VertexFormat::XYC, IndexMode::TriangleFan, nullptr};
+  BatchRequest req{VertexFormat::XYUC, IndexMode::Triangles, nullptr};
   req.isIndexed = true;
   BatchState& state = _requestBatchState(req);
   Mesh& mesh = state.mesh;
@@ -122,8 +123,8 @@ void Renderer::drawRect(float x, float y, float w, float h)
   mesh.addIndex(start, 1);
   mesh.addIndex(start, 0);
 
-  mesh.addVertexXYC(x, y, _currentColor);
-  mesh.addVertexXYC(x, y + h, _currentColor);
-  mesh.addVertexXYC(x + w, y + h, _currentColor);
-  mesh.addVertexXYC(x + w, y, _currentColor);
+  mesh.addVertexXYUVC(x, y, 0, 0, _currentColor);
+  mesh.addVertexXYUVC(x, y + h, 0, 1, _currentColor);
+  mesh.addVertexXYUVC(x + w, y + h, 1, 1, _currentColor);
+  mesh.addVertexXYUVC(x + w, y, 1, 0, _currentColor);
 }

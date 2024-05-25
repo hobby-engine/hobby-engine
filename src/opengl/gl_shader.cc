@@ -138,6 +138,11 @@ void OpenGlShader::sendFloat(const char* name, float value)
   glUniform1f(getShaderLocation(handle, name), value);
 }
 
+void OpenGlShader::sendInt(const char* name, int value)
+{
+  glUniform1i(getShaderLocation(handle, name), value);
+}
+
 void OpenGlShader::sendMat4(const char* name, const Mat4& value)
 {
   glUniformMatrix4fv(
