@@ -17,14 +17,11 @@ Engine::Engine(const WindowSettings& windowSettings)
 {
   switch (windowSettings.backend) {
     case GraphicsBackend::OpenGL:
-      GlfwWindow* glfwWindow = new GlfwWindow(windowSettings);
+      GlfwWindow* glfwWindow = new GlfwWindow(*this, windowSettings);
       OpenGlRenderer* openGlRenderer = new OpenGlRenderer(glfwWindow);
       GlfwInput* glfwInput = new GlfwInput(glfwWindow);
 
-      // TODO: Move this to the GLFW section
-      glfwSetWindowUserPointer(glfwWindow->handle, this);
-
-      window = glfwWindow;
+      mainWindow = glfwWindow;
       renderer = openGlRenderer;
       input = glfwInput;
       break;
@@ -37,7 +34,7 @@ Engine::Engine(const WindowSettings& windowSettings)
 
 Engine::~Engine()
 {
-  delete window;
+  delete mainWindow;
   delete renderer;
   delete input;
   delete time;
@@ -47,7 +44,8 @@ Engine::~Engine()
 void Engine::update()
 {
   // Don't eat up all the system resources for literally no reason.
-  if (window->isFocused()) {
+  if (mainWindow->isFocused()) {
+    // TODO: Maybe reformat this so that the else clause is in each case?
 #if defined(HB_POSIX)
     usleep(1000);
 #elif defined(HB_WINDOWS)
@@ -59,6 +57,11 @@ void Engine::update()
 #elif defined(HB_WINDOWS)
     Sleep(2);
 #endif
+  }
+
+  // There's nothing left to live for.
+  if (mainWindow->isClosed()) {
+    stop();
   }
 
   renderer->update();

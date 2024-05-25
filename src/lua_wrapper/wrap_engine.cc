@@ -14,7 +14,7 @@ static int wrap_getEngine(lua_State* L)
 
 static int wrap_pollEvents(UNUSED lua_State* L)
 {
-  glfwPollEvents();
+  glfwWaitEvents();
   return 0;
 }
 
@@ -27,7 +27,7 @@ luaL_Reg engine[] = {
 static int wrap_isRunning(lua_State* L)
 {
   Engine* engine = getUserdata<Engine>(L, 1, LuaDataType::Engine);
-  lua_pushboolean(L, !engine->window->isClosed());
+  lua_pushboolean(L, engine->isRunning());
   return 1;
 }
 

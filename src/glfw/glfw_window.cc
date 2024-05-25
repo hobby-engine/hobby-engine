@@ -10,7 +10,8 @@ static void onFramebufferSizeChanged(GLFWwindow* window, int width, int height)
   glViewport(0, 0, width, height);
 }
 
-GlfwWindow::GlfwWindow(const WindowSettings& settings)
+GlfwWindow::GlfwWindow(Engine& engine, const WindowSettings& settings)
+    : _engine(engine)
 {
   glfwInit();
 
@@ -33,6 +34,8 @@ GlfwWindow::GlfwWindow(const WindowSettings& settings)
   }
 
   glfwSetFramebufferSizeCallback(handle, onFramebufferSizeChanged);
+
+  glfwSetWindowUserPointer(handle, this);
 
   glfwSwapInterval(0);
 }
@@ -67,6 +70,11 @@ bool GlfwWindow::isClosed() const
   return glfwWindowShouldClose(handle);
 }
 
+void GlfwWindow::close()
+{
+  glfwSetWindowShouldClose(handle, true);
+}
+
 bool GlfwWindow::isFocused() const
 {
   return glfwGetWindowAttrib(handle, GLFW_FOCUSED) == 1;
@@ -75,4 +83,9 @@ bool GlfwWindow::isFocused() const
 void GlfwWindow::present() const
 {
   glfwSwapBuffers(handle);
+}
+
+void GlfwWindow::setCurrent()
+{
+  glfwMakeContextCurrent(handle);
 }

@@ -4,9 +4,6 @@
 
 *.zip
 
-bin/
-build/
-
 # Cmake
 CMakeFiles/
 Makefile
@@ -41,7 +38,3 @@ Debug/
 *.exe
 *.out
 *.app
-
-# Lsp stuff
-compile_flags.txt
-.luarc.json

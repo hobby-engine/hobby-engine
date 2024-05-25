@@ -29,12 +29,14 @@ struct LuaWrapper
 enum class LuaDataType
 {
   Engine,
+  Window,
   Texture2D,
 };
 
 struct LuaData
 {
   LuaDataType type;
+  bool owned = true;
   // Can't use generics because I need to be able to check the type somehow
   // (stupid C++ not having reflection)
   void* data;
@@ -51,14 +53,17 @@ void wrapTexture(lua_State* L);
 void wrapWindow(lua_State* L);
 
 template <typename T>
-void createLuaData(lua_State* L, T* data, LuaDataType type, const char* mt)
+LuaData* createLuaData(lua_State* L, T* data, LuaDataType type, const char* mt)
 {
   LuaData* luaData = (LuaData*)lua_newuserdata(L, sizeof(LuaData));
   luaData->type = type;
+  luaData->owned = true;
   luaData->data = data;
 
   luaL_getmetatable(L, mt);
   lua_setmetatable(L, -2);
+
+  return luaData;
 }
 
 template <typename T>

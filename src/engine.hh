@@ -11,7 +11,7 @@ struct LuaWrapper;
 class Engine
 {
 public:
-  Window* window;
+  Window* mainWindow;
   Renderer* renderer;
   Input* input;
   Time* time;
@@ -22,7 +22,18 @@ public:
 
   void update();
 
+  bool isRunning()
+  {
+    return _isRunning;
+  }
+
+  void stop()
+  {
+    _isRunning = false;
+  }
+
 private:
+  bool _isRunning = true;
 };
 
 #endif // _HOBBY_ENGINE_HH
