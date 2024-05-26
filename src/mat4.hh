@@ -18,6 +18,7 @@ public:
   void multiply(const Mat4& o, float t[16]) const;
   void multiply(const Mat4& o, Mat4& t) const;
   void ortho(float l, float r, float b, float t, float n, float f);
+  void applyTransform(float* x, float* y);
 
   inline const float* data() const
   {

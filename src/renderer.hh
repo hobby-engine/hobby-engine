@@ -21,10 +21,10 @@ struct BatchRequest
   bool isIndexed = true;
   VertexFormat vertexFormat;
   IndexMode indexMode;
-  Texture2D* texture = nullptr;
+  const Texture2D* texture = nullptr;
 
   BatchRequest(
-    VertexFormat vertexFormat, IndexMode indexMode, Texture2D* texture)
+    VertexFormat vertexFormat, IndexMode indexMode, const Texture2D* texture)
       : vertexFormat(vertexFormat), indexMode(indexMode), texture(texture)
   {
   }
@@ -35,7 +35,7 @@ struct BatchState
 {
   Mesh mesh;
   IndexMode indexMode;
-  Texture2D* texture = nullptr;
+  const Texture2D* texture = nullptr;
 
   BatchState(const BatchRequest& req)
       : mesh(Mesh(req.vertexFormat, req.isIndexed)), indexMode(req.indexMode),

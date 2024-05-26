@@ -46,8 +46,8 @@ static int wrap_draw(lua_State* L)
   float UNUSED sky = luaL_optnumber(L, 10, 0);
   LuaWrapper* UNUSED wrapper = getLuaWrapper(L);
 
-  // wrapper->engine.renderer->drawTexture(
-  //   *texture2d, x, y, r, sx, sy, ox, oy, skx, sky);
+  wrapper->engine.renderer->drawTexture(
+    *texture2d, x, y, r, sx, sy, ox, oy, skx, sky);
   return 0;
 }
 

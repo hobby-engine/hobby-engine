@@ -124,3 +124,10 @@ void Mat4::ortho(float l, float r, float b, float t, float n, float f)
   e[13] = -(t + b) / (t - b);
   e[14] = -(f + n) / (f - n);
 }
+
+void Mat4::applyTransform(float* x, float* y)
+{
+  float cx = *x, cy = *y;
+  *x = (e[0] * cx) + (e[4] * cy) + (0) + (e[12]);
+  *y = (e[1] * cx) + (e[5] * cy) + (0) + (e[13]);
+}

@@ -121,3 +121,45 @@ void Renderer::drawRect(float x, float y, float w, float h)
   mesh.addVertexXYUVC(x + w, y + h, 1, 1, _currentColor);
   mesh.addVertexXYUVC(x + w, y, 1, 0, _currentColor);
 }
+
+void Renderer::drawTexture(
+  const Texture2D& texture, float x, float y, float r, float sx, float sy,
+  float ox, float oy, float skx, float sky)
+{
+  BatchRequest req{VertexFormat::XYUC, IndexMode::Triangles, &texture};
+  req.isIndexed = true;
+  BatchState& state = _requestBatchState(req);
+  Mesh& mesh = state.mesh;
+
+  int start = mesh.topIndex();
+  // 03
+  // 12
+  mesh.addIndex(start, 1);
+  mesh.addIndex(start, 2);
+  mesh.addIndex(start, 3);
+  mesh.addIndex(start, 3);
+  mesh.addIndex(start, 1);
+  mesh.addIndex(start, 0);
+
+  Mat4 transform;
+  transform.setRotation(r);
+  transform.scale(sx, sy);
+  transform.skew(skx, sky);
+  transform.translate(x, y);
+
+  int w = texture.getWidth(), h = texture.getHeight();
+
+  float tlx = ox, tly = oy;
+  transform.applyTransform(&tlx, &tly);
+  float blx = ox, bly = oy + h;
+  transform.applyTransform(&blx, &bly);
+  float brx = ox + w, bry = oy + h;
+  transform.applyTransform(&brx, &bry);
+  float trx = ox + w, _try = oy;
+  transform.applyTransform(&trx, &_try);
+
+  mesh.addVertexXYUVC(tlx, tly, 0, 0, _currentColor);
+  mesh.addVertexXYUVC(blx, bly, 0, 1, _currentColor);
+  mesh.addVertexXYUVC(brx, bry, 1, 1, _currentColor);
+  mesh.addVertexXYUVC(trx, _try, 1, 0, _currentColor);
+}

@@ -105,7 +105,6 @@ void OpenGlRenderer::initOpenGl()
 
 void OpenGlRenderer::resizeWindow(Window* window)
 {
-  hlog("test");
   int w, h;
   window->getSize(w, h);
 
@@ -178,6 +177,10 @@ void OpenGlRenderer::_setupShaderForDraw(const Mat4& transform)
   _colorTexture->bind();
 
   _defaultShader.apply();
+
+  if (_state->texture) {
+    _state->texture->bind();
+  }
   _defaultShader.sendInt("tex", 0);
   _defaultShader.sendMat4("proj", _projection);
   _defaultShader.sendMat4("trans", transform);
