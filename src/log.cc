@@ -8,6 +8,9 @@ static void
 logMessage(FILE* file, const char* prefix, const char* format, va_list args)
 {
   std::fprintf(file, "%s", prefix);
+  if (format == nullptr) {
+    return;
+  }
   std::vfprintf(file, format, args);
   std::fprintf(file, "\n");
 }

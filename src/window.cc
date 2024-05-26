@@ -7,4 +7,7 @@ Window* Window::create(Engine& engine, WindowSettings& settings)
     case GraphicsBackend::OpenGL:
       return new GlfwWindow(engine, settings);
   }
+
+  // Unreachable.
+  return nullptr;
 }

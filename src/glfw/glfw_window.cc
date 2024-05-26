@@ -2,8 +2,10 @@
 
 #include "GLFW/glfw3.h"
 #include "log.hh"
+#include "common.hh"
 
-static void onFramebufferSizeChanged(GLFWwindow* window, int width, int height)
+static void onFramebufferSizeChanged(
+  GLFWwindow* window, UNUSED int width, UNUSED int height)
 {
   GlfwWindow* cWindow = (GlfwWindow*)glfwGetWindowUserPointer(window);
   cWindow->getEngine().renderer->resizeWindow(cWindow);
