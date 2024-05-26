@@ -18,11 +18,11 @@ local function getDefaultsTable(opts)
       local lower = v[1]
       local upper = v[2]
 
-      hobby.matchType(lower, "number")
-      hobby.matchType(upper, "number")
+      hobby.matchtype(lower, "number")
+      hobby.matchtype(upper, "number")
 
       local default = v.default
-      hobby.matchType(default, "number")
+      hobby.matchtype(default, "number")
 
       if default then
         if default < lower or default > upper then
@@ -51,7 +51,7 @@ local function default(t, ...)
     error("Thing does not have defaults.", 1)
   end
 
-  hobby.injectKeys(instance, internal[t].defaults)
+  hobby.injectkeys(instance, internal[t].defaults)
 
   if instance.new then
     instance:new(...)

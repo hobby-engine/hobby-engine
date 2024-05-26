@@ -8,17 +8,17 @@ function hobby.lerp(a, b, t)
   return (b - a) * t + a
 end
 
-function hobby.dtLerp(a, b, t)
+function hobby.dtlerp(a, b, t)
   return hobby.lerp(b, a, 0.5^(hobby.dt * t))
 end
 
-function hobby.angleDiff(a, b)
+function hobby.anglediff(a, b)
   local diff = (b - a) % (math.pi * 2)
   return (2 * diff) % (math.pi * 2) - diff
 end
 
-function hobby.lerpAngle(a, b, t)
-  return a + hobby.angleDiff(a, b) * (1 - 0.5^t)
+function hobby.lerpangle(a, b, t)
+  return a + hobby.anglediff(a, b) * (1 - 0.5^t)
 end
 
 function hobby.wrap(a, min, max)
@@ -63,11 +63,11 @@ function hobby.vec.dot(x, y, xx, yy)
   return x * xx + y * yy
 end
 
-function hobby.vec.directionTo(x, y, xx, yy)
+function hobby.vec.directionbetween(x, y, xx, yy)
   return hobby.vec.normalize(xx - x, yy - y)
 end
 
-function hobby.vec.distanceTo(x, y, xx, yy)
+function hobby.vec.distancebetween(x, y, xx, yy)
   return hobby.vec.length(x - xx, y - yy)
 end
 
@@ -75,7 +75,7 @@ function hobby.vec.angle(x, y)
   return math.atan2(y, x)
 end
 
-function hobby.vec.angleTo(x, y, xx, yy)
+function hobby.vec.anglebetween(x, y, xx, yy)
   return hobby.vec.angle(xx - x, yy - y)
 end
 

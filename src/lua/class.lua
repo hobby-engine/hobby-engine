@@ -81,8 +81,8 @@ local function class(extends)
   })
 
   definition.super = super
-  definition.typesMatch = typesMatch
-  definition.isType = isType
+  definition.typesmatch = typesMatch
+  definition.istype = isType
 
   return definition
 end

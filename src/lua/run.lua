@@ -20,20 +20,20 @@ function print(...)
 end
 
 function hobby.run()
-  local engine = hobby.getEngine()
-  local mainWindow = hobby.getMainWindow()
+  local engine = hobby.getengine()
+  local mainWindow = hobby.mainwindow()
 
   hobby.try(hobby.start)
 
-  while engine:isRunning() do
-    hobby.pollEvents()
+  while engine:isrunning() do
+    hobby.pollevents()
     engine:update()
 
-    hobby.try(hobby.update)
+    hobby.try(hobby.onupdate)
 
-    mainWindow:setCurrent()
-    hobby.wipe(0.2, 0.2, 0.2)
-    hobby.try(hobby.draw)
-    hobby.swapDrawBuffers()
+    mainWindow:setcurrent()
+    hobby.draw.clear(0.2, 0.2, 0.2)
+    hobby.try(hobby.ondraw)
+    hobby.draw.swap()
   end
 end

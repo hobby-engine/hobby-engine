@@ -1,7 +1,7 @@
 #include "key.hh"
 #include "wrapper.hh"
 
-static int wrap_isKeyPressed(lua_State* L)
+static int wrap_keydown(lua_State* L)
 {
   LuaWrapper* wrapper = getLuaWrapper(L);
   bool pressed =
@@ -10,7 +10,7 @@ static int wrap_isKeyPressed(lua_State* L)
   return 1;
 }
 
-static int wrap_isMousePressed(lua_State* L)
+static int wrap_mousedown(lua_State* L)
 {
   LuaWrapper* wrapper = getLuaWrapper(L);
   bool pressed =
@@ -20,13 +20,15 @@ static int wrap_isMousePressed(lua_State* L)
 }
 
 luaL_Reg input[] = {
-  {"isKeyPressed",   wrap_isKeyPressed  },
-  {"isMousePressed", wrap_isMousePressed},
-  {nullptr,          nullptr            },
+  {"keydown",   wrap_keydown  },
+  {"mousedown", wrap_mousedown},
+  {nullptr,     nullptr       },
 };
 
 void wrapInput(lua_State* L)
 {
   lua_getglobal(L, LUA_LIB_NAME);
+  lua_newtable(L);
   registerFunctions(L, input);
+  lua_setfield(L, -2, "input");
 }

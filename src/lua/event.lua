@@ -26,7 +26,7 @@ function Event:disconnect(fn)
     error("Cannot disconnect callback that is not connected.")
   end
 
-  hobby.swapRemove(self.connections, self.indices[fn])
+  hobby.swapremove(self.connections, self.indices[fn])
   self.indices[fn] = nil
 end
 

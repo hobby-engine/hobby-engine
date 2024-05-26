@@ -4,7 +4,7 @@
 
 #include "common.hh"
 
-static int wrap_getEngine(lua_State* L)
+static int wrap_getengine(lua_State* L)
 {
   LuaWrapper* wrapper = getLuaWrapper(L);
 
@@ -12,19 +12,19 @@ static int wrap_getEngine(lua_State* L)
   return 1;
 }
 
-static int wrap_pollEvents(UNUSED lua_State* L)
+static int wrap_pollevents(UNUSED lua_State* L)
 {
   glfwWaitEvents();
   return 0;
 }
 
 luaL_Reg engine[] = {
-  {"pollEvents", wrap_pollEvents},
-  {"getEngine",  wrap_getEngine },
+  {"pollevents", wrap_pollevents},
+  {"getengine",  wrap_getengine },
   {nullptr,      nullptr        },
 };
 
-static int wrap_isRunning(lua_State* L)
+static int wrap_isrunning(lua_State* L)
 {
   Engine* engine = getUserdata<Engine>(L, 1, LuaDataType::Engine);
   lua_pushboolean(L, engine->isRunning());
@@ -47,7 +47,7 @@ static int wrap_update(lua_State* L)
   lua_setfield(L, -2, "time");
 
   lua_pushnumber(L, engine->renderer->getDrawCalls());
-  lua_setfield(L, -2, "drawCalls");
+  lua_setfield(L, -2, "drawcalls");
 
   return 0;
 }
@@ -62,7 +62,7 @@ static int engine__index(lua_State* L)
 luaL_Reg engineMethods[] = {
   {"__index",   engine__index },
   {"update",    wrap_update   },
-  {"isRunning", wrap_isRunning},
+  {"isrunning", wrap_isrunning},
   {nullptr,     nullptr       },
 };
 

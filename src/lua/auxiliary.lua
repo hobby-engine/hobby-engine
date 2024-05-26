@@ -6,7 +6,7 @@ function hobby.try(func, ...)
   return nil;
 end
 
-function hobby.matchType(v, t)
+function hobby.matchtype(v, t)
   if type(v) == "table" and type(t) == "table" then
     local vmt = getmetatable(v)
     if vmt.__id ~= t.__id then
@@ -20,7 +20,7 @@ function hobby.matchType(v, t)
   end
 end
 
-function hobby.requireKeys(keys, tbl)
+function hobby.requirekeys(keys, tbl)
   for _, k in ipairs(keys) do
     if tbl[k] == nil then
       error("Table required key '" .. k .. "', but it had none.", 1)
@@ -28,22 +28,22 @@ function hobby.requireKeys(keys, tbl)
   end
 end
 
-function hobby.overrideKeys(dest, src)
+function hobby.overridekeys(dest, src)
   for k, v in pairs(src) do
     dest[k] = v
   end
 end
 
-function hobby.injectKeys(dest, src)
+function hobby.injectkeys(dest, src)
   for k, v in pairs(src) do
     dest[k] = dest[k] or v
   end
 end
 
-function hobby.copyTable(t, deep)
+function hobby.copytable(t, deep)
   deep = deep or false
-  hobby.matchType(t, "table")
-  hobby.matchType(deep, "boolean")
+  hobby.matchtype(t, "table")
+  hobby.matchtype(deep, "boolean")
 
   local copy = {}
 
@@ -51,7 +51,7 @@ function hobby.copyTable(t, deep)
     if type(v) ~= "table" or not deep then
       copy[k] = v
     else
-      copy[k] = hobby.copyTable(v, deep)
+      copy[k] = hobby.copytable(v, deep)
     end
   end
 
@@ -63,7 +63,7 @@ function hobby.copyTable(t, deep)
   return copy
 end
 
-function hobby.swapRemove(t, i)
+function hobby.swapremove(t, i)
   t[i] = t[#t]
   t[#t] = nil
 end

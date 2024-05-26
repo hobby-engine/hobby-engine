@@ -1,7 +1,7 @@
 #include "window.hh"
 #include "wrapper.hh"
 
-static int wrap_getMainWindow(lua_State* L)
+static int wrap_mainwindow(lua_State* L)
 {
   LuaWrapper* wrapper = getLuaWrapper(L);
   LuaData* ld = createLuaData(
@@ -10,7 +10,7 @@ static int wrap_getMainWindow(lua_State* L)
   return 1;
 }
 
-static int wrap_createWindow(lua_State* L)
+static int wrap_window(lua_State* L)
 {
   WindowSettings settings;
   if (!lua_istable(L, 1)) {
@@ -38,14 +38,14 @@ static int wrap_createWindow(lua_State* L)
   return 1;
 }
 
-static int wrap_getTitle(lua_State* L)
+static int wrap_gettitle(lua_State* L)
 {
   Window* window = getUserdata<Window>(L, 1, LuaDataType::Window);
   lua_pushstring(L, window->getTitle());
   return 1;
 }
 
-static int wrap_setTitle(lua_State* L)
+static int wrap_settitle(lua_State* L)
 {
   Window* window = getUserdata<Window>(L, 1, LuaDataType::Window);
   const char* title = luaL_checkstring(L, 2);
@@ -53,7 +53,7 @@ static int wrap_setTitle(lua_State* L)
   return 0;
 }
 
-static int wrap_getSize(lua_State* L)
+static int wrap_getsize(lua_State* L)
 {
   Window* window = getUserdata<Window>(L, 1, LuaDataType::Window);
   int w = 0, h = 0;
@@ -63,7 +63,7 @@ static int wrap_getSize(lua_State* L)
   return 2;
 }
 
-static int wrap_setSize(lua_State* L)
+static int wrap_setsize(lua_State* L)
 {
   Window* window = getUserdata<Window>(L, 1, LuaDataType::Window);
   int w = luaL_checknumber(L, 1);
@@ -75,7 +75,7 @@ static int wrap_setSize(lua_State* L)
   return 0;
 }
 
-static int wrap_setCurrent(lua_State* L)
+static int wrap_setcurrent(lua_State* L)
 {
   Window* window = getUserdata<Window>(L, 1, LuaDataType::Window);
   window->setCurrent();
@@ -104,17 +104,17 @@ static int window__gc(lua_State* L)
 }
 
 luaL_Reg window[] = {
-  {"getMainWindow", wrap_getMainWindow},
-  {"window",        wrap_createWindow },
-  {nullptr,         nullptr           },
+  {"mainwindow", wrap_mainwindow},
+  {"window",     wrap_window    },
+  {nullptr,      nullptr        },
 };
 
 luaL_Reg windowmt[] = {
-  {"getTitle",   wrap_getTitle  },
-  {"setTitle",   wrap_setTitle  },
-  {"getSize",    wrap_getSize   },
-  {"setSize",    wrap_setSize   },
-  {"setCurrent", wrap_setCurrent},
+  {"gettitle",   wrap_gettitle  },
+  {"settitle",   wrap_settitle  },
+  {"getsize",    wrap_getsize   },
+  {"setsize",    wrap_setsize   },
+  {"setcurrent", wrap_setcurrent},
   {"__gc",       window__gc     },
   {"__index",    window__index  },
   {nullptr,      nullptr        },

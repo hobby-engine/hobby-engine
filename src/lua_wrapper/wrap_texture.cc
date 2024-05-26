@@ -49,21 +49,21 @@ static int wrap_draw(lua_State* L)
   return 0;
 }
 
-static int wrap_getWidth(lua_State* L)
+static int wrap_width(lua_State* L)
 {
   Texture2D* texture2d = getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
   lua_pushnumber(L, texture2d->getWidth());
   return 1;
 }
 
-static int wrap_getHeight(lua_State* L)
+static int wrap_height(lua_State* L)
 {
   Texture2D* texture2d = getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
   lua_pushnumber(L, texture2d->getHeight());
   return 1;
 }
 
-static int wrap_getSize(lua_State* L)
+static int wrap_size(lua_State* L)
 {
   Texture2D* texture2d = getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
   lua_pushnumber(L, texture2d->getWidth());
@@ -72,13 +72,13 @@ static int wrap_getSize(lua_State* L)
 }
 
 luaL_Reg texture2dmt[] = {
-  {"__index",   texture2d__index},
-  {"__gc",      texture2d__gc   },
-  {"draw",      wrap_draw       },
-  {"getWidth",  wrap_getWidth   },
-  {"getHeight", wrap_getHeight  },
-  {"getSize",   wrap_getSize    },
-  {nullptr,     nullptr         },
+  {"__index", texture2d__index},
+  {"__gc",    texture2d__gc   },
+  {"draw",    wrap_draw       },
+  {"width",   wrap_width      },
+  {"height",  wrap_height     },
+  {"size",    wrap_size       },
+  {nullptr,   nullptr         },
 };
 
 void wrapTexture(lua_State* L)

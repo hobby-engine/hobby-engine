@@ -1,34 +1,34 @@
-function hobby.getInputVector(left, right, up, down)
-  hobby.matchType(left, "number")
-  hobby.matchType(right, "number")
-  hobby.matchType(up, "number")
-  hobby.matchType(down, "number")
+function hobby.input.getvector(left, right, up, down)
+  hobby.matchtype(left, "number")
+  hobby.matchtype(right, "number")
+  hobby.matchtype(up, "number")
+  hobby.matchtype(down, "number")
 
   local ix, iy = 0, 0
-  if hobby.isKeyPressed(left) then ix = ix - 1 end
-  if hobby.isKeyPressed(right) then ix = ix + 1 end
-  if hobby.isKeyPressed(up) then iy = iy - 1 end
-  if hobby.isKeyPressed(down) then iy = iy + 1 end
+  if hobby.input.keydown(left) then ix = ix - 1 end
+  if hobby.input.keydown(right) then ix = ix + 1 end
+  if hobby.input.keydown(up) then iy = iy - 1 end
+  if hobby.input.keydown(down) then iy = iy + 1 end
   return hobby.vec.normalize(ix, iy)
 end
 
-hobby.keyEvent = hobby.event()
-hobby.keyPressed = hobby.event()
-hobby.keyReleased = hobby.event()
+hobby.keyevent = hobby.event()
+hobby.keypressed = hobby.event()
+hobby.keyreleased = hobby.event()
 
 function hobby.onKeyPressed(key, isRepeat)
-  hobby.keyPressed:call(key, isRepeat)
-  hobby.keyEvent:call(true, key, isRepeat)
+  hobby.keypressed:call(key, isRepeat)
+  hobby.keyevent:call(true, key, isRepeat)
 end
 
 function hobby.onKeyReleased(key)
-  hobby.keyReleased:call(key)
-  hobby.keyEvent:call(false, key, nil)
+  hobby.keyreleased:call(key)
+  hobby.keyevent:call(false, key, nil)
 end
 
 local keyNames = {}
 
-function hobby.keyToString(key)
+function hobby.input.keytostring(key)
   local name = keyNames[key]
   if not name then
     error("Invalid key.", 1)
