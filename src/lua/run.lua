@@ -21,6 +21,7 @@ end
 
 function hobby.run()
   local engine = hobby.getEngine()
+  local mainWindow = hobby.getMainWindow()
 
   hobby.try(hobby.start)
 
@@ -30,6 +31,7 @@ function hobby.run()
 
     hobby.try(hobby.update)
 
+    mainWindow:setCurrent()
     hobby.wipe(0.2, 0.2, 0.2)
     hobby.try(hobby.draw)
     hobby.swapDrawBuffers()
