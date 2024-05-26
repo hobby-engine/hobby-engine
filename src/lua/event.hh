@@ -13,7 +13,7 @@ function Event:connect(fn, bound)
   hobby.matchType(fn, "function")
   if self.indices[fn] then
     -- Don't connect an event twice.
-    error("Cannot disconnect callback that is not connected.")
+    error("Cannot connect callback that is already connected.")
   end
 
   table.insert(self.connections, {
