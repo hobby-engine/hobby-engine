@@ -19,7 +19,7 @@ static int wrap_window(lua_State* L)
 
   lua_getfield(L, 1, "title");
   settings.title = luaL_optstring(L, -1, "HB Popup");
-  lua_getfield(L, 1, "canResize");
+  lua_getfield(L, 1, "canresize");
   settings.canResize = lua_toboolean(L, -1);
   lua_getfield(L, 1, "width");
   settings.width = luaL_optinteger(L, -1, 300);
