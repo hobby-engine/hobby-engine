@@ -15,11 +15,14 @@ public:
   void clear(Color color) override;
   void draw() override;
   void drawIndexed() override;
+  void resizeWindow(Window* window) override;
 
 private:
   void _setAttributes();
   GLenum _getGlIndexMode(IndexMode mode);
   void _setupShaderForDraw(const Mat4& transform);
+
+  Mat4 _projection;
 
   OpenGlTexture2D* _colorTexture = nullptr;
 

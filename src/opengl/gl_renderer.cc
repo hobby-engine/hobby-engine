@@ -1,5 +1,6 @@
 #include "gl_renderer.hh"
 
+#include "glfw/glfw_window.hh"
 #include "mesh.hh"
 #include "opengl/vertex.hh"
 #include "renderer.hh"
@@ -85,11 +86,26 @@ OpenGlRenderer::OpenGlRenderer(Window* window)
   _defaultShader.apply();
 
   _colorTexture = new OpenGlTexture2D({1.0, 1.0, 1.0, 1.0});
+
+  resizeWindow(window);
 }
 
 OpenGlRenderer::~OpenGlRenderer()
 {
   delete _colorTexture;
+}
+
+void OpenGlRenderer::resizeWindow(Window* window)
+{
+  hlog("test");
+  int w, h;
+  window->getSize(w, h);
+
+  _projection.setIdentity();
+  _projection.ortho(0, w, h, 0, -1, 1);
+
+  window->setCurrent();
+  glViewport(0, 0, w, h);
 }
 
 void OpenGlRenderer::clear(Color color)

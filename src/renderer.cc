@@ -15,12 +15,6 @@ Renderer::~Renderer()
 
 void Renderer::update()
 {
-  int w, h;
-  _window->getSize(w, h);
-
-  _projection.setIdentity();
-  _projection.ortho(0, w, h, 0, -1, 1);
-
   _drawCalls = _currentDrawCallCount;
   _currentDrawCallCount = 0;
 }

@@ -69,6 +69,7 @@ public:
   virtual void clear(Color color) = 0;
   virtual void draw() = 0;
   virtual void drawIndexed() = 0;
+  virtual void resizeWindow(Window* window) = 0;
 
   void update();
   void present();
@@ -90,7 +91,6 @@ protected:
   Window* _window;
   BatchState* _state = nullptr;
 
-  Mat4 _projection;
   Color _currentColor = {1, 1, 1, 1};
 
   // Draw call counting has a 1 frame latency. This is so that you can query it
