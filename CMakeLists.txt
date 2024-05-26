@@ -72,6 +72,8 @@ else()
   add_compile_definitions(HB_DEBUG)
 endif()
 
+add_compile_definitions(GLFW_INCLUDE_NONE)
+
 add_executable(hobby ${SRC})
 target_include_directories(hobby PRIVATE src third third/glad/include third/luajit)
 target_link_libraries(

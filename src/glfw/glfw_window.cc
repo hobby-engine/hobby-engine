@@ -27,15 +27,8 @@ GlfwWindow::GlfwWindow(Engine& engine, const WindowSettings& settings)
 
   glfwMakeContextCurrent(handle);
 
-  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    glfwTerminate();
-    fatal("Failed to initialize glad.");
-  }
-
   glfwSetFramebufferSizeCallback(handle, onFramebufferSizeChanged);
-
   glfwSetWindowUserPointer(handle, this);
-
   glfwSwapInterval(0);
 }
 

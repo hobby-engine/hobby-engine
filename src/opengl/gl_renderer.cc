@@ -95,6 +95,14 @@ OpenGlRenderer::~OpenGlRenderer()
   delete _colorTexture;
 }
 
+void OpenGlRenderer::initOpenGl()
+{
+  if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+    glfwTerminate();
+    fatal("Failed to initialize glad.");
+  }
+}
+
 void OpenGlRenderer::resizeWindow(Window* window)
 {
   hlog("test");

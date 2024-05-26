@@ -18,7 +18,10 @@ Engine::Engine(const WindowSettings& windowSettings)
   switch (windowSettings.backend) {
     case GraphicsBackend::OpenGL:
       GlfwWindow* glfwWindow = new GlfwWindow(*this, windowSettings);
+
+      OpenGlRenderer::initOpenGl();
       OpenGlRenderer* openGlRenderer = new OpenGlRenderer(glfwWindow);
+
       GlfwInput* glfwInput = new GlfwInput(glfwWindow);
 
       mainWindow = glfwWindow;

@@ -12,6 +12,8 @@ public:
   OpenGlRenderer(Window* window);
   ~OpenGlRenderer();
 
+  static void initOpenGl();
+
   void clear(Color color) override;
   void draw() override;
   void drawIndexed() override;
