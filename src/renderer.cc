@@ -1,6 +1,5 @@
 #include "renderer.hh"
 
-#include "mat4.hh"
 #include "mesh.hh"
 #include <cmath>
 

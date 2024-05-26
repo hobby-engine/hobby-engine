@@ -54,7 +54,7 @@ luaL_Reg logfn[] = {
   {"error",       wrap_error      },
   {"fatal",       wrap_fatal      },
   {"assert",      wrap_assert     },
-  {"fatalAssert", wrap_fatalAssert},
+  {"fatalassert", wrap_fatalAssert},
   {nullptr,       nullptr         },
 };
 

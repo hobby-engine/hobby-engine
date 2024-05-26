@@ -1,5 +1,6 @@
 #include "opengl/gl_texture.hh"
 #include "wrapper.hh"
+#include "common.hh"
 
 static int wrap_texture2d(lua_State* L)
 {
@@ -32,17 +33,18 @@ static int texture2d__gc(lua_State* L)
 
 static int wrap_draw(lua_State* L)
 {
-  Texture2D* texture2d = getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
-  float x = luaL_checknumber(L, 2);
-  float y = luaL_checknumber(L, 3);
-  float r = luaL_optnumber(L, 4, 0);
-  float sx = luaL_optnumber(L, 5, 1);
-  float sy = luaL_optnumber(L, 6, sx);
-  float ox = luaL_optnumber(L, 7, 0);
-  float oy = luaL_optnumber(L, 8, 0);
-  float skx = luaL_optnumber(L, 9, 0);
-  float sky = luaL_optnumber(L, 10, 0);
-  LuaWrapper* wrapper = getLuaWrapper(L);
+  Texture2D* UNUSED texture2d =
+    getUserdata<Texture2D>(L, 1, LuaDataType::Texture2D);
+  float UNUSED x = luaL_checknumber(L, 2);
+  float UNUSED y = luaL_checknumber(L, 3);
+  float UNUSED r = luaL_optnumber(L, 4, 0);
+  float UNUSED sx = luaL_optnumber(L, 5, 1);
+  float UNUSED sy = luaL_optnumber(L, 6, sx);
+  float UNUSED ox = luaL_optnumber(L, 7, 0);
+  float UNUSED oy = luaL_optnumber(L, 8, 0);
+  float UNUSED skx = luaL_optnumber(L, 9, 0);
+  float UNUSED sky = luaL_optnumber(L, 10, 0);
+  LuaWrapper* UNUSED wrapper = getLuaWrapper(L);
 
   // wrapper->engine.renderer->drawTexture(
   //   *texture2d, x, y, r, sx, sy, ox, oy, skx, sky);

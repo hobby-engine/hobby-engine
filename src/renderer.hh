@@ -75,8 +75,6 @@ public:
   void present();
   void drawRect(float x, float y, float w, float h);
   void drawEllipse(float x, float y, float rx, float ry);
-  void drawVertices(int count, float* vertices);
-  void drawBoid(float x, float y, float b, float h, float r);
   void drawTexture(
     const Texture2D& texture, float x, float y, float r, float sx, float sy,
     float ox, float oy, float skx, float sky);

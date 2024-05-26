@@ -12,6 +12,18 @@ static int wrap_setcolor(lua_State* L)
   return 0;
 }
 
+static int wrap_getcolor(lua_State* L)
+{
+  LuaWrapper* wrapper = getLuaWrapper(L);
+  Color c = wrapper->engine.renderer->getColor();
+
+  lua_pushnumber(L, c.r);
+  lua_pushnumber(L, c.g);
+  lua_pushnumber(L, c.b);
+  lua_pushnumber(L, c.a);
+  return 4;
+}
+
 static int wrap_rect(lua_State* L)
 {
   float x = (float)luaL_checknumber(L, 1);
@@ -36,56 +48,6 @@ static int wrap_ellipse(lua_State* L)
   return 0;
 }
 
-static int wrap_polygon(lua_State* L)
-{
-  if (!lua_istable(L, 1)) {
-    return luaL_error(L, "Expected a table.");
-  }
-
-  int length = lua_objlen(L, 1);
-  if (length % 2 != 0) {
-    return luaL_error(L, "Invalid vertices (Odd number of elements.)");
-  }
-  int count = length + 2;
-
-  float vertices[count];
-
-  lua_pushvalue(L, 1);
-  lua_pushnil(L);
-  while (lua_next(L, -2)) {
-    if (lua_isnumber(L, -2) && lua_isnumber(L, -1)) {
-      int index = lua_tointeger(L, -2) - 1;
-      float number = lua_tonumber(L, -1);
-      vertices[index] = number;
-    } else {
-      return luaL_error(L, "Expected a table of indices with number values.");
-    }
-
-    lua_pop(L, 1);
-  }
-
-  // Close
-  vertices[count - 2] = vertices[0];
-  vertices[count - 1] = vertices[1];
-
-  LuaWrapper* wrapper = getLuaWrapper(L);
-  // wrapper->engine.renderer->drawVertices(count, vertices);
-  return 0;
-}
-
-static int wrap_boid(lua_State* L)
-{
-  float x = (float)luaL_checknumber(L, 1);
-  float y = (float)luaL_checknumber(L, 2);
-  float b = (float)luaL_checknumber(L, 3);
-  float h = (float)luaL_checknumber(L, 4);
-  float r = (float)luaL_checknumber(L, 5);
-
-  LuaWrapper* wrapper = getLuaWrapper(L);
-  // wrapper->engine.renderer->drawBoid(x, y, b, h, r);
-  return 0;
-}
-
 static int wrap_clear(lua_State* L)
 {
   float r = (float)luaL_checknumber(L, 1);
@@ -107,10 +69,9 @@ static int wrap_swap(lua_State* L)
 
 luaL_Reg renderer[] = {
   {"setcolor", wrap_setcolor},
+  {"getcolor", wrap_getcolor},
   {"rect",     wrap_rect    },
   {"ellipse",  wrap_ellipse },
-  {"polygon",  wrap_polygon },
-  {"boid",     wrap_boid    },
   {"clear",    wrap_clear   },
   {"swap",     wrap_swap    },
   {nullptr,    nullptr      },
