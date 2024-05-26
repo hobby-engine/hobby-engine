@@ -1,3 +1,7 @@
+#ifndef _LUA_RUN_HH
+#define _LUA_RUN_HH
+
+const char scriptRunLua[] = R"lua(
 function print(...)
   local msg = ""
   local args = {...}
@@ -29,3 +33,6 @@ function hobby.run()
     hobby.draw.swap()
   end
 end
+)lua";
+
+#endif // _LUA_RUN_HH

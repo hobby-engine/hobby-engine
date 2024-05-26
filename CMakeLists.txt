@@ -82,4 +82,3 @@ target_link_libraries(
 
 # Just for testing, remove once Lua scripts and shaders are embedded
 file(COPY res DESTINATION .)
-file(COPY src/lua DESTINATION src)

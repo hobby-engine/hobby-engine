@@ -7,6 +7,16 @@
 
 #include "log.hh"
 
+#include "lua/auxiliary.hh"
+#include "lua/class.hh"
+#include "lua/event.hh"
+#include "lua/input.hh"
+#include "lua/math.hh"
+#include "lua/run.hh"
+#include "lua/set.hh"
+#include "lua/shader.hh"
+#include "lua/thing.hh"
+
 static int errorHandler(lua_State* L)
 {
   const char* msg = lua_tostring(L, -1);
@@ -57,8 +67,24 @@ LuaWrapper::LuaWrapper(Engine& engine) : engine(engine)
   wrapTexture(L);
   wrapWindow(L);
 
-  if (luaL_dofile(L, "src/lua/run.lua") != LUA_OK) {
-    errorHandler(L);
+  // Initialize scripts
+  // clang-format off
+  const char* scripts[] = {
+    scriptAuxLua,   
+    scriptClassLua, 
+    scriptEventLua,
+    scriptInputLua,
+    scriptMathLua,
+    scriptSetLua,
+    scriptThingLua,
+    scriptRunLua,
+    nullptr
+  };
+  // clang-format on
+  for (int i = 0; scripts[i] != nullptr; i++) {
+    if (luaL_dostring(L, scripts[i]) != LUA_OK) {
+      errorHandler(L);
+    }
   }
 
   if (luaL_dofile(L, "main.lua") != LUA_OK) {

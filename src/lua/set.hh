@@ -1,3 +1,7 @@
+#ifndef _LUA_SET_HH
+#define _LUA_SET_HH
+
+const char scriptSetLua[] = R"lua(
 local Set = hobby.class()
 Set.__metatable = false
 
@@ -41,3 +45,6 @@ function Set:__tostring()
 end
 
 hobby.set = Set
+)lua";
+
+#endif // _LUA_SET_HH
