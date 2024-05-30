@@ -1,7 +1,7 @@
 #include "window.hh"
 #include "wrapper.hh"
 
-static int wrap_mainwindow(lua_State* L)
+static int wrap_getmainwindow(lua_State* L)
 {
   LuaWrapper* wrapper = getLuaWrapper(L);
   LuaData* ld = createLuaData(
@@ -75,7 +75,7 @@ static int wrap_setsize(lua_State* L)
   return 0;
 }
 
-static int wrap_setcurrent(lua_State* L)
+static int wrap_makecurrent(lua_State* L)
 {
   Window* window = getUserdata<Window>(L, 1, LuaDataType::Window);
   window->setCurrent();
@@ -104,20 +104,20 @@ static int window__gc(lua_State* L)
 }
 
 luaL_Reg window[] = {
-  {"mainwindow", wrap_mainwindow},
-  {"window",     wrap_window    },
-  {nullptr,      nullptr        },
+  {"getmainwindow", wrap_getmainwindow},
+  {"window",        wrap_window       },
+  {nullptr,         nullptr           },
 };
 
 luaL_Reg windowmt[] = {
-  {"gettitle",   wrap_gettitle  },
-  {"settitle",   wrap_settitle  },
-  {"getsize",    wrap_getsize   },
-  {"setsize",    wrap_setsize   },
-  {"setcurrent", wrap_setcurrent},
-  {"__gc",       window__gc     },
-  {"__index",    window__index  },
-  {nullptr,      nullptr        },
+  {"gettitle",    wrap_gettitle   },
+  {"settitle",    wrap_settitle   },
+  {"getsize",     wrap_getsize    },
+  {"setsize",     wrap_setsize    },
+  {"makecurrent", wrap_makecurrent},
+  {"__gc",        window__gc      },
+  {"__index",     window__index   },
+  {nullptr,       nullptr         },
 };
 
 void wrapWindow(lua_State* L)

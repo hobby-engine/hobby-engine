@@ -1,6 +1,7 @@
 #include "wrapper.hh"
 
 #include <cstdlib>
+#include <cstring>
 
 #include "lua.h"
 #include "lua.hpp"
@@ -19,8 +20,6 @@
 
 static int errorHandler(lua_State* L)
 {
-  const char* msg = lua_tostring(L, -1);
-
   lua_getglobal(L, "debug");
   if (!lua_istable(L, -1)) {
     fatal(
@@ -34,15 +33,18 @@ static int errorHandler(lua_State* L)
       lua_tostring(L, 1));
   }
 
-  lua_call(L, 0, 1);
+  lua_pushvalue(L, -3);
+  lua_pushnumber(L, 0);
+  lua_call(L, 2, 1);
 
   if (lua_isstring(L, -1)) {
-    const char* trace = lua_tostring(L, -1);
-    fatal("%s\n%s", msg, trace);
+    error("%s", lua_tostring(L, -1));
   } else {
-    fatal("%s", msg);
+    error("%s", lua_tostring(L, -3));
   }
-  return 0;
+
+  lua_close(L);
+  exit(1);
 }
 
 LuaWrapper::LuaWrapper(Engine& engine) : engine(engine)

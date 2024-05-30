@@ -2,7 +2,6 @@
 
 These are just a bunch of random, helpful functions.
 
-- `try(fn, ...)` - Executions a function if it's not `nil`.
 - `matchType(var, type)` - Checks if a variable matches the passed type. Throws an
 error if it doesn't.
 - `requireKeys(keys, table)` - Checks if `table` has all the keys in `keys`. Throws an

@@ -5,10 +5,10 @@ function hobby.input.getvector(left, right, up, down)
   hobby.matchtype(down, "number")
 
   local ix, iy = 0, 0
-  if hobby.input.keydown(left) then ix = ix - 1 end
-  if hobby.input.keydown(right) then ix = ix + 1 end
-  if hobby.input.keydown(up) then iy = iy - 1 end
-  if hobby.input.keydown(down) then iy = iy + 1 end
+  if hobby.input.iskeydown(left) then ix = ix - 1 end
+  if hobby.input.iskeydown(right) then ix = ix + 1 end
+  if hobby.input.iskeydown(up) then iy = iy - 1 end
+  if hobby.input.iskeydown(down) then iy = iy + 1 end
   return hobby.vec.normalize(ix, iy)
 end
 

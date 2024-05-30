@@ -20,9 +20,9 @@ static int wrap_mousedown(lua_State* L)
 }
 
 luaL_Reg input[] = {
-  {"keydown",   wrap_keydown  },
-  {"mousedown", wrap_mousedown},
-  {nullptr,     nullptr       },
+  {"iskeydown",   wrap_keydown  },
+  {"ismousedown", wrap_mousedown},
+  {nullptr,       nullptr       },
 };
 
 void wrapInput(lua_State* L)

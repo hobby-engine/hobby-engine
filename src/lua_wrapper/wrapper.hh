@@ -12,6 +12,7 @@ enum class LuaType
   Number,
   Int,
   Boolean,
+  String,
 };
 
 struct LuaWrapper

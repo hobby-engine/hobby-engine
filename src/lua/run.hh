@@ -3,20 +3,26 @@
 
 const char scriptRunLua[] = R"lua(
 function hobby.run()
-  local engine = hobby.engine()
-  local mainWindow = hobby.mainwindow()
+  local engine = hobby.getengine()
+  local mainWindow = hobby.getmainwindow()
 
-  hobby.try(hobby.start)
+  if hobby.onstart then
+    hobby.onstart()
+  end
 
   while engine:isrunning() do
     hobby.pollevents()
     engine:update()
 
-    hobby.try(hobby.onupdate)
+    if hobby.onupdate then
+      hobby.onupdate()
+    end
 
-    mainWindow:setcurrent()
+    mainWindow:makecurrent()
     hobby.draw.clear(0.2, 0.2, 0.2)
-    hobby.try(hobby.ondraw)
+    if hobby.ondraw then
+      hobby.ondraw()
+    end
     hobby.draw.swap()
   end
 end

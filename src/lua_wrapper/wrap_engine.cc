@@ -20,7 +20,7 @@ static int wrap_pollevents(UNUSED lua_State* L)
 
 luaL_Reg engine[] = {
   {"pollevents", wrap_pollevents},
-  {"engine",     wrap_getengine },
+  {"getengine",  wrap_getengine },
   {nullptr,      nullptr        },
 };
 
