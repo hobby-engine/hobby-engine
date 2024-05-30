@@ -3,7 +3,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/hobby-dark.png">
   <source media="(prefers-color-scheme: light)" srcset="assets/hobby-light.png">
-  <img alt="Hobby Engine logo" width="256px" height="256px">
+  <img alt="[Hobby Engine logo]" width="256px" height="256px">
 </picture>
 
 Hobby is early in development. Use at your own risk.<br>
