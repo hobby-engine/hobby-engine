@@ -38,7 +38,7 @@ static int wrap_assert(lua_State* L)
   return 0;
 }
 
-static int wrap_fatalAssert(lua_State* L)
+static int wrap_fassert(lua_State* L)
 {
   bool cond = lua_toboolean(L, 1);
   const char* msg = lua_tostring(L, 2);
@@ -49,17 +49,17 @@ static int wrap_fatalAssert(lua_State* L)
 }
 
 luaL_Reg logfn[] = {
-  {"log",         wrap_log        },
-  {"warn",        wrap_warn       },
-  {"error",       wrap_error      },
-  {"fatal",       wrap_fatal      },
-  {"assert",      wrap_assert     },
-  {"fatalassert", wrap_fatalAssert},
-  {nullptr,       nullptr         },
+  {"log",     wrap_log    },
+  {"warn",    wrap_warn   },
+  {"error",   wrap_error  },
+  {"fatal",   wrap_fatal  },
+  {"assert",  wrap_assert },
+  {"fassert", wrap_fassert},
+  {nullptr,   nullptr     },
 };
 
-void wrapLog(lua_State* L)
+void wraplog(lua_State* L)
 {
   lua_getglobal(L, LUA_LIB_NAME);
-  registerFunctions(L, logfn);
+  registerfuncs(L, logfn);
 }

@@ -14,46 +14,46 @@ Renderer::~Renderer()
 
 void Renderer::update()
 {
-  _drawCalls = _currentDrawCallCount;
-  _currentDrawCallCount = 0;
+  _drawcalls = _currentdrawcallcount;
+  _currentdrawcallcount = 0;
 }
 
 void Renderer::present()
 {
   if (_state != nullptr) {
-    _flushDrawQueue();
+    _flushdrawqueue();
   }
 
   _window->present();
 }
 
-void Renderer::_flushDrawQueue()
+void Renderer::_flushdrawqueue()
 {
-  if (_state->mesh.isIndexed()) {
-    drawIndexed();
+  if (_state->mesh.isindexed()) {
+    drawindexed();
   } else {
     draw();
   }
-  _currentDrawCallCount++;
+  _currentdrawcallcount++;
 
   delete _state;
   _state = nullptr;
 }
 
-BatchState& Renderer::_requestBatchState(const BatchRequest& req)
+BatchState& Renderer::_requestbatchstate(const BatchRequest& req)
 {
-  bool newState = false;
+  bool newstate = false;
   bool flush = false;
 
   // If there is no command before this one, make one.
   if (_state == nullptr) {
-    newState = true;
+    newstate = true;
   } else {
-    bool canBatch = _state->texture == req.texture &&
-                    _state->mesh.getFormat() == req.vertexFormat &&
-                    _state->indexMode == req.indexMode &&
-                    _state->mesh.isIndexed();
-    if (!canBatch) {
+    bool canbatch = _state->texture == req.texture &&
+                    _state->mesh.getformat() == req.vertexformat &&
+                    _state->indexmode == req.indexmode &&
+                    _state->mesh.isindexed();
+    if (!canbatch) {
       // We can't batch anything more past this point, so we draw everything
       // we've collected so far.
       flush = true;
@@ -61,105 +61,105 @@ BatchState& Renderer::_requestBatchState(const BatchRequest& req)
   }
 
   if (flush) {
-    _flushDrawQueue();
+    _flushdrawqueue();
   }
 
-  if (newState || flush) {
+  if (newstate || flush) {
     BatchState* state = new BatchState(req);
     _state = state;
     return *state;
   }
 
-  _currentBatchedCallsCount++;
+  _currentbatchedcalls++;
   return *_state;
 }
 
-void Renderer::drawEllipse(float x, float y, float rx, float ry)
+void Renderer::drawellipse(float x, float y, float rx, float ry)
 {
   BatchRequest req{VertexFormat::XYUC, IndexMode::Triangles, nullptr};
-  req.isIndexed = true;
-  BatchState& state = _requestBatchState(req);
+  req.isindexed = true;
+  BatchState& state = _requestbatchstate(req);
   Mesh& mesh = state.mesh;
 
-  int start = mesh.topIndex();
-  int circleResolution = fmax(2 * M_PI * sqrt((rx + ry) / 2), 8);
+  int start = mesh.topindex();
+  int circleres = fmax(2 * M_PI * sqrt((rx + ry) / 2), 8);
 
-  for (float i = 0; i < circleResolution; i++) {
-    float angle = (i / circleResolution) * M_PI * 2;
+  for (float i = 0; i < circleres; i++) {
+    float angle = (i / circleres) * M_PI * 2;
     float c = cosf(angle), s = sinf(angle);
     float px = x + c * rx;
     float py = y + s * ry;
 
     if (i > 2) {
-      mesh.addIndex(start, 0);
-      mesh.addIndex(start, i - 1);
-      mesh.addIndex(start, i);
+      mesh.addindex(start, 0);
+      mesh.addindex(start, i - 1);
+      mesh.addindex(start, i);
     }
-    mesh.addVertexXYUVC(px, py, c * 0.5 + 0.5, s * 0.5 + 0.5, _currentColor);
+    mesh.addvertex_xyuc(px, py, c * 0.5 + 0.5, s * 0.5 + 0.5, _currentcolor);
   }
 }
 
-void Renderer::drawRect(float x, float y, float w, float h)
+void Renderer::drawrect(float x, float y, float w, float h)
 {
   BatchRequest req{VertexFormat::XYUC, IndexMode::Triangles, nullptr};
-  req.isIndexed = true;
-  BatchState& state = _requestBatchState(req);
+  req.isindexed = true;
+  BatchState& state = _requestbatchstate(req);
   Mesh& mesh = state.mesh;
 
-  int start = mesh.topIndex();
+  int start = mesh.topindex();
   // 03
   // 12
-  mesh.addIndex(start, 1);
-  mesh.addIndex(start, 2);
-  mesh.addIndex(start, 3);
-  mesh.addIndex(start, 3);
-  mesh.addIndex(start, 1);
-  mesh.addIndex(start, 0);
+  mesh.addindex(start, 1);
+  mesh.addindex(start, 2);
+  mesh.addindex(start, 3);
+  mesh.addindex(start, 3);
+  mesh.addindex(start, 1);
+  mesh.addindex(start, 0);
 
-  mesh.addVertexXYUVC(x, y, 0, 0, _currentColor);
-  mesh.addVertexXYUVC(x, y + h, 0, 1, _currentColor);
-  mesh.addVertexXYUVC(x + w, y + h, 1, 1, _currentColor);
-  mesh.addVertexXYUVC(x + w, y, 1, 0, _currentColor);
+  mesh.addvertex_xyuc(x, y, 0, 0, _currentcolor);
+  mesh.addvertex_xyuc(x, y + h, 0, 1, _currentcolor);
+  mesh.addvertex_xyuc(x + w, y + h, 1, 1, _currentcolor);
+  mesh.addvertex_xyuc(x + w, y, 1, 0, _currentcolor);
 }
 
-void Renderer::drawTexture(
+void Renderer::drawtexture(
   const Texture2D& texture, float x, float y, float r, float sx, float sy,
   float ox, float oy, float skx, float sky)
 {
   BatchRequest req{VertexFormat::XYUC, IndexMode::Triangles, &texture};
-  req.isIndexed = true;
-  BatchState& state = _requestBatchState(req);
+  req.isindexed = true;
+  BatchState& state = _requestbatchstate(req);
   Mesh& mesh = state.mesh;
 
-  int start = mesh.topIndex();
+  int start = mesh.topindex();
   // 03
   // 12
-  mesh.addIndex(start, 1);
-  mesh.addIndex(start, 2);
-  mesh.addIndex(start, 3);
-  mesh.addIndex(start, 3);
-  mesh.addIndex(start, 1);
-  mesh.addIndex(start, 0);
+  mesh.addindex(start, 1);
+  mesh.addindex(start, 2);
+  mesh.addindex(start, 3);
+  mesh.addindex(start, 3);
+  mesh.addindex(start, 1);
+  mesh.addindex(start, 0);
 
   Mat4 transform;
-  transform.setRotation(r);
+  transform.setrotation(r);
   transform.scale(sx, sy);
   transform.skew(skx, sky);
   transform.translate(x, y);
 
-  int w = texture.getWidth(), h = texture.getHeight();
+  int w = texture.getwidth(), h = texture.getheight();
 
   float tlx = ox, tly = oy;
-  transform.applyTransform(&tlx, &tly);
+  transform.applytransform(&tlx, &tly);
   float blx = ox, bly = oy + h;
-  transform.applyTransform(&blx, &bly);
+  transform.applytransform(&blx, &bly);
   float brx = ox + w, bry = oy + h;
-  transform.applyTransform(&brx, &bry);
+  transform.applytransform(&brx, &bry);
   float trx = ox + w, _try = oy;
-  transform.applyTransform(&trx, &_try);
+  transform.applytransform(&trx, &_try);
 
-  mesh.addVertexXYUVC(tlx, tly, 0, 0, _currentColor);
-  mesh.addVertexXYUVC(blx, bly, 0, 1, _currentColor);
-  mesh.addVertexXYUVC(brx, bry, 1, 1, _currentColor);
-  mesh.addVertexXYUVC(trx, _try, 1, 0, _currentColor);
+  mesh.addvertex_xyuc(tlx, tly, 0, 0, _currentcolor);
+  mesh.addvertex_xyuc(blx, bly, 0, 1, _currentcolor);
+  mesh.addvertex_xyuc(brx, bry, 1, 1, _currentcolor);
+  mesh.addvertex_xyuc(trx, _try, 1, 0, _currentcolor);
 }

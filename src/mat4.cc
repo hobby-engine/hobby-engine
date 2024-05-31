@@ -8,10 +8,10 @@
 
 Mat4::Mat4()
 {
-  setIdentity();
+  setidentity();
 }
 
-void Mat4::setIdentity()
+void Mat4::setidentity()
 {
   memset(e, 0, sizeof(float) * 16);
   e[0] = 1;
@@ -20,30 +20,30 @@ void Mat4::setIdentity()
   e[15] = 1;
 }
 
-void Mat4::setTranslation(float x, float y)
+void Mat4::settranslation(float x, float y)
 {
-  setIdentity();
+  setidentity();
   e[12] = x;
   e[13] = y;
 }
 
-void Mat4::setScale(float x, float y)
+void Mat4::setscale(float x, float y)
 {
-  setIdentity();
+  setidentity();
   e[0] = x;
   e[5] = y;
 }
 
-void Mat4::setSkew(float x, float y)
+void Mat4::setskew(float x, float y)
 {
-  setIdentity();
+  setidentity();
   e[1] = x;
   e[4] = y;
 }
 
-void Mat4::setRotation(float r)
+void Mat4::setrotation(float r)
 {
-  setIdentity();
+  setidentity();
   float c = cosf(r);
   float s = sinf(r);
   e[0] = c;
@@ -55,28 +55,28 @@ void Mat4::setRotation(float r)
 void Mat4::translate(float x, float y)
 {
   Mat4 translation;
-  translation.setTranslation(x, y);
+  translation.settranslation(x, y);
   multiply(translation, e);
 }
 
 void Mat4::scale(float x, float y)
 {
   Mat4 scale;
-  scale.setScale(x, y);
+  scale.setscale(x, y);
   multiply(scale, e);
 }
 
 void Mat4::rotate(float r)
 {
   Mat4 rotation;
-  rotation.setRotation(r);
+  rotation.setrotation(r);
   multiply(rotation, e);
 }
 
 void Mat4::skew(float x, float y)
 {
   Mat4 skew;
-  skew.setSkew(x, y);
+  skew.setskew(x, y);
   multiply(skew, e);
 }
 
@@ -125,7 +125,7 @@ void Mat4::ortho(float l, float r, float b, float t, float n, float f)
   e[14] = -(f + n) / (f - n);
 }
 
-void Mat4::applyTransform(float* x, float* y)
+void Mat4::applytransform(float* x, float* y)
 {
   float cx = *x, cy = *y;
   *x = (e[0] * cx) + (e[4] * cy) + (0) + (e[12]);

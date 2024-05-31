@@ -1,15 +1,15 @@
 #ifndef _LUA_SET_HH
 #define _LUA_SET_HH
 
-const char scriptSetLua[] = R"lua(
+const char scriptsetlua[] = R"lua(
 local Set = hobby.class()
 Set.__metatable = false
 
-function Set:new(initTable)
+function Set:new(doinit)
   self.values = {}
 
-  if initTable then
-    for _, v in ipairs(initTable) do
+  if doinit then
+    for _, v in ipairs(doinit) do
       self:add(v)
     end
   end

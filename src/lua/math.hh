@@ -1,7 +1,7 @@
 #ifndef _LUA_MATH_HH
 #define _LUA_MATH_HH
 
-const char scriptMathLua[] = R"lua(
+const char scriptmathlua[] = R"lua(
 hobby.math = {}
 
 function hobby.frac(x)
@@ -84,11 +84,11 @@ function hobby.vec.anglebetween(x, y, xx, yy)
 end
 
 function hobby.vec.rotated(x, y, r)
-  local newRot = hobby.vec.angle(x, y) + r
+  local t = hobby.vec.angle(x, y) + r
   local l = hobby.vec.length(x, y)
 
-  local nx = math.cos(newRot) * l
-  local ny = math.sin(newRot) * l
+  local nx = math.cos(t) * l
+  local ny = math.sin(t) * l
 
   return nx, ny
 end

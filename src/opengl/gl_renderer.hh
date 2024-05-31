@@ -12,28 +12,28 @@ public:
   OpenGlRenderer(Window* window);
   ~OpenGlRenderer();
 
-  static void initOpenGl();
+  static void initopengl();
 
   void clear(Color color) override;
   void draw() override;
-  void drawIndexed() override;
-  void resizeWindow(Window* window) override;
+  void drawindexed() override;
+  void resizewindow(Window* window) override;
 
 private:
-  void _setAttributes();
-  GLenum _getGlIndexMode(IndexMode mode);
-  void _setupShaderForDraw(const Mat4& transform);
+  void _setattribs();
+  GLenum _getglindexmode(IndexMode mode);
+  void _setupshader(const Mat4& transform);
 
   Mat4 _projection;
 
-  OpenGlTexture2D* _colorTexture = nullptr;
+  OpenGlTexture2D* _coltex = nullptr;
 
-  VertexFormat _currentFormat;
+  VertexFormat _currentformat;
 
   VertexBuffer _vbo;
   VertexBuffer _ibo;
   VertexArray _vao;
-  OpenGlShader _defaultShader;
+  OpenGlShader _defaultshader;
 };
 
 #endif // _HOBBY_GL_RENDERER_HH

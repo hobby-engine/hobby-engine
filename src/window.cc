@@ -1,11 +1,11 @@
 #include "window.hh"
 #include "glfw/glfw_window.hh"
 
-Window* Window::create(Engine& engine, WindowSettings& settings)
+Window* Window::create(Engine& engine, WindowOptions& winopt)
 {
-  switch (settings.backend) {
+  switch (winopt.backend) {
     case GraphicsBackend::OpenGL:
-      return new GlfwWindow(engine, settings);
+      return new GlfwWindow(engine, winopt);
   }
 
   // Unreachable.

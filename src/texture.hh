@@ -22,9 +22,9 @@ public:
   {
   }
 
-  virtual int getWidth() const = 0;
-  virtual int getHeight() const = 0;
-  virtual int getChannelCount() const = 0;
+  virtual int getwidth() const = 0;
+  virtual int getheight() const = 0;
+  virtual int getchannels() const = 0;
 
 private:
 };

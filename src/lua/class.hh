@@ -1,16 +1,16 @@
 #ifndef _LUA_CLASS_HH
 #define _LUA_CLASS_HH
 
-const char scriptClassLua[] = R"lua(
-local nextTypeId = 0
+const char scriptclasslua[] = R"lua(
+local nexttypeid = 0
 
-local function getNextTypeId()
-  local id = nextTypeId
-  nextTypeId = nextTypeId + 1
+local function nextid()
+  local id = nexttypeid
+  nexttypeid = nexttypeid + 1
   return id
 end
 
-local function createInstance(class, ...)
+local function createinst(class, ...)
   local instance = setmetatable({}, class)
   if instance.new then
     instance:new(...)
@@ -31,7 +31,7 @@ local function super(self, fn, ...)
   return res
 end
 
-local function typesMatch(self, other)
+local function typesmatch(self, other)
   local smt, omt = getmetatable(self), getmetatable(other)
   local match = smt.__id == omt.__id
 
@@ -40,14 +40,14 @@ local function typesMatch(self, other)
     local id = smt.__id
     smt.__base = smt.__base.__base
     smt.__id = current.__id
-    match = typesMatch(self, other)
+    match = typesmatch(self, other)
     smt.__base = current
     smt.__id = id
   end
   return match
 end
 
-local function isType(self, type)
+local function istype(self, type)
   local smt = getmetatable(self)
   local match = smt.__id == type.__id
 
@@ -56,7 +56,7 @@ local function isType(self, type)
     local id = smt.__id
     smt.__base = smt.__base.__base
     smt.__id = current.__id
-    match = isType(self, type)
+    match = istype(self, type)
     smt.__base = current
     smt.__id = id
   end
@@ -67,7 +67,7 @@ local function class(extends)
   local definition = {}
   definition.__index = definition
   definition.__base = extends
-  definition.__id = getNextTypeId()
+  definition.__id = nextid()
 
   -- copying down all the base methods so we don't need to search through 
   -- inheritance trees whenever we call something
@@ -80,13 +80,13 @@ local function class(extends)
   end
 
   setmetatable(definition, {
-    __call = createInstance,
+    __call = createinst,
     __index = extends,
   })
 
   definition.super = super
-  definition.typesmatch = typesMatch
-  definition.istype = isType
+  definition.typesmatch = typesmatch
+  definition.istype = istype
 
   return definition
 end

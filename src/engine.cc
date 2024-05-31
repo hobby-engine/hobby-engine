@@ -13,41 +13,41 @@
 #include <windows.h>
 #endif
 
-Engine::Engine(const WindowSettings& windowSettings)
+Engine::Engine(const WindowOptions& winopt)
 {
-  switch (windowSettings.backend) {
+  switch (winopt.backend) {
     case GraphicsBackend::OpenGL:
-      GlfwWindow* glfwWindow = new GlfwWindow(*this, windowSettings);
+      GlfwWindow* glfwwin = new GlfwWindow(*this, winopt);
 
-      OpenGlRenderer::initOpenGl();
-      OpenGlRenderer* openGlRenderer = new OpenGlRenderer(glfwWindow);
+      OpenGlRenderer::initopengl();
+      OpenGlRenderer* glrenderer = new OpenGlRenderer(glfwwin);
 
-      GlfwInput* glfwInput = new GlfwInput(glfwWindow);
+      GlfwInput* glfwinput = new GlfwInput(glfwwin);
 
-      mainWindow = glfwWindow;
-      renderer = openGlRenderer;
-      input = glfwInput;
+      mainwin = glfwwin;
+      renderer = glrenderer;
+      input = glfwinput;
       break;
   }
 
   time = new Time();
 
-  luaWrapper = new LuaWrapper(*this);
+  luawrap = new LuaWrapper(*this);
 }
 
 Engine::~Engine()
 {
-  delete mainWindow;
+  delete mainwin;
   delete renderer;
   delete input;
   delete time;
-  delete luaWrapper;
+  delete luawrap;
 }
 
 void Engine::update()
 {
   // Don't eat up all the system resources for literally no reason.
-  if (mainWindow->isFocused()) {
+  if (mainwin->isfocused()) {
     // TODO: Maybe reformat this so that the else clause is in each case?
 #if defined(HB_POSIX)
     usleep(1000);
@@ -63,7 +63,7 @@ void Engine::update()
   }
 
   // There's nothing left to live for.
-  if (mainWindow->isClosed()) {
+  if (mainwin->isclosed()) {
     stop();
   }
 

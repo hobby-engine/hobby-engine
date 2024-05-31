@@ -19,12 +19,12 @@ struct LuaWrapper
 {
   Engine& engine;
   lua_State* L;
-  int errorHandlerPos;
+  int errorhandlerindex;
 
   LuaWrapper(Engine& engine);
   ~LuaWrapper();
 
-  void callFunction(const char* name, int argCount, ...);
+  void callfunction(const char* name, int argc, ...);
 };
 
 enum class LuaDataType
@@ -43,32 +43,32 @@ struct LuaData
   void* data;
 };
 
-void registerFunctions(lua_State* L, const luaL_Reg* funcs);
-LuaWrapper* getLuaWrapper(lua_State* L);
+void registerfuncs(lua_State* L, const luaL_Reg* funcs);
+LuaWrapper* getwrapper(lua_State* L);
 
-void wrapEngine(lua_State* L);
-void wrapRenderer(lua_State* L);
-void wrapInput(lua_State* L);
-void wrapLog(lua_State* L);
-void wrapTexture(lua_State* L);
-void wrapWindow(lua_State* L);
+void wrapengine(lua_State* L);
+void wraprenderer(lua_State* L);
+void wrapinput(lua_State* L);
+void wraplog(lua_State* L);
+void wraptexture(lua_State* L);
+void wrapwindow(lua_State* L);
 
 template <typename T>
-LuaData* createLuaData(lua_State* L, T* data, LuaDataType type, const char* mt)
+LuaData* createluadata(lua_State* L, T* data, LuaDataType type, const char* mt)
 {
-  LuaData* luaData = (LuaData*)lua_newuserdata(L, sizeof(LuaData));
-  luaData->type = type;
-  luaData->owned = true;
-  luaData->data = data;
+  LuaData* luadata = (LuaData*)lua_newuserdata(L, sizeof(LuaData));
+  luadata->type = type;
+  luadata->owned = true;
+  luadata->data = data;
 
   luaL_getmetatable(L, mt);
   lua_setmetatable(L, -2);
 
-  return luaData;
+  return luadata;
 }
 
 template <typename T>
-T* getUserdata(lua_State* L, int index, LuaDataType type)
+T* getuserdata(lua_State* L, int index, LuaDataType type)
 {
   LuaData* v = (LuaData*)lua_touserdata(L, index);
   if (v->type != type) {

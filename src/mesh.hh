@@ -20,80 +20,80 @@ enum class VertexFormat
   XYZUC,
 };
 
-size_t getVertexFormatStride(VertexFormat format);
-int getVertexFormatVertexLength(VertexFormat format);
+size_t getvertformatstride(VertexFormat format);
+int getverformatlen(VertexFormat format);
 
 class Mesh
 {
 public:
-  Mesh(VertexFormat format, bool isIndexed, int count = 0);
+  Mesh(VertexFormat format, bool indexed, int count = 0);
   ~Mesh();
 
   void clear();
 
-  inline void addVertexXY(float x, float y)
+  inline void addvertex_xy(float x, float y)
   {
-    _vertices.pushBack(x);
-    _vertices.pushBack(y);
+    _vertices.pushback(x);
+    _vertices.pushback(y);
   }
 
-  inline void addVertexXYUV(float x, float y, float uvx, float uvy)
+  inline void addvertex_xyu(float x, float y, float uvx, float uvy)
   {
-    _vertices.pushBack(x);
-    _vertices.pushBack(y);
-    _vertices.pushBack(uvx);
-    _vertices.pushBack(uvy);
+    _vertices.pushback(x);
+    _vertices.pushback(y);
+    _vertices.pushback(uvx);
+    _vertices.pushback(uvy);
   }
 
   inline void
-  addVertexXYUVC(float x, float y, float uvx, float uvy, Color color)
+  addvertex_xyuc(float x, float y, float uvx, float uvy, Color color)
   {
-    _vertices.pushBack(x);
-    _vertices.pushBack(y);
-    _vertices.pushBack(uvx);
-    _vertices.pushBack(uvy);
-    _vertices.pushBack(color.r);
-    _vertices.pushBack(color.g);
-    _vertices.pushBack(color.b);
-    _vertices.pushBack(color.a);
+    _vertices.pushback(x);
+    _vertices.pushback(y);
+    _vertices.pushback(uvx);
+    _vertices.pushback(uvy);
+    _vertices.pushback(color.r);
+    _vertices.pushback(color.g);
+    _vertices.pushback(color.b);
+    _vertices.pushback(color.a);
   }
 
-  inline void addVertexXYC(float x, float y, Color color)
+  inline void addvertex_xyc(float x, float y, Color color)
   {
-    _vertices.pushBack(x);
-    _vertices.pushBack(y);
-    _vertices.pushBack(color.r);
-    _vertices.pushBack(color.g);
-    _vertices.pushBack(color.b);
-    _vertices.pushBack(color.a);
+    _vertices.pushback(x);
+    _vertices.pushback(y);
+    _vertices.pushback(color.r);
+    _vertices.pushback(color.g);
+    _vertices.pushback(color.b);
+    _vertices.pushback(color.a);
   }
 
-  inline void addIndex(int start, int index)
+  inline void addindex(int start, int index)
   {
-    if (start + index > _topIndex) {
-      _topIndex = start + index + 1;
+    if (start + index > _topindex) {
+      _topindex = start + index + 1;
     }
-    _indices->pushBack(start + index);
+    _indices->pushback(start + index);
   }
 
-  inline int isIndexed()
+  inline int isindexed()
   {
-    return _isIndexed;
+    return _indexed;
   }
 
-  inline int vertexCount()
+  inline int vertexcount()
   {
     return _vertices.size();
   }
 
-  inline int indexCount()
+  inline int indexcount()
   {
     return _indices->size();
   }
 
-  inline int topIndex()
+  inline int topindex()
   {
-    return _topIndex;
+    return _topindex;
   }
 
   inline float* data()
@@ -106,17 +106,17 @@ public:
     return _indices->data();
   }
 
-  inline VertexFormat getFormat()
+  inline VertexFormat getformat()
   {
-    return _vertexFormat;
+    return _vertexformat;
   }
 
 private:
   // Do we use the index buffer to draw?
-  bool _isIndexed = false;
-  int _topIndex = 0;
+  bool _indexed = false;
+  int _topindex = 0;
 
-  VertexFormat _vertexFormat;
+  VertexFormat _vertexformat;
   DynArr<float> _vertices;
   DynArr<uint32_t>* _indices = nullptr;
 };

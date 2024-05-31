@@ -3,11 +3,11 @@
 
 int main()
 {
-  WindowSettings windowSettings = WindowSettings();
-  windowSettings.title = "Hobby Engine";
-  windowSettings.canResize = false;
+  WindowOptions winopt = WindowOptions();
+  winopt.title = "Hobby Engine";
+  winopt.canresize = false;
 
-  Engine engine{windowSettings};
+  Engine engine{winopt};
 
-  engine.luaWrapper->callFunction("run", 0);
+  engine.luawrap->callfunction("run", 0);
 }

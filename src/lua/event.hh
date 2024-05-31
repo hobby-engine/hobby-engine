@@ -1,7 +1,7 @@
 #ifndef _LUA_EVENT_HH
 #define _LUA_EVENT_HH
 
-const char scriptEventLua[] = R"lua(
+const char scripteventlua[] = R"lua(
 local Event = hobby.class()
 
 function Event:new()

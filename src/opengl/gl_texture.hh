@@ -11,9 +11,9 @@ public:
   OpenGlTexture2D(Color color);
   ~OpenGlTexture2D();
 
-  int getWidth() const override;
-  int getHeight() const override;
-  int getChannelCount() const override;
+  int getwidth() const override;
+  int getheight() const override;
+  int getchannels() const override;
   void bind() const override;
 
   unsigned int handle;
@@ -22,7 +22,7 @@ private:
   FilterMode _min = FilterMode::Linear, _mag = FilterMode::Linear;
   WrapMode _wrap = WrapMode::None;
   int _width, _height;
-  int _channelCount;
+  int _channels;
 };
 
 #endif // _HOBBY_OPENGL_TEXTURE_HH

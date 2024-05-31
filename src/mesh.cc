@@ -1,6 +1,6 @@
 #include "mesh.hh"
 
-size_t getVertexFormatStride(VertexFormat format)
+size_t getvertformatstride(VertexFormat format)
 {
   switch (format) {
     case VertexFormat::XY:
@@ -25,7 +25,7 @@ size_t getVertexFormatStride(VertexFormat format)
   return 0;
 }
 
-int getVertexFormatVertexLength(VertexFormat format)
+int getverformatlen(VertexFormat format)
 {
   switch (format) {
     case VertexFormat::XY:
@@ -48,12 +48,12 @@ int getVertexFormatVertexLength(VertexFormat format)
   return 0;
 }
 
-Mesh::Mesh(VertexFormat format, bool isIndexed, int count)
-    : _isIndexed(isIndexed), _vertexFormat(format)
+Mesh::Mesh(VertexFormat format, bool indexed, int count)
+    : _indexed(indexed), _vertexformat(format)
 {
-  _vertices.reserve(count * getVertexFormatVertexLength(format));
+  _vertices.reserve(count * getverformatlen(format));
 
-  if (isIndexed) {
+  if (indexed) {
     _indices = new DynArr<uint32_t>();
     _indices->reserve(count);
   }

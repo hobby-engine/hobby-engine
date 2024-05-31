@@ -1,6 +1,6 @@
 function hobby.run()
   local engine = hobby.getengine()
-  local mainWindow = hobby.getmainwindow()
+  local mainwin = hobby.getmainwindow()
 
   if hobby.onstart then
     hobby.onstart()
@@ -14,7 +14,7 @@ function hobby.run()
       hobby.onupdate()
     end
 
-    mainWindow:makecurrent()
+    mainwin:makecurrent()
     hobby.draw.clear(0.2, 0.2, 0.2)
     if hobby.ondraw then
       hobby.ondraw()

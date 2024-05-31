@@ -6,12 +6,12 @@ enum class GraphicsBackend
   OpenGL,
 };
 
-struct WindowSettings
+struct WindowOptions
 {
   const char* title = nullptr;
   int width = 800, height = 400;
   int x = -1, y = -1;
-  bool canResize = true;
+  bool canresize = true;
   GraphicsBackend backend = GraphicsBackend::OpenGL;
 };
 
@@ -24,17 +24,17 @@ public:
   {
   }
 
-  static Window* create(Engine& engine, WindowSettings& settings);
+  static Window* create(Engine& engine, WindowOptions& winopt);
 
-  virtual const char* getTitle() const = 0;
-  virtual void setTitle(const char* title) = 0;
-  virtual void getSize(int& w, int& h) const = 0;
-  virtual void setSize(int w, int h) = 0;
-  virtual bool isClosed() const = 0;
+  virtual const char* gettitle() const = 0;
+  virtual void settitle(const char* title) = 0;
+  virtual void getsize(int& w, int& h) const = 0;
+  virtual void setsize(int w, int h) = 0;
+  virtual bool isclosed() const = 0;
   virtual void close() = 0;
-  virtual bool isFocused() const = 0;
+  virtual bool isfocused() const = 0;
   virtual void present() const = 0;
-  virtual void setCurrent() = 0;
+  virtual void makecurrent() = 0;
 
 private:
 };

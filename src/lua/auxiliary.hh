@@ -1,7 +1,7 @@
 #ifndef _LUA_AUXILIARY_HH
 #define _LUA_AUXILIARY_HH
 
-const char scriptAuxLua[] = R"lua(
+const char scriptauxlua[] = R"lua(
 function hobby.matchtype(v, t)
   if type(v) == "table" and type(t) == "table" then
     local vmt = getmetatable(v)

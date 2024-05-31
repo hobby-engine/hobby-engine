@@ -8,7 +8,7 @@
 
 #include "log.hh"
 
-static char* loadFile(const char* path)
+static char* loadfile(const char* path)
 {
   FILE* file = fopen(path, "rb");
   if (!file) {
@@ -17,23 +17,23 @@ static char* loadFile(const char* path)
   }
 
   fseek(file, 0, SEEK_END);
-  size_t fileLength = ftell(file);
+  size_t size = ftell(file);
   rewind(file);
 
-  char* buf = new char[fileLength + 1];
-  fatalAssert(buf != NULL, "Not enough memory to read '%s'.", path);
+  char* buf = new char[size + 1];
+  fassert(buf != NULL, "Not enough memory to read '%s'.", path);
 
-  size_t bytesRead = fread(buf, sizeof(char), fileLength, file);
-  fatalAssert(bytesRead == fileLength, "Failed to read '%s'.", path);
+  size_t read = fread(buf, sizeof(char), size, file);
+  fassert(read == size, "Failed to read '%s'.", path);
 
-  buf[bytesRead] = '\0';
+  buf[read] = '\0';
 
   fclose(file);
 
   return buf;
 }
 
-static inline int getGlShaderType(ShaderType type)
+static inline int getgltype(ShaderType type)
 {
   switch (type) {
     case ShaderType::Fragment:
@@ -45,9 +45,9 @@ static inline int getGlShaderType(ShaderType type)
 }
 
 static unsigned int
-createShader(const char* source, const char* path, ShaderType type)
+createshader(const char* source, const char* path, ShaderType type)
 {
-  unsigned int shader = glCreateShader(getGlShaderType(type));
+  unsigned int shader = glCreateShader(getgltype(type));
   glShaderSource(shader, 1, &source, nullptr);
 
   glCompileShader(shader);
@@ -67,12 +67,12 @@ createShader(const char* source, const char* path, ShaderType type)
   return shader;
 }
 
-unsigned int createProgram(
-  const char* vertSource, const char* fragSource, const char* vertPath,
-  const char* fragPath)
+unsigned int createprog(
+  const char* vertsrc, const char* fragsrc, const char* vertpath,
+  const char* fragpath)
 {
-  unsigned int vert = createShader(vertSource, vertPath, ShaderType::Vertex);
-  unsigned int frag = createShader(fragSource, fragPath, ShaderType::Fragment);
+  unsigned int vert = createshader(vertsrc, vertpath, ShaderType::Vertex);
+  unsigned int frag = createshader(fragsrc, fragpath, ShaderType::Fragment);
 
   unsigned int handle = glCreateProgram();
   glAttachShader(handle, vert);
@@ -85,7 +85,7 @@ unsigned int createProgram(
   if (!success) {
     char error[512];
     glGetProgramInfoLog(success, 512, nullptr, error);
-    fatal("Error linking shader '%s' and '%s': %s", vertPath, fragPath, error);
+    fatal("Error linking shader '%s' and '%s': %s", vertpath, fragpath, error);
   }
 
   glDeleteShader(vert);
@@ -94,25 +94,24 @@ unsigned int createProgram(
   return handle;
 }
 
-OpenGlShader::OpenGlShader(const char* vertPath, const char* fragPath)
+OpenGlShader::OpenGlShader(const char* vertpath, const char* fragpath)
 {
-  char* vertSource = loadFile(vertPath);
-  char* fragSource = loadFile(fragPath);
+  char* vertsrc = loadfile(vertpath);
+  char* fragsrc = loadfile(fragpath);
 
-  handle = createProgram(vertSource, fragSource, vertPath, fragPath);
+  handle = createprog(vertsrc, fragsrc, vertpath, fragpath);
 
-  delete[] vertSource;
-  delete[] fragSource;
+  delete[] vertsrc;
+  delete[] fragsrc;
 }
 
 OpenGlShader::OpenGlShader(unsigned int handle) : handle(handle)
 {
 }
 
-OpenGlShader
-OpenGlShader::embedded(const char* vertSource, const char* fragSource)
+OpenGlShader OpenGlShader::embedded(const char* vertsrc, const char* fragsrc)
 {
-  unsigned int handle = createProgram(vertSource, fragSource, nullptr, nullptr);
+  unsigned int handle = createprog(vertsrc, fragsrc, nullptr, nullptr);
   return OpenGlShader(handle);
 }
 
@@ -129,27 +128,27 @@ void OpenGlShader::apply()
 static int getShaderLocation(unsigned int handle, const char* name)
 {
   int location = glGetUniformLocation(handle, name);
-  fatalAssert(location != -1, "Shader uniform '%s' doesn't exist.", name);
+  fassert(location != -1, "Shader uniform '%s' doesn't exist.", name);
   return location;
 }
 
-void OpenGlShader::sendFloat(const char* name, float value)
+void OpenGlShader::sendfloat(const char* name, float value)
 {
   glUniform1f(getShaderLocation(handle, name), value);
 }
 
-void OpenGlShader::sendInt(const char* name, int value)
+void OpenGlShader::sendint(const char* name, int value)
 {
   glUniform1i(getShaderLocation(handle, name), value);
 }
 
-void OpenGlShader::sendMat4(const char* name, const Mat4& value)
+void OpenGlShader::sendmat4(const char* name, const Mat4& value)
 {
   glUniformMatrix4fv(
     getShaderLocation(handle, name), 1, GL_FALSE, value.data());
 }
 
-void OpenGlShader::sendColor(const char* name, Color value)
+void OpenGlShader::sendcolor(const char* name, Color value)
 {
   glUniform4f(
     getShaderLocation(handle, name), value.r, value.g, value.b, value.a);

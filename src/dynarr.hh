@@ -38,7 +38,7 @@ public:
     _resize(size);
   }
 
-  inline void pushBack(const T& e)
+  inline void pushback(const T& e)
   {
     if (_count + 1 > _capacity) {
       _resize(_capacity * DYN_ARR_GROW);
@@ -46,7 +46,7 @@ public:
     _d[_count++] = e;
   }
 
-  inline void pushFront(const T& e)
+  inline void pushfront(const T& e)
   {
     insert(0, e);
   }
@@ -88,12 +88,12 @@ public:
     _count--;
   }
 
-  inline void swapRemove(size_t index)
+  inline void swapremove(size_t index)
   {
     _d[index] = _d[_count--];
   }
 
-  T& popBack()
+  T& popback()
   {
     return _d[_count--];
   }

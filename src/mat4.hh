@@ -6,11 +6,11 @@ struct Mat4
 public:
   Mat4();
 
-  void setIdentity();
-  void setTranslation(float x, float y);
-  void setScale(float x, float y);
-  void setRotation(float r);
-  void setSkew(float x, float y);
+  void setidentity();
+  void settranslation(float x, float y);
+  void setscale(float x, float y);
+  void setrotation(float r);
+  void setskew(float x, float y);
   void translate(float x, float y);
   void scale(float x, float y);
   void rotate(float r);
@@ -18,7 +18,7 @@ public:
   void multiply(const Mat4& o, float t[16]) const;
   void multiply(const Mat4& o, Mat4& t) const;
   void ortho(float l, float r, float b, float t, float n, float f);
-  void applyTransform(float* x, float* y);
+  void applytransform(float* x, float* y);
 
   inline const float* data() const
   {

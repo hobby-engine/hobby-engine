@@ -8,22 +8,22 @@
 class GlfwWindow final : public Window
 {
 public:
-  GlfwWindow(Engine& engine, const WindowSettings& settings);
+  GlfwWindow(Engine& engine, const WindowOptions& settings);
   ~GlfwWindow();
 
   GLFWwindow* handle;
 
-  const char* getTitle() const override;
-  void setTitle(const char* title) override;
-  void getSize(int& w, int& h) const override;
-  void setSize(int w, int h) override;
-  bool isClosed() const override;
+  const char* gettitle() const override;
+  void settitle(const char* title) override;
+  void getsize(int& w, int& h) const override;
+  void setsize(int w, int h) override;
+  bool isclosed() const override;
   void close() override;
-  bool isFocused() const override;
+  bool isfocused() const override;
   void present() const override;
-  void setCurrent() override;
+  void makecurrent() override;
 
-  inline Engine& getEngine()
+  inline Engine& getengine()
   {
     return _engine;
   }

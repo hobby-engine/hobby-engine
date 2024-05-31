@@ -1,12 +1,12 @@
 #ifndef _LUA_THING_HH
 #define _LUA_THING_HH
 
-const char scriptThingLua[] = R"lua(
+const char scriptthinglua[] = R"lua(
 local things = {}
 
 local internal = {}
 
-local function getDefaultsTable(opts)
+local function defaultstbl(opts)
   local defaults = {}
 
   for k, v in pairs(opts) do
@@ -75,7 +75,7 @@ function hobby.thing(opts)
     internal[thing] = {
       opts = opts,
       name = name,
-      defaults = getDefaultsTable(opts),
+      defaults = defaultstbl(opts),
     }
   end
 

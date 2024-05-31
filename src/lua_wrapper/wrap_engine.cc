@@ -6,9 +6,9 @@
 
 static int wrap_getengine(lua_State* L)
 {
-  LuaWrapper* wrapper = getLuaWrapper(L);
+  LuaWrapper* wrapper = getwrapper(L);
 
-  createLuaData(L, &wrapper->engine, LuaDataType::Engine, "enginemt");
+  createluadata(L, &wrapper->engine, LuaDataType::Engine, "enginemt");
   return 1;
 }
 
@@ -26,14 +26,14 @@ luaL_Reg engine[] = {
 
 static int wrap_isrunning(lua_State* L)
 {
-  Engine* engine = getUserdata<Engine>(L, 1, LuaDataType::Engine);
-  lua_pushboolean(L, engine->isRunning());
+  Engine* engine = getuserdata<Engine>(L, 1, LuaDataType::Engine);
+  lua_pushboolean(L, engine->isrunning());
   return 1;
 }
 
 static int wrap_update(lua_State* L)
 {
-  Engine* engine = getUserdata<Engine>(L, 1, LuaDataType::Engine);
+  Engine* engine = getuserdata<Engine>(L, 1, LuaDataType::Engine);
   engine->update();
 
   lua_getglobal(L, LUA_LIB_NAME);
@@ -43,10 +43,10 @@ static int wrap_update(lua_State* L)
   lua_pushnumber(L, engine->time->fps);
   lua_setfield(L, -2, "fps");
 
-  lua_pushnumber(L, engine->time->totalTime);
+  lua_pushnumber(L, engine->time->total);
   lua_setfield(L, -2, "time");
 
-  lua_pushnumber(L, engine->renderer->getDrawCalls());
+  lua_pushnumber(L, engine->renderer->getdrawcalls());
   lua_setfield(L, -2, "drawcalls");
 
   return 0;
@@ -59,19 +59,19 @@ static int engine__index(lua_State* L)
   return 1;
 }
 
-luaL_Reg engineMethods[] = {
+luaL_Reg enginemt[] = {
   {"__index",   engine__index },
   {"update",    wrap_update   },
   {"isrunning", wrap_isrunning},
   {nullptr,     nullptr       },
 };
 
-void wrapEngine(lua_State* L)
+void wrapengine(lua_State* L)
 {
   lua_getglobal(L, LUA_LIB_NAME);
-  registerFunctions(L, engine);
+  registerfuncs(L, engine);
 
   luaL_newmetatable(L, "enginemt");
-  registerFunctions(L, engineMethods);
+  registerfuncs(L, enginemt);
   lua_pop(L, 1); // enginemt
 }

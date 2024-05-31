@@ -10,8 +10,8 @@ public:
   {
   }
 
-  virtual bool isKeyPressed(Key key) = 0;
-  virtual bool isMousePressed(int button) = 0;
+  virtual bool iskeydown(Key key) = 0;
+  virtual bool ismousedown(int button) = 0;
 };
 
 #endif // _HOBBY_INPUT_HH

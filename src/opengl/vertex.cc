@@ -2,7 +2,7 @@
 
 #include "log.hh"
 
-static unsigned int getGlBufferType(VertexBufferType type)
+static unsigned int getglbuftype(VertexBufferType type)
 {
   switch (type) {
     case VertexBufferType::Array:
@@ -15,8 +15,8 @@ static unsigned int getGlBufferType(VertexBufferType type)
   }
 }
 
-VertexBuffer::VertexBuffer(VertexBufferType type, bool isStatic)
-    : type(type), isStatic(isStatic)
+VertexBuffer::VertexBuffer(VertexBufferType type, bool isstatic)
+    : type(type), isstatic(isstatic)
 {
   glGenBuffers(1, &handle);
 }
@@ -28,15 +28,15 @@ VertexBuffer::~VertexBuffer()
 
 void VertexBuffer::bind() const
 {
-  glBindBuffer(getGlBufferType(type), handle);
+  glBindBuffer(getglbuftype(type), handle);
 }
 
-void VertexBuffer::setData(size_t size, void* data)
+void VertexBuffer::setdata(size_t size, void* data)
 {
   bind();
   glBufferData(
-    getGlBufferType(type), size, data,
-    isStatic ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+    getglbuftype(type), size, data,
+    isstatic ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
 }
 
 VertexArray::VertexArray()
@@ -54,7 +54,7 @@ void VertexArray::bind() const
   glBindVertexArray(handle);
 }
 
-void VertexArray::setAttribute(
+void VertexArray::setattrib(
   const VertexBuffer& buffer, unsigned int index, int count, GLenum type,
   size_t stride, size_t offset)
 {

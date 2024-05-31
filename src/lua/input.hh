@@ -1,7 +1,7 @@
 #ifndef _LUA_INPUT_HH
 #define _LUA_INPUT_HH
 
-const char scriptInputLua[] = R"lua(
+const char scriptinputlua[] = R"lua(
 function hobby.input.getvector(left, right, up, down)
   hobby.matchtype(left, "number")
   hobby.matchtype(right, "number")
@@ -20,20 +20,20 @@ hobby.keyevent = hobby.event()
 hobby.keypressed = hobby.event()
 hobby.keyreleased = hobby.event()
 
-function hobby.onKeyPressed(key, isRepeat)
+function hobby.onkeypressed(key, isRepeat)
   hobby.keypressed:call(key, isRepeat)
   hobby.keyevent:call(true, key, isRepeat)
 end
 
-function hobby.onKeyReleased(key)
+function hobby.onkeyreleased(key)
   hobby.keyreleased:call(key)
   hobby.keyevent:call(false, key, nil)
 end
 
-local keyNames = {}
+local keynames = {}
 
 function hobby.input.keytostring(key)
-  local name = keyNames[key]
+  local name = keynames[key]
   if not name then
     error("Invalid key.", 1)
   end
@@ -172,7 +172,7 @@ hobby.XB2 = 5
 
 for k, v in pairs(keys) do
   hobby[k] = v
-  keyNames[v] = k
+  keynames[v] = k
 end
 )lua";
 

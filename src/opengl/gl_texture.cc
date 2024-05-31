@@ -8,7 +8,7 @@
 #include "log.hh"
 #include "texture.hh"
 
-static int hobbyFilterToOpenGl(FilterMode filter)
+static int getglfilter(FilterMode filter)
 {
   switch (filter) {
     case FilterMode::Linear:
@@ -21,7 +21,7 @@ static int hobbyFilterToOpenGl(FilterMode filter)
   }
 }
 
-static int hobbyWrapToOpenGl(WrapMode mode)
+static int getglwrap(WrapMode mode)
 {
   switch (mode) {
     case WrapMode::None:
@@ -40,13 +40,13 @@ static int hobbyWrapToOpenGl(WrapMode mode)
 
 OpenGlTexture2D::OpenGlTexture2D(const char* path)
 {
-  uint8_t* data = stbi_load(path, &_width, &_height, &_channelCount, 0);
+  uint8_t* data = stbi_load(path, &_width, &_height, &_channels, 0);
 
-  fatalAssert(data != nullptr, "Failed to load image '%s'", path);
+  fassert(data != nullptr, "Failed to load image '%s'", path);
 
   int channels = -1;
 
-  switch (_channelCount) {
+  switch (_channels) {
     case 3:
       channels = GL_RGB;
       break;
@@ -60,12 +60,10 @@ OpenGlTexture2D::OpenGlTexture2D(const char* path)
   glGenTextures(1, &handle);
   glBindTexture(GL_TEXTURE_2D, handle);
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, hobbyWrapToOpenGl(_wrap));
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, hobbyWrapToOpenGl(_wrap));
-  glTexParameteri(
-    GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, hobbyFilterToOpenGl(_min));
-  glTexParameteri(
-    GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, hobbyFilterToOpenGl(_mag));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, getglwrap(_wrap));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, getglwrap(_wrap));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, getglfilter(_min));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, getglfilter(_mag));
 
   glTexImage2D(
     GL_TEXTURE_2D, 0, channels, _width, _height, 0, channels, GL_UNSIGNED_BYTE,
@@ -82,24 +80,22 @@ OpenGlTexture2D::OpenGlTexture2D(Color color)
 
   _wrap = WrapMode::Repeat;
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, hobbyWrapToOpenGl(_wrap));
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, hobbyWrapToOpenGl(_wrap));
-  glTexParameteri(
-    GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, hobbyFilterToOpenGl(_min));
-  glTexParameteri(
-    GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, hobbyFilterToOpenGl(_mag));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, getglwrap(_wrap));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, getglwrap(_wrap));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, getglfilter(_min));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, getglfilter(_mag));
 
-  uint8_t bColor[4] = {
+  uint8_t bcolor[4] = {
     (uint8_t)(color.r * UINT8_MAX), (uint8_t)(color.g * UINT8_MAX),
     (uint8_t)(color.b * UINT8_MAX), (uint8_t)(color.a * UINT8_MAX)};
 
   _width = 1;
   _height = 1;
-  _channelCount = 4;
+  _channels = 4;
 
   glTexImage2D(
     GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-    bColor);
+    bcolor);
 }
 
 OpenGlTexture2D::~OpenGlTexture2D()
@@ -107,19 +103,19 @@ OpenGlTexture2D::~OpenGlTexture2D()
   glDeleteTextures(0, &handle);
 }
 
-int OpenGlTexture2D::getWidth() const
+int OpenGlTexture2D::getwidth() const
 {
   return _width;
 }
 
-int OpenGlTexture2D::getHeight() const
+int OpenGlTexture2D::getheight() const
 {
   return _height;
 }
 
-int OpenGlTexture2D::getChannelCount() const
+int OpenGlTexture2D::getchannels() const
 {
-  return _channelCount;
+  return _channels;
 }
 
 void OpenGlTexture2D::bind() const

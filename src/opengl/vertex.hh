@@ -15,13 +15,13 @@ struct VertexBuffer
 {
   unsigned int handle;
   VertexBufferType type;
-  bool isStatic;
+  bool isstatic;
 
-  VertexBuffer(VertexBufferType type, bool isStatic);
+  VertexBuffer(VertexBufferType type, bool isstatic);
   ~VertexBuffer();
 
   void bind() const;
-  void setData(size_t size, void* data);
+  void setdata(size_t size, void* data);
 };
 
 struct VertexArray
@@ -32,7 +32,7 @@ struct VertexArray
   ~VertexArray();
 
   void bind() const;
-  void setAttribute(
+  void setattrib(
     const VertexBuffer& buffer, unsigned int index, int count, GLenum type,
     size_t stride, size_t offset);
 };
