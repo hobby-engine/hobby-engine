@@ -1,5 +1,5 @@
-#ifndef _LUA_CLASS_HH
-#define _LUA_CLASS_HH
+#ifndef _HOBBY_LUA_CLASS_HH
+#define _HOBBY_LUA_CLASS_HH
 
 const char scriptclasslua[] = R"lua(
 local nexttypeid = 0
@@ -94,4 +94,4 @@ end
 hobby.class = class
 )lua";
 
-#endif // _LUA_CLASS_HH
+#endif // _HOBBY_LUA_CLASS_HH

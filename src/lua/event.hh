@@ -1,5 +1,5 @@
-#ifndef _LUA_EVENT_HH
-#define _LUA_EVENT_HH
+#ifndef _HOBBY_LUA_EVENT_HH
+#define _HOBBY_LUA_EVENT_HH
 
 const char scripteventlua[] = R"lua(
 local Event = hobby.class()
@@ -47,4 +47,4 @@ end
 hobby.event = Event
 )lua";
 
-#endif // _LUA_EVENT_HH
+#endif // _HOBBY_LUA_EVENT_HH

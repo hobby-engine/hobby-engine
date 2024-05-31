@@ -1,5 +1,5 @@
-#ifndef _LUA_THING_HH
-#define _LUA_THING_HH
+#ifndef _HOBBY_LUA_THING_HH
+#define _HOBBY_LUA_THING_HH
 
 const char scriptthinglua[] = R"lua(
 local things = {}
@@ -84,4 +84,4 @@ function hobby.thing(opts)
 end
 )lua";
 
-#endif // _LUA_THING_HH
+#endif // _HOBBY_LUA_THING_HH

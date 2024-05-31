@@ -1,5 +1,5 @@
-#ifndef _LUA_INPUT_HH
-#define _LUA_INPUT_HH
+#ifndef _HOBBY_LUA_INPUT_HH
+#define _HOBBY_LUA_INPUT_HH
 
 const char scriptinputlua[] = R"lua(
 function hobby.input.getvector(left, right, up, down)
@@ -176,4 +176,4 @@ for k, v in pairs(keys) do
 end
 )lua";
 
-#endif // _LUA_INPUT_HH
+#endif // _HOBBY_LUA_INPUT_HH

@@ -1,5 +1,5 @@
-#ifndef _LUA_AUXILIARY_HH
-#define _LUA_AUXILIARY_HH
+#ifndef _HOBBY_LUA_AUXILIARY_HH
+#define _HOBBY_LUA_AUXILIARY_HH
 
 const char scriptauxlua[] = R"lua(
 function hobby.matchtype(v, t)
@@ -65,4 +65,4 @@ function hobby.swapremove(t, i)
 end
 )lua";
 
-#endif // _LUA_AUXILIARY_HH
+#endif // _HOBBY_LUA_AUXILIARY_HH

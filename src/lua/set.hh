@@ -1,5 +1,5 @@
-#ifndef _LUA_SET_HH
-#define _LUA_SET_HH
+#ifndef _HOBBY_LUA_SET_HH
+#define _HOBBY_LUA_SET_HH
 
 const char scriptsetlua[] = R"lua(
 local Set = hobby.class()
@@ -47,4 +47,4 @@ end
 hobby.set = Set
 )lua";
 
-#endif // _LUA_SET_HH
+#endif // _HOBBY_LUA_SET_HH

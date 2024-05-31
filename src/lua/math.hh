@@ -1,5 +1,5 @@
-#ifndef _LUA_MATH_HH
-#define _LUA_MATH_HH
+#ifndef _HOBBY_LUA_MATH_HH
+#define _HOBBY_LUA_MATH_HH
 
 const char scriptmathlua[] = R"lua(
 hobby.math = {}
@@ -94,4 +94,4 @@ function hobby.vec.rotated(x, y, r)
 end
 )lua";
 
-#endif // _LUA_MATH_HH
+#endif // _HOBBY_LUA_MATH_HH

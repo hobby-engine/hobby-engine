@@ -1,5 +1,5 @@
-#ifndef _LUA_RUN_HH
-#define _LUA_RUN_HH
+#ifndef _HOBBY_LUA_RUN_HH
+#define _HOBBY_LUA_RUN_HH
 
 const char scriptrunlua[] = R"lua(
 function hobby.run()
@@ -28,4 +28,4 @@ function hobby.run()
 end
 )lua";
 
-#endif // _LUA_RUN_HH
+#endif // _HOBBY_LUA_RUN_HH

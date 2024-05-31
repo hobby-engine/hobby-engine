@@ -6,7 +6,7 @@ script_path = args[1]
 header_path = args[2]
 var_name = args[3]
 
-header_guard = header_path.replace("/", "_").replace(".", "_").replace("src", "").upper()
+header_guard = "_HOBBY" + header_path.replace("/", "_").replace(".", "_").replace("src", "").upper()
 
 print(f"writing {header_path}...")
 
