@@ -24,7 +24,7 @@ GlfwWindow::GlfwWindow(Engine& engine, const WindowOptions& settings)
     settings.width, settings.height, settings.title, nullptr, nullptr);
   if (!handle) {
     glfwTerminate();
-    fatal("Failed to initialize glfw window.");
+    Logger::instance()->fatal("Failed to initialize glfw window.");
   }
 
   glfwMakeContextCurrent(handle);

@@ -16,7 +16,8 @@ static int getglfilter(FilterMode filter)
     case FilterMode::Nearest:
       return GL_NEAREST;
     default:
-      error("Invalid filter type. This should be unreachable.\n");
+      Logger::instance()->error(
+        "Invalid filter type. This should be unreachable.\n");
       return 0;
   }
 }
@@ -33,7 +34,8 @@ static int getglwrap(WrapMode mode)
     case WrapMode::Clamp:
       return GL_CLAMP_TO_EDGE;
     default:
-      error("Invalid filter type. This should be unreachable.\n");
+      Logger::instance()->error(
+        "Invalid filter type. This should be unreachable.\n");
       return 0;
   }
 }
@@ -42,7 +44,10 @@ OpenGlTexture2D::OpenGlTexture2D(const char* path)
 {
   uint8_t* data = stbi_load(path, &_width, &_height, &_channels, 0);
 
-  fassert(data != nullptr, "Failed to load image '%s'", path);
+  if (!Logger::instance()->fassert(
+        data != nullptr, "Failed to load image '%s'", path)) {
+    std::exit(1);
+  }
 
   int channels = -1;
 
@@ -54,7 +59,8 @@ OpenGlTexture2D::OpenGlTexture2D(const char* path)
       channels = GL_RGBA;
       break;
     default:
-      fatal("Unsupported channel format.");
+      Logger::instance()->fatal("Unsupported channel format.");
+      std::exit(1);
   }
 
   glGenTextures(1, &handle);

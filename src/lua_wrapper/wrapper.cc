@@ -22,15 +22,17 @@ static int errorhandler(lua_State* L)
 {
   lua_getglobal(L, "debug");
   if (!lua_istable(L, -1)) {
-    fatal(
+    Logger::instance()->fatal(
       "%s\nDebug library has been removed. Cannot provide stack trace.",
       lua_tostring(L, 1));
+    std::exit(1);
   }
   lua_getfield(L, -1, "traceback");
   if (!lua_iscfunction(L, -1)) {
-    fatal(
+    Logger::instance()->fatal(
       "%s\n'debug.traceback' has been removed. Cannot provide stack trace.",
       lua_tostring(L, 1));
+    std::exit(1);
   }
 
   lua_pushvalue(L, -3);
@@ -38,9 +40,9 @@ static int errorhandler(lua_State* L)
   lua_call(L, 2, 1);
 
   if (lua_isstring(L, -1)) {
-    error("%s", lua_tostring(L, -1));
+    Logger::instance()->error("%s", lua_tostring(L, -1));
   } else {
-    error("%s", lua_tostring(L, -3));
+    Logger::instance()->error("%s", lua_tostring(L, -3));
   }
 
   lua_close(L);
@@ -104,7 +106,8 @@ void LuaWrapper::callfunction(const char* name, int argc, ...)
   lua_getglobal(L, LUA_LIB_NAME);
   lua_getfield(L, -1, name);
   if (!lua_isfunction(L, -1)) {
-    fatal("Cannot call non-function value '%s'.", name);
+    Logger::instance()->fatal("Cannot call non-function value '%s'.", name);
+    std::exit(1);
   }
 
   va_list args;
@@ -131,7 +134,8 @@ void LuaWrapper::callfunction(const char* name, int argc, ...)
         break;
       }
       default:
-        fatal("Unsupported value '%d'.", type);
+        Logger::instance()->fatal("Unsupported value '%d'.", type);
+        std::exit(1);
         break;
     }
   }

@@ -55,17 +55,17 @@ void openGlMessage(
   switch (severity) {
     case GL_DEBUG_SEVERITY_HIGH:
     case GL_DEBUG_SEVERITY_MEDIUM:
-      error("OpenGL: %s", message);
+      Logger::instance()->error("OpenGL: %s", message);
       return;
     case GL_DEBUG_SEVERITY_LOW:
-      warn("OpenGL: %s", message);
+      Logger::instance()->warn("OpenGL: %s", message);
       return;
     case GL_DEBUG_SEVERITY_NOTIFICATION:
-      hlog("OpenGL: %s", message);
+      Logger::instance()->log("OpenGL: %s", message);
       return;
   }
 
-  error("Unknown severity level!");
+  Logger::instance()->error("Unknown severity level!");
 }
 
 OpenGlRenderer::OpenGlRenderer(Window* window)
@@ -78,7 +78,7 @@ OpenGlRenderer::OpenGlRenderer(Window* window)
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 #ifdef HB_DEBUG
-  hlog("OpenGL debug enabled.");
+  Logger::instance()->log("OpenGL debug enabled.");
   glEnable(GL_DEBUG_OUTPUT);
   glDebugMessageCallback(openGlMessage, nullptr);
 #endif
@@ -99,7 +99,7 @@ void OpenGlRenderer::initopengl()
 {
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     glfwTerminate();
-    fatal("Failed to initialize glad.");
+    Logger::instance()->fatal("Failed to initialize glad.");
   }
 }
 

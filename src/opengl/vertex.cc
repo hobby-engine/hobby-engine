@@ -10,7 +10,7 @@ static unsigned int getglbuftype(VertexBufferType type)
     case VertexBufferType::Index:
       return GL_ELEMENT_ARRAY_BUFFER;
     default:
-      error("Invalid buffer type.");
+      Logger::instance()->error("Invalid buffer type.");
       return -1;
   }
 }

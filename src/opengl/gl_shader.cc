@@ -13,7 +13,7 @@ static char* loadfile(const char* path)
   FILE* file = fopen(path, "rb");
   if (!file) {
     printf("%s\n", path);
-    fatal("Failed to open file '%s'.", path);
+    Logger::instance()->fatal("Failed to open file '%s'.", path);
   }
 
   fseek(file, 0, SEEK_END);
@@ -21,10 +21,16 @@ static char* loadfile(const char* path)
   rewind(file);
 
   char* buf = new char[size + 1];
-  fassert(buf != NULL, "Not enough memory to read '%s'.", path);
+  if (!Logger::instance()->fassert(
+        buf != NULL, "Not enough memory to read '%s'.", path)) {
+    std::exit(1);
+  }
 
   size_t read = fread(buf, sizeof(char), size, file);
-  fassert(read == size, "Failed to read '%s'.", path);
+  if (!Logger::instance()->fassert(
+        read == size, "Failed to read '%s'.", path)) {
+    std::exit(1);
+  }
 
   buf[read] = '\0';
 
@@ -58,10 +64,12 @@ createshader(const char* source, const char* path, ShaderType type)
     char error[512];
     glGetShaderInfoLog(shader, 512, nullptr, error);
     if (path != nullptr) {
-      fatal("Error compiling '%s': %s", path, error);
+      Logger::instance()->fatal("Error compiling '%s': %s", path, error);
     } else {
-      fatal("Error compiling embedded shader: %s", path, error);
+      Logger::instance()->fatal(
+        "Error compiling embedded shader: %s", path, error);
     }
+    std::exit(1);
   }
 
   return shader;
@@ -85,7 +93,9 @@ unsigned int createprog(
   if (!success) {
     char error[512];
     glGetProgramInfoLog(success, 512, nullptr, error);
-    fatal("Error linking shader '%s' and '%s': %s", vertpath, fragpath, error);
+    Logger::instance()->fatal(
+      "Error linking shader '%s' and '%s': %s", vertpath, fragpath, error);
+    std::exit(1);
   }
 
   glDeleteShader(vert);
@@ -128,7 +138,10 @@ void OpenGlShader::apply()
 static int getShaderLocation(unsigned int handle, const char* name)
 {
   int location = glGetUniformLocation(handle, name);
-  fassert(location != -1, "Shader uniform '%s' doesn't exist.", name);
+  if (!Logger::instance()->fassert(
+        location != -1, "Shader uniform '%s' doesn't exist.", name)) {
+    std::exit(1);
+  }
   return location;
 }
 

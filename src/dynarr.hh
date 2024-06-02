@@ -137,7 +137,8 @@ T& DynArr<T>::operator[](size_t index) const
 {
 #ifdef HB_DEBUG
   if (index >= _count || index < 0) {
-    return fatal("Index '%d' out of bounds (Size %d).", index, _count);
+    return Logger::instance()->fatal(
+      "Index '%d' out of bounds (Size %d).", index, _count);
   }
 #endif
 
