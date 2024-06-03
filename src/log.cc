@@ -1,7 +1,6 @@
 #include "log.hh"
 
 #include <cstdarg>
-#include <cstdio>
 #include <cstdlib>
 
 Logger* Logger::_instance = nullptr;
@@ -14,8 +13,8 @@ Logger* Logger::instance()
   return _instance;
 }
 
-static void
-msg(FILE* file, const char* prefix, const char* format, va_list args)
+void Logger::_msg(
+  FILE* file, const char* prefix, const char* format, va_list args)
 {
   if (format == nullptr) {
     return;
@@ -32,7 +31,7 @@ void Logger::raw(const char* format, ...)
 {
   std::va_list args;
   va_start(args, format);
-  msg(stdout, nullptr, format, args);
+  _msg(stdout, nullptr, format, args);
   va_end(args);
 }
 
@@ -40,7 +39,7 @@ void Logger::log(const char* format, ...)
 {
   std::va_list args;
   va_start(args, format);
-  msg(stdout, "[LOG] ", format, args);
+  _msg(stdout, "[LOG] ", format, args);
   va_end(args);
 }
 
@@ -48,7 +47,7 @@ void Logger::warn(const char* format, ...)
 {
   std::va_list args;
   va_start(args, format);
-  msg(stderr, "[WARN] ", format, args);
+  _msg(stderr, "[WARN] ", format, args);
   va_end(args);
 }
 
@@ -56,7 +55,7 @@ void Logger::fatal(const char* format, ...)
 {
   std::va_list args;
   va_start(args, format);
-  msg(stderr, "[FATAL] ", format, args);
+  _msg(stderr, "[FATAL] ", format, args);
   va_end(args);
   std::exit(1);
 }
@@ -65,7 +64,7 @@ void Logger::error(const char* format, ...)
 {
   std::va_list args;
   va_start(args, format);
-  msg(stderr, "[ERROR] ", format, args);
+  _msg(stderr, "[ERROR] ", format, args);
   va_end(args);
 }
 
@@ -76,7 +75,7 @@ bool Logger::assert(bool cond, const char* format, ...)
   }
   std::va_list args;
   va_start(args, format);
-  msg(stderr, "[ERROR] ", format, args);
+  _msg(stderr, "[ERROR] ", format, args);
   va_end(args);
 
   return false;
@@ -89,7 +88,7 @@ bool Logger::fassert(bool cond, const char* format, ...)
   }
   std::va_list args;
   va_start(args, format);
-  msg(stderr, "[FATAL] ", format, args);
+  _msg(stderr, "[FATAL] ", format, args);
   va_end(args);
 
   return false;

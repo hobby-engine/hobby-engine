@@ -1,6 +1,8 @@
 #ifndef _HOBBY_LOG_HH
 #define _HOBBY_LOG_HH
 
+#include <cstdio>
+
 class Logger
 {
 public:
@@ -16,6 +18,8 @@ public:
 
 private:
   Logger() = default;
+
+  void _msg(FILE* file, const char* prefix, const char* format, va_list args);
 
   static Logger* _instance;
 };
