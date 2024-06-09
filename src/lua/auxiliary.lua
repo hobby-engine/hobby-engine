@@ -1,3 +1,7 @@
+function hobby.color8(r, g, b, a)
+  return r / 255, g / 255, b / 255, (a or 255) / 255
+end
+
 function hobby.matchtype(v, t)
   if type(v) == "table" and type(t) == "table" then
     local vmt = getmetatable(v)

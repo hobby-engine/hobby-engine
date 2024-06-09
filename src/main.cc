@@ -5,8 +5,7 @@ int main()
 {
   WindowOptions winopt = WindowOptions();
   winopt.title = "Hobby Engine";
-  winopt.canresize = false;
-
+  winopt.canresize = true;
   Engine engine{winopt};
 
   engine.luawrap->callfunction("run", 0);
