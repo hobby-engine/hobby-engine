@@ -39,49 +39,49 @@ public:
 
   inline int isindexed()
   {
-    return _indexed;
+    return m_indexed;
   }
 
   inline int vertexcount()
   {
-    return _vertices.size();
+    return m_vertices.size();
   }
 
   inline int indexcount()
   {
-    return _indices->size();
+    return m_indices->size();
   }
 
   inline int topindex()
   {
-    return _topindex;
+    return m_topindex;
   }
 
   inline float* data()
   {
-    return _vertices.data();
+    return m_vertices.data();
   }
 
   inline uint32_t* indices()
   {
-    return _indices->data();
+    return m_indices->data();
   }
 
   inline VertexFormat getformat()
   {
-    return _vertexformat;
+    return m_vertexformat;
   }
 
 private:
-  bool _indexed = false; // Do we use the index buffer to draw?
-  int _topindex = 0;
+  bool m_indexed = false; // Do we use the index buffer to draw?
+  int m_topindex = 0;
 
-  VertexFormat _vertexformat;
+  VertexFormat m_vertexformat;
 
-  DynArr<float> _vertices;
+  DynArr<float> m_vertices;
   // TODO: This sucks, ideally it should take up no space whatsoever if you
   // don't need it. Maybe make an `IndexMesh` class for indexed meshes?
-  DynArr<uint32_t>* _indices = nullptr;
+  DynArr<uint32_t>* m_indices = nullptr;
 };
 
 #endif // _HOBBY_MESH_HH

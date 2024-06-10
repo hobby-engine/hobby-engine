@@ -4,16 +4,31 @@
 struct Time
 {
 public:
-  double dt = 0;
-  double fps = 0;
-  double total = 0;
-
   void update();
 
+  double getdt() const
+  {
+    return m_dt;
+  }
+
+  double getfps() const
+  {
+    return m_fps;
+  }
+
+  double gettotal() const
+  {
+    return m_total;
+  }
+
 private:
-  double _lastframe = 0;
-  double _lastfps = 0;
-  int _framesrendered = 0;
+  double m_dt = 0;
+  double m_fps = 0;
+  double m_total = 0;
+
+  double m_lastframe = 0;
+  double m_lastfps = 0;
+  int m_framesrendered = 0;
 };
 
 #endif // _HOBBY_TIME_HH

@@ -7,16 +7,16 @@ void Time::update()
 {
   // TODO: Get rid of this GLFW call somehow.
   double currenttime = glfwGetTime();
-  dt = currenttime - _lastframe;
-  _lastframe = currenttime;
+  m_dt = currenttime - m_lastframe;
+  m_lastframe = currenttime;
 
-  total = currenttime;
+  m_total = currenttime;
 
-  _framesrendered++;
-  double lastupdate = currenttime - _lastfps;
+  m_framesrendered++;
+  double lastupdate = currenttime - m_lastfps;
   if (lastupdate > FPS_UPDATE_FREQ) {
-    fps = _framesrendered / lastupdate;
-    _lastfps = currenttime;
-    _framesrendered = 0;
+    m_fps = m_framesrendered / lastupdate;
+    m_lastfps = currenttime;
+    m_framesrendered = 0;
   }
 }

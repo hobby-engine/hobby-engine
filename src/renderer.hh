@@ -53,17 +53,17 @@ public:
 
   inline int getdrawcalls() const
   {
-    return _drawcalls;
+    return m_drawcalls;
   }
 
   inline void setcolor(Color color)
   {
-    _currentcolor = color;
+    m_currentcolor = color;
   }
 
   inline Color getcolor()
   {
-    return _currentcolor;
+    return m_currentcolor;
   }
 
   virtual void clear(Color color) = 0;
@@ -80,25 +80,25 @@ public:
     float ox, float oy, float skx, float sky);
 
 private:
-  void _flushdrawqueue();
+  void m_flushdrawqueue();
   // Checks if the current command matches up with what we want to draw enough
   // that we can use the current command, or if we need to use a new one.
-  BatchState& _requestbatchstate(const BatchRequest& req);
+  BatchState& m_requestbatchstate(const BatchRequest& req);
 
 protected:
-  Window* _window;
-  BatchState* _state = nullptr;
+  Window* m_window;
+  BatchState* m_state = nullptr;
 
-  Color _currentcolor = {1, 1, 1, 1};
+  Color m_currentcolor = {1, 1, 1, 1};
 
   // Draw call counting has a 1 frame latency. This is so that you can query it
   // anywhere and always have a full count.
-  int _drawcalls = 0;            // Prev frame draw calls.
-  int _currentdrawcallcount = 0; // Current frame's count.
+  int m_drawcalls = 0;            // Prev frame draw calls.
+  int m_currentdrawcallcount = 0; // Current frame's count.
 
   // Same with the batched calls.
-  int _batchedcalls = 0;        // Prev frame batched calls.
-  int _currentbatchedcalls = 0; // Current frame's count.
+  int m_batchedcalls = 0;        // Prev frame batched calls.
+  int m_currentbatchedcalls = 0; // Current frame's count.
 };
 
 #endif // _HOBBY_RENDERER_HH

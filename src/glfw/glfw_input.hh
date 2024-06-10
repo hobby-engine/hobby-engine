@@ -13,7 +13,7 @@ public:
   bool ismousedown(int button) override;
 
 private:
-  const GlfwWindow* _window;
+  const GlfwWindow* m_window;
 };
 
 #endif // _HOBBY_OPENGL_INPUT_HH

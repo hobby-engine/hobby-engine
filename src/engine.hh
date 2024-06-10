@@ -24,16 +24,16 @@ public:
 
   bool isrunning()
   {
-    return _isrunning;
+    return m_isrunning;
   }
 
   void stop()
   {
-    _isrunning = false;
+    m_isrunning = false;
   }
 
 private:
-  bool _isrunning = true;
+  bool m_isrunning = true;
 };
 
 #endif // _HOBBY_ENGINE_HH

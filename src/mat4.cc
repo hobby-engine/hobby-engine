@@ -13,32 +13,32 @@ Mat4::Mat4()
 
 void Mat4::setidentity()
 {
-  memset(e, 0, sizeof(float) * 16);
-  e[0] = 1;
-  e[5] = 1;
-  e[10] = 1;
-  e[15] = 1;
+  memset(m_e, 0, sizeof(float) * 16);
+  m_e[0] = 1;
+  m_e[5] = 1;
+  m_e[10] = 1;
+  m_e[15] = 1;
 }
 
 void Mat4::settranslation(float x, float y)
 {
   setidentity();
-  e[12] = x;
-  e[13] = y;
+  m_e[12] = x;
+  m_e[13] = y;
 }
 
 void Mat4::setscale(float x, float y)
 {
   setidentity();
-  e[0] = x;
-  e[5] = y;
+  m_e[0] = x;
+  m_e[5] = y;
 }
 
 void Mat4::setskew(float x, float y)
 {
   setidentity();
-  e[1] = x;
-  e[4] = y;
+  m_e[1] = x;
+  m_e[4] = y;
 }
 
 void Mat4::setrotation(float r)
@@ -46,38 +46,38 @@ void Mat4::setrotation(float r)
   setidentity();
   float c = cosf(r);
   float s = sinf(r);
-  e[0] = c;
-  e[4] = -s;
-  e[1] = s;
-  e[5] = c;
+  m_e[0] = c;
+  m_e[4] = -s;
+  m_e[1] = s;
+  m_e[5] = c;
 }
 
 void Mat4::translate(float x, float y)
 {
   Mat4 translation;
   translation.settranslation(x, y);
-  multiply(translation, e);
+  multiply(translation, m_e);
 }
 
 void Mat4::scale(float x, float y)
 {
   Mat4 scale;
   scale.setscale(x, y);
-  multiply(scale, e);
+  multiply(scale, m_e);
 }
 
 void Mat4::rotate(float r)
 {
   Mat4 rotation;
   rotation.setrotation(r);
-  multiply(rotation, e);
+  multiply(rotation, m_e);
 }
 
 void Mat4::skew(float x, float y)
 {
   Mat4 skew;
   skew.setskew(x, y);
-  multiply(skew, e);
+  multiply(skew, m_e);
 }
 
 void Mat4::multiply(const Mat4& o, float t[16]) const
@@ -90,44 +90,44 @@ void Mat4::multiply(const Mat4& o, float t[16]) const
    */
 
   // clang-format off
-  t[0]  = (e[0]  * o.e[0]) + (e[1]  * o.e[4]) + (e[2]  * o.e[8])  + (e[3]  * o.e[12]);
-  t[1]  = (e[0]  * o.e[1]) + (e[1]  * o.e[5]) + (e[2]  * o.e[9])  + (e[3]  * o.e[13]);
-  t[2]  = (e[0]  * o.e[2]) + (e[1]  * o.e[6]) + (e[2]  * o.e[10]) + (e[3]  * o.e[14]);
-  t[3]  = (e[0]  * o.e[3]) + (e[1]  * o.e[7]) + (e[2]  * o.e[11]) + (e[3]  * o.e[15]);
-  t[4]  = (e[4]  * o.e[0]) + (e[5]  * o.e[4]) + (e[6]  * o.e[8])  + (e[7]  * o.e[12]);
-  t[5]  = (e[4]  * o.e[1]) + (e[5]  * o.e[5]) + (e[6]  * o.e[9])  + (e[7]  * o.e[13]);
-  t[6]  = (e[4]  * o.e[2]) + (e[5]  * o.e[6]) + (e[6]  * o.e[10]) + (e[7]  * o.e[14]);
-  t[7]  = (e[4]  * o.e[3]) + (e[5]  * o.e[7]) + (e[6]  * o.e[11]) + (e[7]  * o.e[15]);
-  t[8]  = (e[8]  * o.e[0]) + (e[9]  * o.e[4]) + (e[10] * o.e[8])  + (e[11] * o.e[12]);
-  t[9]  = (e[8]  * o.e[1]) + (e[9]  * o.e[5]) + (e[10] * o.e[9])  + (e[11] * o.e[13]);
-  t[10] = (e[8]  * o.e[2]) + (e[9]  * o.e[6]) + (e[10] * o.e[10]) + (e[11] * o.e[14]);
-  t[11] = (e[8]  * o.e[3]) + (e[9]  * o.e[7]) + (e[10] * o.e[11]) + (e[11] * o.e[15]);
-  t[12] = (e[12] * o.e[0]) + (e[13] * o.e[4]) + (e[14] * o.e[8])  + (e[15] * o.e[12]);
-  t[13] = (e[12] * o.e[1]) + (e[13] * o.e[5]) + (e[14] * o.e[9])  + (e[15] * o.e[13]);
-  t[14] = (e[12] * o.e[2]) + (e[13] * o.e[6]) + (e[14] * o.e[10]) + (e[15] * o.e[14]);
-  t[15] = (e[12] * o.e[3]) + (e[13] * o.e[7]) + (e[14] * o.e[11]) + (e[15] * o.e[15]);
+  t[0]  = (m_e[0]  * o.m_e[0]) + (m_e[1]  * o.m_e[4]) + (m_e[2]  * o.m_e[8])  + (m_e[3]  * o.m_e[12]);
+  t[1]  = (m_e[0]  * o.m_e[1]) + (m_e[1]  * o.m_e[5]) + (m_e[2]  * o.m_e[9])  + (m_e[3]  * o.m_e[13]);
+  t[2]  = (m_e[0]  * o.m_e[2]) + (m_e[1]  * o.m_e[6]) + (m_e[2]  * o.m_e[10]) + (m_e[3]  * o.m_e[14]);
+  t[3]  = (m_e[0]  * o.m_e[3]) + (m_e[1]  * o.m_e[7]) + (m_e[2]  * o.m_e[11]) + (m_e[3]  * o.m_e[15]);
+  t[4]  = (m_e[4]  * o.m_e[0]) + (m_e[5]  * o.m_e[4]) + (m_e[6]  * o.m_e[8])  + (m_e[7]  * o.m_e[12]);
+  t[5]  = (m_e[4]  * o.m_e[1]) + (m_e[5]  * o.m_e[5]) + (m_e[6]  * o.m_e[9])  + (m_e[7]  * o.m_e[13]);
+  t[6]  = (m_e[4]  * o.m_e[2]) + (m_e[5]  * o.m_e[6]) + (m_e[6]  * o.m_e[10]) + (m_e[7]  * o.m_e[14]);
+  t[7]  = (m_e[4]  * o.m_e[3]) + (m_e[5]  * o.m_e[7]) + (m_e[6]  * o.m_e[11]) + (m_e[7]  * o.m_e[15]);
+  t[8]  = (m_e[8]  * o.m_e[0]) + (m_e[9]  * o.m_e[4]) + (m_e[10] * o.m_e[8])  + (m_e[11] * o.m_e[12]);
+  t[9]  = (m_e[8]  * o.m_e[1]) + (m_e[9]  * o.m_e[5]) + (m_e[10] * o.m_e[9])  + (m_e[11] * o.m_e[13]);
+  t[10] = (m_e[8]  * o.m_e[2]) + (m_e[9]  * o.m_e[6]) + (m_e[10] * o.m_e[10]) + (m_e[11] * o.m_e[14]);
+  t[11] = (m_e[8]  * o.m_e[3]) + (m_e[9]  * o.m_e[7]) + (m_e[10] * o.m_e[11]) + (m_e[11] * o.m_e[15]);
+  t[12] = (m_e[12] * o.m_e[0]) + (m_e[13] * o.m_e[4]) + (m_e[14] * o.m_e[8])  + (m_e[15] * o.m_e[12]);
+  t[13] = (m_e[12] * o.m_e[1]) + (m_e[13] * o.m_e[5]) + (m_e[14] * o.m_e[9])  + (m_e[15] * o.m_e[13]);
+  t[14] = (m_e[12] * o.m_e[2]) + (m_e[13] * o.m_e[6]) + (m_e[14] * o.m_e[10]) + (m_e[15] * o.m_e[14]);
+  t[15] = (m_e[12] * o.m_e[3]) + (m_e[13] * o.m_e[7]) + (m_e[14] * o.m_e[11]) + (m_e[15] * o.m_e[15]);
   // clang-format on
 }
 
 void Mat4::multiply(const Mat4& o, Mat4& t) const
 {
-  multiply(o, t.e);
+  multiply(o, t.m_e);
 }
 
 void Mat4::ortho(float l, float r, float b, float t, float n, float f)
 {
-  e[0] = 2.0f / (r - l);
-  e[5] = 2.0f / (t - b);
-  e[10] = -2.0f / (f - n);
+  m_e[0] = 2.0f / (r - l);
+  m_e[5] = 2.0f / (t - b);
+  m_e[10] = -2.0f / (f - n);
 
-  e[12] = -(r + l) / (r - l);
-  e[13] = -(t + b) / (t - b);
-  e[14] = -(f + n) / (f - n);
+  m_e[12] = -(r + l) / (r - l);
+  m_e[13] = -(t + b) / (t - b);
+  m_e[14] = -(f + n) / (f - n);
 }
 
 void Mat4::applytransform(float* x, float* y)
 {
   float cx = *x, cy = *y;
-  *x = (e[0] * cx) + (e[4] * cy) + (e[12]);
-  *y = (e[1] * cx) + (e[5] * cy) + (e[13]);
+  *x = (m_e[0] * cx) + (m_e[4] * cy) + (m_e[12]);
+  *y = (m_e[1] * cx) + (m_e[5] * cy) + (m_e[13]);
 }

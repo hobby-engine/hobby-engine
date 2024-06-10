@@ -19,9 +19,9 @@ public:
 private:
   Logger() = default;
 
-  void _msg(FILE* file, const char* prefix, const char* format, va_list args);
+  void m_msg(FILE* file, const char* prefix, const char* format, va_list args);
 
-  static Logger* _instance;
+  static Logger* m_instance;
 };
 
 #endif // _HOBBY_LOG_HH

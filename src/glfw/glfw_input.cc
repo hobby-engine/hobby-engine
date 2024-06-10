@@ -20,19 +20,19 @@ static void onkeypressed(
   }
 }
 
-GlfwInput::GlfwInput(const GlfwWindow* window) : _window(window)
+GlfwInput::GlfwInput(const GlfwWindow* window) : m_window(window)
 {
-  glfwSetKeyCallback(_window->gethandle(), onkeypressed);
+  glfwSetKeyCallback(m_window->gethandle(), onkeypressed);
 }
 
 bool GlfwInput::iskeydown(Key key)
 {
-  int state = glfwGetKey(_window->gethandle(), (int)key);
+  int state = glfwGetKey(m_window->gethandle(), (int)key);
   return state == GLFW_PRESS;
 }
 
 bool GlfwInput::ismousedown(int button)
 {
-  int state = glfwGetMouseButton(_window->gethandle(), button);
+  int state = glfwGetMouseButton(m_window->gethandle(), button);
   return state == GLFW_PRESS;
 }

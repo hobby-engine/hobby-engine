@@ -49,63 +49,63 @@ int getverformatlen(VertexFormat format)
 }
 
 Mesh::Mesh(VertexFormat format, bool indexed, int count)
-    : _indexed(indexed), _vertexformat(format)
+    : m_indexed(indexed), m_vertexformat(format)
 {
-  _vertices.reserve(count * getverformatlen(format));
+  m_vertices.reserve(count * getverformatlen(format));
 
   if (indexed) {
-    _indices = new DynArr<uint32_t>();
-    _indices->reserve(count);
+    m_indices = new DynArr<uint32_t>();
+    m_indices->reserve(count);
   }
 }
 
 Mesh::~Mesh()
 {
-  if (_indices != nullptr) {
-    delete _indices;
+  if (m_indices != nullptr) {
+    delete m_indices;
   }
 }
 
 void Mesh::addvertex_xy(float x, float y)
 {
-  _vertices.pushback(x);
-  _vertices.pushback(y);
+  m_vertices.pushback(x);
+  m_vertices.pushback(y);
 }
 
 void Mesh::addvertex_xyu(float x, float y, float uvx, float uvy)
 {
-  _vertices.pushback(x);
-  _vertices.pushback(y);
-  _vertices.pushback(uvx);
-  _vertices.pushback(uvy);
+  m_vertices.pushback(x);
+  m_vertices.pushback(y);
+  m_vertices.pushback(uvx);
+  m_vertices.pushback(uvy);
 }
 
 void Mesh::addvertex_xyuc(float x, float y, float uvx, float uvy, Color color)
 {
-  _vertices.pushback(x);
-  _vertices.pushback(y);
-  _vertices.pushback(uvx);
-  _vertices.pushback(uvy);
-  _vertices.pushback(color.r);
-  _vertices.pushback(color.g);
-  _vertices.pushback(color.b);
-  _vertices.pushback(color.a);
+  m_vertices.pushback(x);
+  m_vertices.pushback(y);
+  m_vertices.pushback(uvx);
+  m_vertices.pushback(uvy);
+  m_vertices.pushback(color.r);
+  m_vertices.pushback(color.g);
+  m_vertices.pushback(color.b);
+  m_vertices.pushback(color.a);
 }
 
 void Mesh::addvertex_xyc(float x, float y, Color color)
 {
-  _vertices.pushback(x);
-  _vertices.pushback(y);
-  _vertices.pushback(color.r);
-  _vertices.pushback(color.g);
-  _vertices.pushback(color.b);
-  _vertices.pushback(color.a);
+  m_vertices.pushback(x);
+  m_vertices.pushback(y);
+  m_vertices.pushback(color.r);
+  m_vertices.pushback(color.g);
+  m_vertices.pushback(color.b);
+  m_vertices.pushback(color.a);
 }
 
 void Mesh::addindex(int start, int index)
 {
-  if (start + index > _topindex) {
-    _topindex = start + index + 1;
+  if (start + index > m_topindex) {
+    m_topindex = start + index + 1;
   }
-  _indices->pushback(start + index);
+  m_indices->pushback(start + index);
 }

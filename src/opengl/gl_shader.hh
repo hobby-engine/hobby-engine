@@ -20,7 +20,7 @@ public:
   void sendcolor(const char* name, Color value) override;
 
 private:
-  unsigned int _handle;
+  unsigned int m_handle;
 };
 
 #endif // _HOBBY_OPENGL_SHADER_HH

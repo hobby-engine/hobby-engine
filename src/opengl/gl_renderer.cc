@@ -69,10 +69,10 @@ void openGlMessage(
 }
 
 OpenGlRenderer::OpenGlRenderer(Window* window)
-    : Renderer(window), _currentformat(VertexFormat::XY),
-      _vbo(VertexBuffer(VertexBufferType::Array, false)),
-      _ibo(VertexBuffer(VertexBufferType::Index, false)), _vao(VertexArray()),
-      _defaultshader(OpenGlShader::embedded(defaultvert, defaultfrag))
+    : Renderer(window), m_currentformat(VertexFormat::XY),
+      m_vbo(VertexBuffer(VertexBufferType::Array, false)),
+      m_ibo(VertexBuffer(VertexBufferType::Index, false)), m_vao(VertexArray()),
+      m_defaultshader(OpenGlShader::embedded(defaultvert, defaultfrag))
 {
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -83,16 +83,16 @@ OpenGlRenderer::OpenGlRenderer(Window* window)
   glDebugMessageCallback(openGlMessage, nullptr);
 #endif
 
-  _defaultshader.apply();
+  m_defaultshader.apply();
 
-  _coltex = new OpenGlTexture2D({1.0, 1.0, 1.0, 1.0});
+  m_coltex = new OpenGlTexture2D({1.0, 1.0, 1.0, 1.0});
 
   resizewindow(window);
 }
 
 OpenGlRenderer::~OpenGlRenderer()
 {
-  delete _coltex;
+  delete m_coltex;
 }
 
 void OpenGlRenderer::initopengl()
@@ -108,8 +108,8 @@ void OpenGlRenderer::resizewindow(Window* window)
   int w, h;
   window->getsize(w, h);
 
-  _projection.setidentity();
-  _projection.ortho(0, w, h, 0, -1, 1);
+  m_projection.setidentity();
+  m_projection.ortho(0, w, h, 0, -1, 1);
 
   window->makecurrent();
   glViewport(0, 0, w, h);
@@ -121,13 +121,13 @@ void OpenGlRenderer::clear(Color color)
   glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void OpenGlRenderer::_setattribs()
+void OpenGlRenderer::m_setattribs()
 {
-  VertexFormat format = _currentformat;
-  if (_state) {
-    format = _state->mesh.getformat();
+  VertexFormat format = m_currentformat;
+  if (m_state) {
+    format = m_state->mesh.getformat();
     // Nothing changed, this is a waste of our time
-    if (format == _currentformat) {
+    if (format == m_currentformat) {
       return;
     }
   }
@@ -136,27 +136,27 @@ void OpenGlRenderer::_setattribs()
 
   switch (format) {
     case VertexFormat::XY:
-      _vao.setattrib(_vbo, 0, 2, GL_FLOAT, stride, 0);
+      m_vao.setattrib(m_vbo, 0, 2, GL_FLOAT, stride, 0);
       break;
     case VertexFormat::XYU:
-      _vao.setattrib(_vbo, 0, 2, GL_FLOAT, stride, 0);
-      _vao.setattrib(_vbo, 1, 2, GL_FLOAT, stride, 2 * sizeof(float));
+      m_vao.setattrib(m_vbo, 0, 2, GL_FLOAT, stride, 0);
+      m_vao.setattrib(m_vbo, 1, 2, GL_FLOAT, stride, 2 * sizeof(float));
       break;
     case VertexFormat::XYC:
-      _vao.setattrib(_vbo, 0, 2, GL_FLOAT, stride, 0);
-      _vao.setattrib(_vbo, 1, 4, GL_FLOAT, stride, 2 * sizeof(float));
+      m_vao.setattrib(m_vbo, 0, 2, GL_FLOAT, stride, 0);
+      m_vao.setattrib(m_vbo, 1, 4, GL_FLOAT, stride, 2 * sizeof(float));
       break;
     case VertexFormat::XYUC:
-      _vao.setattrib(_vbo, 0, 2, GL_FLOAT, stride, 0);
-      _vao.setattrib(_vbo, 1, 2, GL_FLOAT, stride, 2 * sizeof(float));
-      _vao.setattrib(_vbo, 2, 4, GL_FLOAT, stride, 4 * sizeof(float));
+      m_vao.setattrib(m_vbo, 0, 2, GL_FLOAT, stride, 0);
+      m_vao.setattrib(m_vbo, 1, 2, GL_FLOAT, stride, 2 * sizeof(float));
+      m_vao.setattrib(m_vbo, 2, 4, GL_FLOAT, stride, 4 * sizeof(float));
       break;
     default:
       return;
   }
 }
 
-GLenum OpenGlRenderer::_getglindexmode(IndexMode mode)
+GLenum OpenGlRenderer::m_getglindexmode(IndexMode mode)
 {
   switch (mode) {
     case IndexMode::Triangles:
@@ -171,61 +171,61 @@ GLenum OpenGlRenderer::_getglindexmode(IndexMode mode)
   return GL_TRIANGLES;
 }
 
-void OpenGlRenderer::_setupshader(const Mat4& transform)
+void OpenGlRenderer::m_setupshader(const Mat4& transform)
 {
   glActiveTexture(GL_TEXTURE0);
-  _coltex->bind();
+  m_coltex->bind();
 
-  _defaultshader.apply();
+  m_defaultshader.apply();
 
-  if (_state->texture) {
-    _state->texture->bind();
+  if (m_state->texture) {
+    m_state->texture->bind();
   }
-  _defaultshader.sendint("tex", 0);
-  _defaultshader.sendmat4("proj", _projection);
-  _defaultshader.sendmat4("trans", transform);
+  m_defaultshader.sendint("tex", 0);
+  m_defaultshader.sendmat4("proj", m_projection);
+  m_defaultshader.sendmat4("trans", transform);
 }
 
 void OpenGlRenderer::draw()
 {
-  float* vertices = _state->mesh.data();
+  float* vertices = m_state->mesh.data();
 
-  int vertexlen = getverformatlen(_state->mesh.getformat());
-  int meshlen = _state->mesh.vertexcount();
+  int vertexlen = getverformatlen(m_state->mesh.getformat());
+  int meshlen = m_state->mesh.vertexcount();
 
-  _vbo.setdata(meshlen * sizeof(float), vertices);
-  _setattribs();
+  m_vbo.setdata(meshlen * sizeof(float), vertices);
+  m_setattribs();
 
   Mat4 transform;
   transform.setidentity();
 
-  _setupshader(transform);
+  m_setupshader(transform);
 
-  _vao.bind();
+  m_vao.bind();
 
   int elementc = meshlen / vertexlen;
-  glDrawArrays(_getglindexmode(_state->indexmode), 0, elementc);
+  glDrawArrays(m_getglindexmode(m_state->indexmode), 0, elementc);
 }
 
 void OpenGlRenderer::drawindexed()
 {
-  float* vertices = _state->mesh.data();
-  unsigned int* indices = _state->mesh.indices();
+  float* vertices = m_state->mesh.data();
+  unsigned int* indices = m_state->mesh.indices();
 
-  int vertexcount = _state->mesh.vertexcount();
-  int indexcount = _state->mesh.indexcount();
+  int vertexcount = m_state->mesh.vertexcount();
+  int indexcount = m_state->mesh.indexcount();
 
-  _vbo.setdata(vertexcount * sizeof(float), vertices);
-  _ibo.setdata(indexcount * sizeof(uint32_t), indices);
-  _setattribs();
+  m_vbo.setdata(vertexcount * sizeof(float), vertices);
+  m_ibo.setdata(indexcount * sizeof(uint32_t), indices);
+  m_setattribs();
 
   Mat4 transform;
   transform.setidentity();
 
-  _setupshader(transform);
+  m_setupshader(transform);
 
-  _ibo.bind();
+  m_ibo.bind();
 
-  GLenum indexmode = _getglindexmode(_state->indexmode);
+  GLenum indexmode = m_getglindexmode(m_state->indexmode);
   glDrawElements(indexmode, indexcount, GL_UNSIGNED_INT, nullptr);
 }

@@ -3,56 +3,56 @@
 #include "mesh.hh"
 #include <cmath>
 
-Renderer::Renderer(Window* window) : _window(window)
+Renderer::Renderer(Window* window) : m_window(window)
 {
 }
 
 Renderer::~Renderer()
 {
-  delete _state;
+  delete m_state;
 }
 
 void Renderer::update()
 {
-  _drawcalls = _currentdrawcallcount;
-  _currentdrawcallcount = 0;
+  m_drawcalls = m_currentdrawcallcount;
+  m_currentdrawcallcount = 0;
 }
 
 void Renderer::present()
 {
-  if (_state != nullptr) {
-    _flushdrawqueue();
+  if (m_state != nullptr) {
+    m_flushdrawqueue();
   }
 
-  _window->present();
+  m_window->present();
 }
 
-void Renderer::_flushdrawqueue()
+void Renderer::m_flushdrawqueue()
 {
-  if (_state->mesh.isindexed()) {
+  if (m_state->mesh.isindexed()) {
     drawindexed();
   } else {
     draw();
   }
-  _currentdrawcallcount++;
+  m_currentdrawcallcount++;
 
-  delete _state;
-  _state = nullptr;
+  delete m_state;
+  m_state = nullptr;
 }
 
-BatchState& Renderer::_requestbatchstate(const BatchRequest& req)
+BatchState& Renderer::m_requestbatchstate(const BatchRequest& req)
 {
   bool newstate = false;
   bool flush = false;
 
   // If there is no command before this one, make one.
-  if (_state == nullptr) {
+  if (m_state == nullptr) {
     newstate = true;
   } else {
-    bool canbatch = _state->texture == req.texture &&
-                    _state->mesh.getformat() == req.vertexformat &&
-                    _state->indexmode == req.indexmode &&
-                    _state->mesh.isindexed();
+    bool canbatch = m_state->texture == req.texture &&
+                    m_state->mesh.getformat() == req.vertexformat &&
+                    m_state->indexmode == req.indexmode &&
+                    m_state->mesh.isindexed();
     if (!canbatch) {
       // We can't batch anything more past this point, so we draw everything
       // we've collected so far.
@@ -61,24 +61,24 @@ BatchState& Renderer::_requestbatchstate(const BatchRequest& req)
   }
 
   if (flush) {
-    _flushdrawqueue();
+    m_flushdrawqueue();
   }
 
   if (newstate || flush) {
     BatchState* state = new BatchState(req);
-    _state = state;
+    m_state = state;
     return *state;
   }
 
-  _currentbatchedcalls++;
-  return *_state;
+  m_currentbatchedcalls++;
+  return *m_state;
 }
 
 void Renderer::drawellipse(float x, float y, float rx, float ry)
 {
   BatchRequest req{VertexFormat::XYUC, IndexMode::Triangles, nullptr};
   req.isindexed = true;
-  BatchState& state = _requestbatchstate(req);
+  BatchState& state = m_requestbatchstate(req);
   Mesh& mesh = state.mesh;
 
   int start = mesh.topindex();
@@ -95,7 +95,7 @@ void Renderer::drawellipse(float x, float y, float rx, float ry)
       mesh.addindex(start, i - 1);
       mesh.addindex(start, i);
     }
-    mesh.addvertex_xyuc(px, py, c * 0.5 + 0.5, s * 0.5 + 0.5, _currentcolor);
+    mesh.addvertex_xyuc(px, py, c * 0.5 + 0.5, s * 0.5 + 0.5, m_currentcolor);
   }
 }
 
@@ -103,7 +103,7 @@ void Renderer::drawrect(float x, float y, float w, float h)
 {
   BatchRequest req{VertexFormat::XYUC, IndexMode::Triangles, nullptr};
   req.isindexed = true;
-  BatchState& state = _requestbatchstate(req);
+  BatchState& state = m_requestbatchstate(req);
   Mesh& mesh = state.mesh;
 
   int start = mesh.topindex();
@@ -116,10 +116,10 @@ void Renderer::drawrect(float x, float y, float w, float h)
   mesh.addindex(start, 1);
   mesh.addindex(start, 0);
 
-  mesh.addvertex_xyuc(x, y, 0, 0, _currentcolor);
-  mesh.addvertex_xyuc(x, y + h, 0, 1, _currentcolor);
-  mesh.addvertex_xyuc(x + w, y + h, 1, 1, _currentcolor);
-  mesh.addvertex_xyuc(x + w, y, 1, 0, _currentcolor);
+  mesh.addvertex_xyuc(x, y, 0, 0, m_currentcolor);
+  mesh.addvertex_xyuc(x, y + h, 0, 1, m_currentcolor);
+  mesh.addvertex_xyuc(x + w, y + h, 1, 1, m_currentcolor);
+  mesh.addvertex_xyuc(x + w, y, 1, 0, m_currentcolor);
 }
 
 void Renderer::drawtexture(
@@ -128,7 +128,7 @@ void Renderer::drawtexture(
 {
   BatchRequest req{VertexFormat::XYUC, IndexMode::Triangles, &texture};
   req.isindexed = true;
-  BatchState& state = _requestbatchstate(req);
+  BatchState& state = m_requestbatchstate(req);
   Mesh& mesh = state.mesh;
 
   int start = mesh.topindex();
@@ -158,8 +158,8 @@ void Renderer::drawtexture(
   float trx = ox + w, _try = oy;
   transform.applytransform(&trx, &_try);
 
-  mesh.addvertex_xyuc(tlx, tly, 0, 0, _currentcolor);
-  mesh.addvertex_xyuc(blx, bly, 0, 1, _currentcolor);
-  mesh.addvertex_xyuc(brx, bry, 1, 1, _currentcolor);
-  mesh.addvertex_xyuc(trx, _try, 1, 0, _currentcolor);
+  mesh.addvertex_xyuc(tlx, tly, 0, 0, m_currentcolor);
+  mesh.addvertex_xyuc(blx, bly, 0, 1, m_currentcolor);
+  mesh.addvertex_xyuc(brx, bry, 1, 1, m_currentcolor);
+  mesh.addvertex_xyuc(trx, _try, 1, 0, m_currentcolor);
 }

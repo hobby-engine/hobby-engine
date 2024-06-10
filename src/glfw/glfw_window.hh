@@ -23,17 +23,17 @@ public:
 
   inline Engine& getengine() const
   {
-    return _engine;
+    return m_engine;
   }
 
   inline GLFWwindow* gethandle() const
   {
-    return _handle;
+    return m_handle;
   }
 
 private:
-  Engine& _engine;
-  GLFWwindow* _handle;
+  Engine& m_engine;
+  GLFWwindow* m_handle;
 };
 
 #endif // _HOBBY_OPENGL_WINDOW_HH

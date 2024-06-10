@@ -17,7 +17,7 @@ class DynArr
 public:
   DynArr()
   {
-    _resize(DYN_ARR_SMALLEST);
+    m_resize(DYN_ARR_SMALLEST);
   }
 
   DynArr(const DynArr<T>& arr)
@@ -27,23 +27,23 @@ public:
 
   ~DynArr()
   {
-    _resize(0);
+    m_resize(0);
   }
 
   inline void reserve(size_t size)
   {
-    if (_capacity >= size) {
+    if (m_capacity >= size) {
       return;
     }
-    _resize(size);
+    m_resize(size);
   }
 
   inline void pushback(const T& e)
   {
-    if (_count + 1 > _capacity) {
-      _resize(_capacity * DYN_ARR_GROW);
+    if (m_count + 1 > m_capacity) {
+      m_resize(m_capacity * DYN_ARR_GROW);
     }
-    _d[_count++] = e;
+    m_d[m_count++] = e;
   }
 
   inline void pushfront(const T& e)
@@ -53,96 +53,96 @@ public:
 
   void insert(size_t index, const T& e)
   {
-    if (_count + 1 > _capacity) {
-      _resize(_capacity * DYN_ARR_GROW);
+    if (m_count + 1 > m_capacity) {
+      m_resize(m_capacity * DYN_ARR_GROW);
     }
 
-    for (int i = _count; i > index; i--) {
-      _d[i] = _d[i - 1];
+    for (int i = m_count; i > index; i--) {
+      m_d[i] = m_d[i - 1];
     }
 
-    _d[index] = e;
-    _count++;
+    m_d[index] = e;
+    m_count++;
   }
 
   inline void clear()
   {
-    free(_d);
-    _d = nullptr;
-    _count = 0;
-    _resize(DYN_ARR_SMALLEST);
+    free(m_d);
+    m_d = nullptr;
+    m_count = 0;
+    m_resize(DYN_ARR_SMALLEST);
   }
 
   inline void copy(DynArr<T>& dest) const
   {
-    dest._resize(_capacity);
-    dest._count = _count;
-    memcpy(dest._d, _d, sizeof(T) * _count);
+    dest.m_resize(m_capacity);
+    dest.m_count = m_count;
+    memcpy(dest.m_d, m_d, sizeof(T) * m_count);
   }
 
   void remove(size_t index)
   {
-    for (int i = index; i < _count - 1; i++) {
-      _d[i] = _d[i + 1];
+    for (int i = index; i < m_count - 1; i++) {
+      m_d[i] = m_d[i + 1];
     }
-    _count--;
+    m_count--;
   }
 
   inline void swapremove(size_t index)
   {
-    _d[index] = _d[_count--];
+    m_d[index] = m_d[m_count--];
   }
 
   T& popback()
   {
-    return _d[_count--];
+    return m_d[m_count--];
   }
 
   inline T& operator[](size_t index) const;
 
   inline int capacity() const
   {
-    return _capacity;
+    return m_capacity;
   }
 
   inline int size() const
   {
-    return _count;
+    return m_count;
   }
 
   inline T* data() const
   {
-    return _d;
+    return m_d;
   }
 
 private:
-  void _resize(size_t size)
+  void m_resize(size_t size)
   {
     if (size == 0) {
-      free(_d);
-      _d = nullptr;
+      free(m_d);
+      m_d = nullptr;
       return;
     }
 
-    _d = (T*)realloc(_d, sizeof(T) * size);
-    _capacity = size;
+    m_d = (T*)realloc(m_d, sizeof(T) * size);
+    m_capacity = size;
   }
 
-  T* _d = nullptr;
-  size_t _count = 0, _capacity = 0;
+  T* m_d = nullptr;
+  size_t m_count = 0, m_capacity = 0;
 };
 
 template <typename T>
 T& DynArr<T>::operator[](size_t index) const
 {
 #ifdef HB_DEBUG
-  if (index >= _count || index < 0) {
+  if (index >= m_count || index < 0) {
     return Logger::instance()->fatal(
-      "Index '%d' out of bounds (Size %d).", index, _count);
+      "Index '%d' out of bounds (Size %d).", index, m_count);
   }
 #endif
 
-  return _d[index];
+  return m_d[index];
 }
 
 #endif // _HOBBY_DYNARR_HH

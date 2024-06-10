@@ -22,11 +22,11 @@ public:
 
   inline const float* data() const
   {
-    return e;
+    return m_e;
   }
 
 private:
-  float e[16];
+  float m_e[16];
 };
 
 #endif // _HOBBY_MAT4_HH

@@ -12,7 +12,7 @@ static void onframebuffersizechanged(
 }
 
 GlfwWindow::GlfwWindow(Engine& engine, const WindowOptions& settings)
-    : _engine(engine)
+    : m_engine(engine)
 {
   glfwInit();
 
@@ -20,66 +20,66 @@ GlfwWindow::GlfwWindow(Engine& engine, const WindowOptions& settings)
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_RESIZABLE, settings.canresize);
 
-  _handle = glfwCreateWindow(
+  m_handle = glfwCreateWindow(
     settings.width, settings.height, settings.title, nullptr, nullptr);
-  if (!_handle) {
+  if (!m_handle) {
     glfwTerminate();
     Logger::instance()->fatal("Failed to initialize glfw window.");
   }
 
-  glfwMakeContextCurrent(_handle);
+  glfwMakeContextCurrent(m_handle);
 
-  glfwSetFramebufferSizeCallback(_handle, onframebuffersizechanged);
-  glfwSetWindowUserPointer(_handle, this);
+  glfwSetFramebufferSizeCallback(m_handle, onframebuffersizechanged);
+  glfwSetWindowUserPointer(m_handle, this);
   glfwSwapInterval(0);
 }
 
 GlfwWindow::~GlfwWindow()
 {
-  glfwDestroyWindow(_handle);
+  glfwDestroyWindow(m_handle);
 }
 
 const char* GlfwWindow::gettitle() const
 {
-  return glfwGetWindowTitle(_handle);
+  return glfwGetWindowTitle(m_handle);
 }
 
 void GlfwWindow::settitle(const char* title)
 {
-  glfwSetWindowTitle(_handle, title);
+  glfwSetWindowTitle(m_handle, title);
 }
 
 void GlfwWindow::getsize(int& w, int& h) const
 {
-  glfwGetWindowSize(_handle, &w, &h);
+  glfwGetWindowSize(m_handle, &w, &h);
 }
 
 void GlfwWindow::setsize(int w, int h)
 {
-  glfwSetWindowSize(_handle, w, h);
+  glfwSetWindowSize(m_handle, w, h);
 }
 
 bool GlfwWindow::isclosed() const
 {
-  return glfwWindowShouldClose(_handle);
+  return glfwWindowShouldClose(m_handle);
 }
 
 void GlfwWindow::close()
 {
-  glfwSetWindowShouldClose(_handle, true);
+  glfwSetWindowShouldClose(m_handle, true);
 }
 
 bool GlfwWindow::isfocused() const
 {
-  return glfwGetWindowAttrib(_handle, GLFW_FOCUSED) == 1;
+  return glfwGetWindowAttrib(m_handle, GLFW_FOCUSED) == 1;
 }
 
 void GlfwWindow::present() const
 {
-  glfwSwapBuffers(_handle);
+  glfwSwapBuffers(m_handle);
 }
 
 void GlfwWindow::makecurrent()
 {
-  glfwMakeContextCurrent(_handle);
+  glfwMakeContextCurrent(m_handle);
 }

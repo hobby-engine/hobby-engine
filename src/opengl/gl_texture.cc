@@ -42,7 +42,7 @@ static int getglwrap(WrapMode mode)
 
 OpenGlTexture2D::OpenGlTexture2D(const char* path)
 {
-  uint8_t* data = stbi_load(path, &_width, &_height, &_channels, 0);
+  uint8_t* data = stbi_load(path, &m_width, &m_height, &m_channels, 0);
 
   if (!Logger::instance()->fassert(
         data != nullptr, "Failed to load image '%s'", path)) {
@@ -51,7 +51,7 @@ OpenGlTexture2D::OpenGlTexture2D(const char* path)
 
   int channels = -1;
 
-  switch (_channels) {
+  switch (m_channels) {
     case 3:
       channels = GL_RGB;
       break;
@@ -63,17 +63,17 @@ OpenGlTexture2D::OpenGlTexture2D(const char* path)
       std::exit(1);
   }
 
-  glGenTextures(1, &_handle);
-  glBindTexture(GL_TEXTURE_2D, _handle);
+  glGenTextures(1, &m_handle);
+  glBindTexture(GL_TEXTURE_2D, m_handle);
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, getglwrap(_wrap));
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, getglwrap(_wrap));
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, getglfilter(_min));
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, getglfilter(_mag));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, getglwrap(m_wrap));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, getglwrap(m_wrap));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, getglfilter(m_min));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, getglfilter(m_mag));
 
   glTexImage2D(
-    GL_TEXTURE_2D, 0, channels, _width, _height, 0, channels, GL_UNSIGNED_BYTE,
-    data);
+    GL_TEXTURE_2D, 0, channels, m_width, m_height, 0, channels,
+    GL_UNSIGNED_BYTE, data);
   glGenerateMipmap(GL_TEXTURE_2D);
 
   stbi_image_free(data);
@@ -81,50 +81,50 @@ OpenGlTexture2D::OpenGlTexture2D(const char* path)
 
 OpenGlTexture2D::OpenGlTexture2D(Color color)
 {
-  glGenTextures(1, &_handle);
-  glBindTexture(GL_TEXTURE_2D, _handle);
+  glGenTextures(1, &m_handle);
+  glBindTexture(GL_TEXTURE_2D, m_handle);
 
-  _wrap = WrapMode::Repeat;
+  m_wrap = WrapMode::Repeat;
 
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, getglwrap(_wrap));
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, getglwrap(_wrap));
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, getglfilter(_min));
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, getglfilter(_mag));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, getglwrap(m_wrap));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, getglwrap(m_wrap));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, getglfilter(m_min));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, getglfilter(m_mag));
 
   uint8_t bcolor[4] = {
     (uint8_t)(color.r * UINT8_MAX), (uint8_t)(color.g * UINT8_MAX),
     (uint8_t)(color.b * UINT8_MAX), (uint8_t)(color.a * UINT8_MAX)};
 
-  _width = 1;
-  _height = 1;
-  _channels = 4;
+  m_width = 1;
+  m_height = 1;
+  m_channels = 4;
 
   glTexImage2D(
-    GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+    GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
     bcolor);
 }
 
 OpenGlTexture2D::~OpenGlTexture2D()
 {
-  glDeleteTextures(0, &_handle);
+  glDeleteTextures(0, &m_handle);
 }
 
 int OpenGlTexture2D::getwidth() const
 {
-  return _width;
+  return m_width;
 }
 
 int OpenGlTexture2D::getheight() const
 {
-  return _height;
+  return m_height;
 }
 
 int OpenGlTexture2D::getchannels() const
 {
-  return _channels;
+  return m_channels;
 }
 
 void OpenGlTexture2D::bind() const
 {
-  glBindTexture(GL_TEXTURE_2D, _handle);
+  glBindTexture(GL_TEXTURE_2D, m_handle);
 }

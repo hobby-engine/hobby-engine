@@ -37,13 +37,13 @@ static int wrap_update(lua_State* L)
   engine->update();
 
   lua_getglobal(L, LUA_LIB_NAME);
-  lua_pushnumber(L, engine->time->dt);
+  lua_pushnumber(L, engine->time->getdt());
   lua_setfield(L, -2, "dt");
 
-  lua_pushnumber(L, engine->time->fps);
+  lua_pushnumber(L, engine->time->getfps());
   lua_setfield(L, -2, "fps");
 
-  lua_pushnumber(L, engine->time->total);
+  lua_pushnumber(L, engine->time->gettotal());
   lua_setfield(L, -2, "time");
 
   lua_pushnumber(L, engine->renderer->getdrawcalls());

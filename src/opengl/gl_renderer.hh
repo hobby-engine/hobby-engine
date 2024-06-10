@@ -20,20 +20,20 @@ public:
   void resizewindow(Window* window) override;
 
 private:
-  void _setattribs();
-  GLenum _getglindexmode(IndexMode mode);
-  void _setupshader(const Mat4& transform);
+  void m_setattribs();
+  GLenum m_getglindexmode(IndexMode mode);
+  void m_setupshader(const Mat4& transform);
 
-  Mat4 _projection;
+  Mat4 m_projection;
 
-  OpenGlTexture2D* _coltex = nullptr;
+  OpenGlTexture2D* m_coltex = nullptr;
 
-  VertexFormat _currentformat;
+  VertexFormat m_currentformat;
 
-  VertexBuffer _vbo;
-  VertexBuffer _ibo;
-  VertexArray _vao;
-  OpenGlShader _defaultshader;
+  VertexBuffer m_vbo;
+  VertexBuffer m_ibo;
+  VertexArray m_vao;
+  OpenGlShader m_defaultshader;
 };
 
 #endif // _HOBBY_GL_RENDERER_HH

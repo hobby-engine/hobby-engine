@@ -17,11 +17,11 @@ public:
   void bind() const override;
 
 private:
-  unsigned int _handle;
-  FilterMode _min = FilterMode::Linear, _mag = FilterMode::Linear;
-  WrapMode _wrap = WrapMode::None;
-  int _width, _height;
-  int _channels;
+  unsigned int m_handle;
+  FilterMode m_min = FilterMode::Linear, m_mag = FilterMode::Linear;
+  WrapMode m_wrap = WrapMode::None;
+  int m_width, m_height;
+  int m_channels;
 };
 
 #endif // _HOBBY_OPENGL_TEXTURE_HH
