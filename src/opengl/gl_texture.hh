@@ -16,9 +16,8 @@ public:
   int getchannels() const override;
   void bind() const override;
 
-  unsigned int handle;
-
 private:
+  unsigned int _handle;
   FilterMode _min = FilterMode::Linear, _mag = FilterMode::Linear;
   WrapMode _wrap = WrapMode::None;
   int _width, _height;

@@ -63,8 +63,8 @@ OpenGlTexture2D::OpenGlTexture2D(const char* path)
       std::exit(1);
   }
 
-  glGenTextures(1, &handle);
-  glBindTexture(GL_TEXTURE_2D, handle);
+  glGenTextures(1, &_handle);
+  glBindTexture(GL_TEXTURE_2D, _handle);
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, getglwrap(_wrap));
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, getglwrap(_wrap));
@@ -81,8 +81,8 @@ OpenGlTexture2D::OpenGlTexture2D(const char* path)
 
 OpenGlTexture2D::OpenGlTexture2D(Color color)
 {
-  glGenTextures(1, &handle);
-  glBindTexture(GL_TEXTURE_2D, handle);
+  glGenTextures(1, &_handle);
+  glBindTexture(GL_TEXTURE_2D, _handle);
 
   _wrap = WrapMode::Repeat;
 
@@ -106,7 +106,7 @@ OpenGlTexture2D::OpenGlTexture2D(Color color)
 
 OpenGlTexture2D::~OpenGlTexture2D()
 {
-  glDeleteTextures(0, &handle);
+  glDeleteTextures(0, &_handle);
 }
 
 int OpenGlTexture2D::getwidth() const
@@ -126,5 +126,5 @@ int OpenGlTexture2D::getchannels() const
 
 void OpenGlTexture2D::bind() const
 {
-  glBindTexture(GL_TEXTURE_2D, handle);
+  glBindTexture(GL_TEXTURE_2D, _handle);
 }

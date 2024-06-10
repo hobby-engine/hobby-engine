@@ -10,8 +10,6 @@ public:
   OpenGlShader(unsigned int handle);
   ~OpenGlShader();
 
-  unsigned int handle;
-
   static OpenGlShader embedded(const char* vertsource, const char* fragsource);
 
   void apply() override;
@@ -22,6 +20,7 @@ public:
   void sendcolor(const char* name, Color value) override;
 
 private:
+  unsigned int _handle;
 };
 
 #endif // _HOBBY_OPENGL_SHADER_HH

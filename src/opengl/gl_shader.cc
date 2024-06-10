@@ -8,6 +8,7 @@
 
 #include "log.hh"
 
+// FIXME: This kinda sucks ngl, this would be done better by the C++ STD.
 static char* loadfile(const char* path)
 {
   FILE* file = fopen(path, "rb");
@@ -109,13 +110,13 @@ OpenGlShader::OpenGlShader(const char* vertpath, const char* fragpath)
   char* vertsrc = loadfile(vertpath);
   char* fragsrc = loadfile(fragpath);
 
-  handle = createprog(vertsrc, fragsrc, vertpath, fragpath);
+  _handle = createprog(vertsrc, fragsrc, vertpath, fragpath);
 
   delete[] vertsrc;
   delete[] fragsrc;
 }
 
-OpenGlShader::OpenGlShader(unsigned int handle) : handle(handle)
+OpenGlShader::OpenGlShader(unsigned int handle) : _handle(handle)
 {
 }
 
@@ -127,12 +128,12 @@ OpenGlShader OpenGlShader::embedded(const char* vertsrc, const char* fragsrc)
 
 OpenGlShader::~OpenGlShader()
 {
-  glDeleteProgram(handle);
+  glDeleteProgram(_handle);
 }
 
 void OpenGlShader::apply()
 {
-  glUseProgram(handle);
+  glUseProgram(_handle);
 }
 
 static int getShaderLocation(unsigned int handle, const char* name)
@@ -147,22 +148,22 @@ static int getShaderLocation(unsigned int handle, const char* name)
 
 void OpenGlShader::sendfloat(const char* name, float value)
 {
-  glUniform1f(getShaderLocation(handle, name), value);
+  glUniform1f(getShaderLocation(_handle, name), value);
 }
 
 void OpenGlShader::sendint(const char* name, int value)
 {
-  glUniform1i(getShaderLocation(handle, name), value);
+  glUniform1i(getShaderLocation(_handle, name), value);
 }
 
 void OpenGlShader::sendmat4(const char* name, const Mat4& value)
 {
   glUniformMatrix4fv(
-    getShaderLocation(handle, name), 1, GL_FALSE, value.data());
+    getShaderLocation(_handle, name), 1, GL_FALSE, value.data());
 }
 
 void OpenGlShader::sendcolor(const char* name, Color value)
 {
   glUniform4f(
-    getShaderLocation(handle, name), value.r, value.g, value.b, value.a);
+    getShaderLocation(_handle, name), value.r, value.g, value.b, value.a);
 }

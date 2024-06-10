@@ -14,7 +14,6 @@ public:
 
 private:
   const GlfwWindow* _window;
-  bool state[(int)Key::Max];
 };
 
 #endif // _HOBBY_OPENGL_INPUT_HH

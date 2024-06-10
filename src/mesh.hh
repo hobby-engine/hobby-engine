@@ -77,7 +77,10 @@ private:
   int _topindex = 0;
 
   VertexFormat _vertexformat;
+
   DynArr<float> _vertices;
+  // TODO: This sucks, ideally it should take up no space whatsoever if you
+  // don't need it. Maybe make an `IndexMesh` class for indexed meshes?
   DynArr<uint32_t>* _indices = nullptr;
 };
 

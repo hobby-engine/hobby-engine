@@ -11,8 +11,6 @@ public:
   GlfwWindow(Engine& engine, const WindowOptions& settings);
   ~GlfwWindow();
 
-  GLFWwindow* handle;
-
   const char* gettitle() const override;
   void settitle(const char* title) override;
   void getsize(int& w, int& h) const override;
@@ -23,13 +21,19 @@ public:
   void present() const override;
   void makecurrent() override;
 
-  inline Engine& getengine()
+  inline Engine& getengine() const
   {
     return _engine;
   }
 
+  inline GLFWwindow* gethandle() const
+  {
+    return _handle;
+  }
+
 private:
   Engine& _engine;
+  GLFWwindow* _handle;
 };
 
 #endif // _HOBBY_OPENGL_WINDOW_HH

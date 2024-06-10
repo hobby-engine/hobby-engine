@@ -20,66 +20,66 @@ GlfwWindow::GlfwWindow(Engine& engine, const WindowOptions& settings)
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_RESIZABLE, settings.canresize);
 
-  handle = glfwCreateWindow(
+  _handle = glfwCreateWindow(
     settings.width, settings.height, settings.title, nullptr, nullptr);
-  if (!handle) {
+  if (!_handle) {
     glfwTerminate();
     Logger::instance()->fatal("Failed to initialize glfw window.");
   }
 
-  glfwMakeContextCurrent(handle);
+  glfwMakeContextCurrent(_handle);
 
-  glfwSetFramebufferSizeCallback(handle, onframebuffersizechanged);
-  glfwSetWindowUserPointer(handle, this);
+  glfwSetFramebufferSizeCallback(_handle, onframebuffersizechanged);
+  glfwSetWindowUserPointer(_handle, this);
   glfwSwapInterval(0);
 }
 
 GlfwWindow::~GlfwWindow()
 {
-  glfwDestroyWindow(handle);
+  glfwDestroyWindow(_handle);
 }
 
 const char* GlfwWindow::gettitle() const
 {
-  return glfwGetWindowTitle(handle);
+  return glfwGetWindowTitle(_handle);
 }
 
 void GlfwWindow::settitle(const char* title)
 {
-  glfwSetWindowTitle(handle, title);
+  glfwSetWindowTitle(_handle, title);
 }
 
 void GlfwWindow::getsize(int& w, int& h) const
 {
-  glfwGetWindowSize(handle, &w, &h);
+  glfwGetWindowSize(_handle, &w, &h);
 }
 
 void GlfwWindow::setsize(int w, int h)
 {
-  glfwSetWindowSize(handle, w, h);
+  glfwSetWindowSize(_handle, w, h);
 }
 
 bool GlfwWindow::isclosed() const
 {
-  return glfwWindowShouldClose(handle);
+  return glfwWindowShouldClose(_handle);
 }
 
 void GlfwWindow::close()
 {
-  glfwSetWindowShouldClose(handle, true);
+  glfwSetWindowShouldClose(_handle, true);
 }
 
 bool GlfwWindow::isfocused() const
 {
-  return glfwGetWindowAttrib(handle, GLFW_FOCUSED) == 1;
+  return glfwGetWindowAttrib(_handle, GLFW_FOCUSED) == 1;
 }
 
 void GlfwWindow::present() const
 {
-  glfwSwapBuffers(handle);
+  glfwSwapBuffers(_handle);
 }
 
 void GlfwWindow::makecurrent()
 {
-  glfwMakeContextCurrent(handle);
+  glfwMakeContextCurrent(_handle);
 }

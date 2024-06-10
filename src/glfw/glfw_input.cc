@@ -22,21 +22,17 @@ static void onkeypressed(
 
 GlfwInput::GlfwInput(const GlfwWindow* window) : _window(window)
 {
-  for (int i = 0; i < (int)Key::Max; i++) {
-    state[i] = false;
-  }
-
-  glfwSetKeyCallback(window->handle, onkeypressed);
+  glfwSetKeyCallback(_window->gethandle(), onkeypressed);
 }
 
 bool GlfwInput::iskeydown(Key key)
 {
-  int state = glfwGetKey(_window->handle, (int)key);
+  int state = glfwGetKey(_window->gethandle(), (int)key);
   return state == GLFW_PRESS;
 }
 
 bool GlfwInput::ismousedown(int button)
 {
-  int state = glfwGetMouseButton(_window->handle, button);
+  int state = glfwGetMouseButton(_window->gethandle(), button);
   return state == GLFW_PRESS;
 }
