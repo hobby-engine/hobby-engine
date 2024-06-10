@@ -20,9 +20,7 @@ class Engine;
 class Window
 {
 public:
-  virtual ~Window()
-  {
-  }
+  virtual ~Window();
 
   static Window* create(Engine& engine, WindowOptions& winopt);
 

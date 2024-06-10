@@ -31,50 +31,11 @@ public:
 
   void clear();
 
-  inline void addvertex_xy(float x, float y)
-  {
-    _vertices.pushback(x);
-    _vertices.pushback(y);
-  }
-
-  inline void addvertex_xyu(float x, float y, float uvx, float uvy)
-  {
-    _vertices.pushback(x);
-    _vertices.pushback(y);
-    _vertices.pushback(uvx);
-    _vertices.pushback(uvy);
-  }
-
-  inline void
-  addvertex_xyuc(float x, float y, float uvx, float uvy, Color color)
-  {
-    _vertices.pushback(x);
-    _vertices.pushback(y);
-    _vertices.pushback(uvx);
-    _vertices.pushback(uvy);
-    _vertices.pushback(color.r);
-    _vertices.pushback(color.g);
-    _vertices.pushback(color.b);
-    _vertices.pushback(color.a);
-  }
-
-  inline void addvertex_xyc(float x, float y, Color color)
-  {
-    _vertices.pushback(x);
-    _vertices.pushback(y);
-    _vertices.pushback(color.r);
-    _vertices.pushback(color.g);
-    _vertices.pushback(color.b);
-    _vertices.pushback(color.a);
-  }
-
-  inline void addindex(int start, int index)
-  {
-    if (start + index > _topindex) {
-      _topindex = start + index + 1;
-    }
-    _indices->pushback(start + index);
-  }
+  void addvertex_xy(float x, float y);
+  void addvertex_xyu(float x, float y, float uvx, float uvy);
+  void addvertex_xyuc(float x, float y, float uvx, float uvy, Color color);
+  void addvertex_xyc(float x, float y, Color color);
+  void addindex(int start, int index);
 
   inline int isindexed()
   {
@@ -112,8 +73,7 @@ public:
   }
 
 private:
-  // Do we use the index buffer to draw?
-  bool _indexed = false;
+  bool _indexed = false; // Do we use the index buffer to draw?
   int _topindex = 0;
 
   VertexFormat _vertexformat;

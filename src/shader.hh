@@ -13,9 +13,7 @@ enum class ShaderType
 class Shader
 {
 public:
-  virtual ~Shader()
-  {
-  }
+  virtual ~Shader();
 
   virtual void apply() = 0;
 

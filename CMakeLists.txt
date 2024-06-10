@@ -30,6 +30,8 @@ set(SRC
   src/time.cc
   src/renderer.cc
   src/mesh.cc
+  src/texture.cc
+  src/shader.cc
   src/window.cc
   
   # GLFW implementation

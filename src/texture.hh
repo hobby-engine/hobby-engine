@@ -18,9 +18,7 @@ enum class WrapMode
 class Texture
 {
 public:
-  virtual ~Texture()
-  {
-  }
+  virtual ~Texture();
 
   virtual int getwidth() const = 0;
   virtual int getheight() const = 0;
