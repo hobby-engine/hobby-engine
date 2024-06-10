@@ -129,7 +129,8 @@ private:
   }
 
   T* m_d = nullptr;
-  size_t m_count = 0, m_capacity = 0;
+  size_t m_count = 0;
+  size_t m_capacity = 0;
 };
 
 template <typename T>

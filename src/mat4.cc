@@ -127,7 +127,8 @@ void Mat4::ortho(float l, float r, float b, float t, float n, float f)
 
 void Mat4::applytransform(float* x, float* y)
 {
-  float cx = *x, cy = *y;
+  float cx = *x;
+  float cy = *y;
   *x = (m_e[0] * cx) + (m_e[4] * cy) + (m_e[12]);
   *y = (m_e[1] * cx) + (m_e[5] * cy) + (m_e[13]);
 }

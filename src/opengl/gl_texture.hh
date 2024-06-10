@@ -18,7 +18,8 @@ public:
 
 private:
   unsigned int m_handle;
-  FilterMode m_min = FilterMode::Linear, m_mag = FilterMode::Linear;
+  FilterMode m_min = FilterMode::Linear;
+  FilterMode m_mag = FilterMode::Linear;
   WrapMode m_wrap = WrapMode::None;
   int m_width, m_height;
   int m_channels;

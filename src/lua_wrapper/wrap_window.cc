@@ -56,7 +56,8 @@ static int wrap_settitle(lua_State* L)
 static int wrap_getsize(lua_State* L)
 {
   Window* window = getuserdata<Window>(L, 1, LuaDataType::Window);
-  int w = 0, h = 0;
+  int w = 0;
+  int h = 0;
   window->getsize(w, h);
   lua_pushnumber(L, w);
   lua_pushnumber(L, h);

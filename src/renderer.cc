@@ -86,7 +86,8 @@ void Renderer::drawellipse(float x, float y, float rx, float ry)
 
   for (float i = 0; i < circleres; i++) {
     float angle = (i / circleres) * M_PI * 2;
-    float c = cosf(angle), s = sinf(angle);
+    float c = cosf(angle);
+    float s = sinf(angle);
     float px = x + c * rx;
     float py = y + s * ry;
 
@@ -147,15 +148,20 @@ void Renderer::drawtexture(
   transform.skew(skx, sky);
   transform.translate(x, y);
 
-  int w = texture.getwidth(), h = texture.getheight();
+  int w = texture.getwidth();
+  int h = texture.getheight();
 
-  float tlx = ox, tly = oy;
+  float tlx = ox;
+  float tly = oy;
   transform.applytransform(&tlx, &tly);
-  float blx = ox, bly = oy + h;
+  float blx = ox;
+  float bly = oy + h;
   transform.applytransform(&blx, &bly);
-  float brx = ox + w, bry = oy + h;
+  float brx = ox + w;
+  float bry = oy + h;
   transform.applytransform(&brx, &bry);
-  float trx = ox + w, _try = oy;
+  float trx = ox + w;
+  float _try = oy;
   transform.applytransform(&trx, &_try);
 
   mesh.addvertex_xyuc(tlx, tly, 0, 0, m_currentcolor);

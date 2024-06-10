@@ -9,8 +9,10 @@ enum class GraphicsBackend
 struct WindowOptions
 {
   const char* title = nullptr;
-  int width = 800, height = 400;
-  int x = -1, y = -1;
+  int width = 800;
+  int height = 400;
+  int x = -1;
+  int y = -1;
   bool canresize = true;
   GraphicsBackend backend = GraphicsBackend::OpenGL;
 };
